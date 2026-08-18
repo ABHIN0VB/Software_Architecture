@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - FeastFleet</title>
+  <meta name="description" content="Get in touch with FeastFleet for any questions or support.">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-brand">
+        <div class="brand-icon">🔥</div>
+        Feast<span class="accent">Fleet</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html"><i class="bi bi-house"></i> Home</a></li>
+        <li><a href="restaurants.html"><i class="bi bi-shop"></i> Restaurants</a></li>
+        <li><a href="cart.html" class="cart-link"><i class="bi bi-bag"></i> Cart <span class="cart-badge">0</span></a></li>
+        <li><a href="contact.html" class="active"><i class="bi bi-envelope"></i> Contact</a></li>
+      </ul>
+      <div class="nav-auth">
+        <a href="login.html" class="btn-nav-login">Sign In</a>
+      </div>
+      <button class="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main class="contact-page reveal">
+    <div class="container py-5">
+      <div class="text-center mb-5">
+        <h1>Get in Touch</h1>
+        <p>Have questions? We'd love to hear from you.</p>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-form-card">
+          <h3>Send us a Message</h3>
+          <form id="contact-form">
+            <div class="form-group mb-3">
+              <input type="text" id="name" class="form-control-custom" placeholder="Your Name" required>
+            </div>
+            <div class="form-group mb-3">
+              <input type="email" id="email" class="form-control-custom" placeholder="Your Email" required>
+            </div>
+            <div class="form-group mb-3">
+              <select id="subject" class="form-control-custom" required>
+                <option value="" disabled selected>Select Subject</option>
+                <option value="General Inquiry">General Inquiry</option>
+                <option value="Become a Partner">Become a Partner</option>
+                <option value="Report an Issue">Report an Issue</option>
+                <option value="Feedback">Feedback</option>
+              </select>
+            </div>
+            <div class="form-group mb-4">
+              <textarea id="message" class="form-control-custom" rows="5" placeholder="Your Message" required></textarea>
+            </div>
+            <button type="submit" class="btn-send btn-primary-custom w-100">Send Message</button>
+          </form>
+        </div>
+
+        <div class="contact-info-side">
+          <div class="info-card">
+            <div class="info-icon">📧</div>
+            <div class="info-content">
+              <h4>Email Us</h4>
+              <p>support@feastfleet.com</p>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">📞</div>
+            <div class="info-content">
+              <h4>Call Us</h4>
+              <p>+91 484 123 4567</p>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">📍</div>
+            <div class="info-content">
+              <h4>Visit Us</h4>
+              <p>Infopark, Kochi, Kerala, India</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-section mt-5 reveal">
+        <h2 class="text-center mb-4">Frequently Asked Questions</h2>
+        
+        <div class="faq-item">
+          <button class="faq-question">How do I place an order? <i class="bi bi-chevron-down"></i></button>
+          <div class="faq-answer">
+            <p>Browse restaurants, add items to cart, checkout.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-question">What are the delivery fees? <i class="bi bi-chevron-down"></i></button>
+          <div class="faq-answer">
+            <p>Delivery fees start at ₹30 and vary by distance.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-question">How can I track my order? <i class="bi bi-chevron-down"></i></button>
+          <div class="faq-answer">
+            <p>After placing your order, use the tracking page for real-time updates.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-question">Can I become a delivery partner? <i class="bi bi-chevron-down"></i></button>
+          <div class="faq-answer">
+            <p>Yes! Fill out the contact form above or visit our partner page.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-question">What payment methods do you accept? <i class="bi bi-chevron-down"></i></button>
+          <div class="faq-answer">
+            <p>We accept cash, credit/debit cards, and Apple Pay.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h2>Feast<span class="accent">Fleet</span></h2>
+        <p>Delicious food delivered fast to your doorstep. Order from the best restaurants in your city.</p>
+        <div class="footer-socials">
+          <a href="#"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-instagram"></i></a>
+          <a href="#"><i class="bi bi-twitter-x"></i></a>
+          <a href="#"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About Us</a>
+        <a href="#">Careers</a>
+        <a href="#">Blog</a>
+        <a href="#">Press</a>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <a href="contact.html">Contact Us</a>
+        <a href="#">Help Center</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+      <div class="footer-col">
+        <h4>Partner</h4>
+        <a href="contact.html">Become a Partner</a>
+        <a href="#">Delivery Driver</a>
+        <a href="#">Restaurant Owner</a>
+        <a href="#">Corporate Orders</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 FeastFleet. All rights reserved.</span>
+      <span>Made with ❤️ in Kerala, India</span>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

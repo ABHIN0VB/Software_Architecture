@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurants - FeastFleet</title>
+  <meta name="description" content="Explore the best restaurants in your city for food delivery with FeastFleet.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-brand">
+        <div class="brand-icon">🔥</div>
+        Feast<span class="accent">Fleet</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html"><i class="bi bi-house"></i> Home</a></li>
+        <li><a href="restaurants.html" class="active"><i class="bi bi-shop"></i> Restaurants</a></li>
+        <li><a href="cart.html" class="cart-link"><i class="bi bi-bag"></i> Cart <span class="cart-badge">0</span></a></li>
+        <li><a href="contact.html"><i class="bi bi-envelope"></i> Contact</a></li>
+      </ul>
+      <div class="nav-auth">
+        <a href="login.html" class="btn-nav-login">Sign In</a>
+      </div>
+      <button class="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="page-header reveal">
+    <div class="container text-center">
+      <h1>Explore <span class="accent">Restaurants</span></h1>
+      <p>Find the best restaurants near you</p>
+    </div>
+  </header>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar reveal">
+    <div class="container">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+        <div class="search-input-wrapper w-100" style="max-width: 400px; position: relative;">
+          <i class="bi bi-search" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.6);"></i>
+          <input type="text" class="search-input form-control form-control-custom w-100" placeholder="Search restaurants..." style="padding-left: 45px; border-radius: 50px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff;">
+        </div>
+        <div class="filter-chips d-flex flex-wrap justify-content-center justify-content-md-end gap-2">
+          <button class="filter-chip active" data-filter="all">All</button>
+          <button class="filter-chip" data-filter="pizza">Pizza</button>
+          <button class="filter-chip" data-filter="burgers">Burgers</button>
+          <button class="filter-chip" data-filter="asian">Asian</button>
+          <button class="filter-chip" data-filter="indian">Indian</button>
+          <button class="filter-chip" data-filter="desserts">Desserts</button>
+          <button class="filter-chip" data-filter="healthy">Healthy</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Restaurant Grid Section -->
+  <section class="section reveal">
+    <div class="container">
+      <div class="restaurants-grid">
+        
+        <!-- Restaurant Card 1 -->
+        <a href="menu.html" class="restaurant-card" data-cuisine="burgers">
+          <div class="card-image">
+            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop" alt="Burger Palace">
+            <span class="card-tag">Promo</span>
+            <button class="card-fav"><i class="bi bi-heart"></i></button>
+          </div>
+          <div class="card-body">
+            <h3>Burger Palace</h3>
+            <p class="card-cuisine">Burgers • American • Fast Food</p>
+            <div class="card-meta">
+              <span class="meta-item rating"><i class="bi bi-star-fill"></i> 4.8</span>
+              <span class="meta-item"><i class="bi bi-clock"></i> 15-25 min</span>
+              <span class="meta-item"><i class="bi bi-bicycle"></i> Free Delivery</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Restaurant Card 2 -->
+        <a href="menu.html" class="restaurant-card" data-cuisine="asian">
+          <div class="card-image">
+            <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&h=300&fit=crop" alt="Sushi Master">
+            <button class="card-fav"><i class="bi bi-heart"></i></button>
+          </div>
+          <div class="card-body">
+            <h3>Sushi Master</h3>
+            <p class="card-cuisine">Asian • Japanese • Sushi</p>
+            <div class="card-meta">
+              <span class="meta-item rating"><i class="bi bi-star-fill"></i> 4.9</span>
+              <span class="meta-item"><i class="bi bi-clock"></i> 30-40 min</span>
+              <span class="meta-item"><i class="bi bi-bicycle"></i> $2.99</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Restaurant Card 3 -->
+        <a href="menu.html" class="restaurant-card" data-cuisine="pizza">
+          <div class="card-image">
+            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=300&fit=crop" alt="Pizza Roma">
+            <span class="card-tag">Best Seller</span>
+            <button class="card-fav"><i class="bi bi-heart"></i></button>
+          </div>
+          <div class="card-body">
+            <h3>Pizza Roma</h3>
+            <p class="card-cuisine">Pizza • Italian • Pasta</p>
+            <div class="card-meta">
+              <span class="meta-item rating"><i class="bi bi-star-fill"></i> 4.7</span>
+              <span class="meta-item"><i class="bi bi-clock"></i> 25-35 min</span>
+              <span class="meta-item"><i class="bi bi-bicycle"></i> $1.49</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Restaurant Card 4 -->
+        <a href="menu.html" class="restaurant-card" data-cuisine="indian">
+          <div class="card-image">
+            <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&h=300&fit=crop" alt="Spice Garden">
+            <button class="card-fav"><i class="bi bi-heart"></i></button>
+          </div>
+          <div class="card-body">
+            <h3>Spice Garden</h3>
+            <p class="card-cuisine">Indian • Curry • Tandoori</p>
+            <div class="card-meta">
+              <span class="meta-item rating"><i class="bi bi-star-fill"></i> 4.6</span>
+              <span class="meta-item"><i class="bi bi-clock"></i> 35-45 min</span>
+              <span class="meta-item"><i class="bi bi-bicycle"></i> $3.50</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Restaurant Card 5 -->
+        <a href="menu.html" class="restaurant-card" data-cuisine="desserts">
+          <div class="card-image">
+            <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&h=300&fit=crop" alt="Sweet Treats">
+            <span class="card-tag">New</span>
+            <button class="card-fav"><i class="bi bi-heart"></i></button>
+          </div>
+          <div class="card-body">
+            <h3>Sweet Treats</h3>
+            <p class="card-cuisine">Desserts • Bakery • Sweets</p>
+            <div class="card-meta">
+              <span class="meta-item rating"><i class="bi bi-star-fill"></i> 4.9</span>
+              <span class="meta-item"><i class="bi bi-clock"></i> 10-20 min</span>
+              <span class="meta-item"><i class="bi bi-bicycle"></i> $1.99</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Restaurant Card 6 -->
+        <a href="menu.html" class="restaurant-card" data-cuisine="healthy">
+          <div class="card-image">
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop" alt="The Coffee House">
+            <button class="card-fav"><i class="bi bi-heart"></i></button>
+          </div>
+          <div class="card-body">
+            <h3>The Coffee House</h3>
+            <p class="card-cuisine">Healthy • Salads • Cafe</p>
+            <div class="card-meta">
+              <span class="meta-item rating"><i class="bi bi-star-fill"></i> 4.5</span>
+              <span class="meta-item"><i class="bi bi-clock"></i> 15-25 min</span>
+              <span class="meta-item"><i class="bi bi-bicycle"></i> Free Delivery</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Restaurant Card 7 -->
+        <a href="menu.html" class="restaurant-card" data-cuisine="asian">
+          <div class="card-image">
+            <img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=400&h=300&fit=crop" alt="Dragon Wok">
+            <button class="card-fav"><i class="bi bi-heart"></i></button>
+          </div>
+          <div class="card-body">
+            <h3>Dragon Wok</h3>
+            <p class="card-cuisine">Asian • Chinese • Noodles</p>
+            <div class="card-meta">
+              <span class="meta-item rating"><i class="bi bi-star-fill"></i> 4.4</span>
+              <span class="meta-item"><i class="bi bi-clock"></i> 25-35 min</span>
+              <span class="meta-item"><i class="bi bi-bicycle"></i> $2.50</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Restaurant Card 8 -->
+        <a href="menu.html" class="restaurant-card" data-cuisine="burgers">
+          <div class="card-image">
+            <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&h=300&fit=crop" alt="Taco Fiesta">
+            <span class="card-tag">Featured</span>
+            <button class="card-fav"><i class="bi bi-heart"></i></button>
+          </div>
+          <div class="card-body">
+            <h3>Taco Fiesta</h3>
+            <p class="card-cuisine">Mexican • Tacos • Burgers</p>
+            <div class="card-meta">
+              <span class="meta-item rating"><i class="bi bi-star-fill"></i> 4.6</span>
+              <span class="meta-item"><i class="bi bi-clock"></i> 20-30 min</span>
+              <span class="meta-item"><i class="bi bi-bicycle"></i> $1.99</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Restaurant Card 9 -->
+        <a href="menu.html" class="restaurant-card" data-cuisine="indian">
+          <div class="card-image">
+            <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&h=300&fit=crop" alt="Royal Biryani House">
+            <button class="card-fav"><i class="bi bi-heart"></i></button>
+          </div>
+          <div class="card-body">
+            <h3>Royal Biryani House</h3>
+            <p class="card-cuisine">Indian • Biryani • Mughlai</p>
+            <div class="card-meta">
+              <span class="meta-item rating"><i class="bi bi-star-fill"></i> 4.8</span>
+              <span class="meta-item"><i class="bi bi-clock"></i> 30-45 min</span>
+              <span class="meta-item"><i class="bi bi-bicycle"></i> Free Delivery</span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h2>Feast<span class="accent">Fleet</span></h2>
+        <p>Delicious food delivered fast to your doorstep. Order from the best restaurants in your city.</p>
+        <div class="footer-socials">
+          <a href="#"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-instagram"></i></a>
+          <a href="#"><i class="bi bi-twitter-x"></i></a>
+          <a href="#"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About Us</a>
+        <a href="#">Careers</a>
+        <a href="#">Blog</a>
+        <a href="#">Press</a>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <a href="contact.html">Contact Us</a>
+        <a href="#">Help Center</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+      <div class="footer-col">
+        <h4>Partner</h4>
+        <a href="contact.html">Become a Partner</a>
+        <a href="#">Delivery Driver</a>
+        <a href="#">Restaurant Owner</a>
+        <a href="#">Corporate Orders</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 FeastFleet. All rights reserved.</span>
+      <span>Made with ❤️ in Kerala, India</span>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

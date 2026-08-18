@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Burger Palace - FeastFleet</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-brand">
+        <div class="brand-icon">🔥</div>
+        Feast<span class="accent">Fleet</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html"><i class="bi bi-house"></i> Home</a></li>
+        <li><a href="restaurants.html"><i class="bi bi-shop"></i> Restaurants</a></li>
+        <li><a href="cart.html" class="cart-link"><i class="bi bi-bag"></i> Cart <span class="cart-badge">0</span></a></li>
+        <li><a href="contact.html"><i class="bi bi-envelope"></i> Contact</a></li>
+      </ul>
+      <div class="nav-auth">
+        <a href="login.html" class="btn-nav-login">Sign In</a>
+      </div>
+      <button class="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Menu Hero -->
+  <header class="menu-hero" style="background-image: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&h=400&fit=crop');">
+    <div class="overlay">
+      <div class="container reveal">
+        <h1>Burger Palace</h1>
+        <div class="restaurant-info">
+          <span class="info-item">⭐ 4.8 (2.1k reviews)</span>
+          <span class="info-item">🕐 20-30 min</span>
+          <span class="info-item">💰 ₹49 delivery</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Menu Section -->
+  <main class="container section">
+    
+    <div class="menu-tabs reveal">
+      <button class="menu-tab active" data-category="all">All</button>
+      <button class="menu-tab" data-category="popular">Popular</button>
+      <button class="menu-tab" data-category="burgers">Burgers</button>
+      <button class="menu-tab" data-category="sides">Sides</button>
+      <button class="menu-tab" data-category="drinks">Drinks</button>
+      <button class="menu-tab" data-category="desserts">Desserts</button>
+    </div>
+
+    <div class="menu-grid reveal">
+      
+      <!-- Item 1 -->
+      <div class="menu-item" data-category="popular burgers">
+        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop" alt="Classic Smash Burger" class="item-image">
+        <div class="item-details">
+          <h4>Classic Smash Burger</h4>
+          <p>Two smashed beef patties, house sauce, pickles, and American cheese.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹249</span>
+            <button class="btn-add-cart" data-id="bp-1" data-name="Classic Smash Burger" data-price="249" data-image="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop" data-restaurant="Burger Palace" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 2 -->
+      <div class="menu-item" data-category="popular burgers">
+        <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=400&h=300&fit=crop" alt="Cheese Loaded Burger" class="item-image">
+        <div class="item-details">
+          <h4>Cheese Loaded Burger</h4>
+          <p>Melted cheddar, mozzarella stick patty, and classic beef.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹299</span>
+            <button class="btn-add-cart" data-id="bp-2" data-name="Cheese Loaded Burger" data-price="299" data-image="https://images.unsplash.com/photo-1550547660-d9450f859349?w=400&h=300&fit=crop" data-restaurant="Burger Palace" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 3 -->
+      <div class="menu-item" data-category="popular burgers">
+        <img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=400&h=300&fit=crop" alt="Crispy Chicken Burger" class="item-image">
+        <div class="item-details">
+          <h4>Crispy Chicken Burger</h4>
+          <p>Spicy fried chicken breast, coleslaw, and spicy mayo.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹279</span>
+            <button class="btn-add-cart" data-id="bp-3" data-name="Crispy Chicken Burger" data-price="279" data-image="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=400&h=300&fit=crop" data-restaurant="Burger Palace" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 4 -->
+      <div class="menu-item" data-category="popular burgers">
+        <img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400&h=300&fit=crop" alt="Double Stack" class="item-image">
+        <div class="item-details">
+          <h4>Double Stack</h4>
+          <p>Two thick patties, bacon, onion rings, and BBQ sauce.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹349</span>
+            <button class="btn-add-cart" data-id="bp-4" data-name="Double Stack" data-price="349" data-image="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400&h=300&fit=crop" data-restaurant="Burger Palace" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 5 -->
+      <div class="menu-item" data-category="sides">
+        <img src="https://images.unsplash.com/photo-1576107232684-1279f3908594?w=400&h=300&fit=crop" alt="French Fries" class="item-image">
+        <div class="item-details">
+          <h4>French Fries</h4>
+          <p>Crispy golden fries seasoned with sea salt.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹99</span>
+            <button class="btn-add-cart" data-id="bp-5" data-name="French Fries" data-price="99" data-image="https://images.unsplash.com/photo-1576107232684-1279f3908594?w=400&h=300&fit=crop" data-restaurant="Burger Palace" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 6 -->
+      <div class="menu-item" data-category="sides">
+        <img src="https://images.unsplash.com/photo-1639024471210-24f56f4d2f14?w=400&h=300&fit=crop" alt="Onion Rings" class="item-image">
+        <div class="item-details">
+          <h4>Onion Rings</h4>
+          <p>Thick-cut, beer-battered onion rings with dip.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹119</span>
+            <button class="btn-add-cart" data-id="bp-6" data-name="Onion Rings" data-price="119" data-image="https://images.unsplash.com/photo-1639024471210-24f56f4d2f14?w=400&h=300&fit=crop" data-restaurant="Burger Palace" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 7 -->
+      <div class="menu-item" data-category="drinks">
+        <img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&h=300&fit=crop" alt="Cola" class="item-image">
+        <div class="item-details">
+          <h4>Cola</h4>
+          <p>Chilled refreshing cola drink.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹69</span>
+            <button class="btn-add-cart" data-id="bp-7" data-name="Cola" data-price="69" data-image="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&h=300&fit=crop" data-restaurant="Burger Palace" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 8 -->
+      <div class="menu-item" data-category="drinks desserts">
+        <img src="https://images.unsplash.com/photo-1572490122747-3968b75bb699?w=400&h=300&fit=crop" alt="Chocolate Shake" class="item-image">
+        <div class="item-details">
+          <h4>Chocolate Shake</h4>
+          <p>Thick and creamy chocolate milkshake.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹149</span>
+            <button class="btn-add-cart" data-id="bp-8" data-name="Chocolate Shake" data-price="149" data-image="https://images.unsplash.com/photo-1572490122747-3968b75bb699?w=400&h=300&fit=crop" data-restaurant="Burger Palace" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Floating Cart -->
+  <a href="cart.html" class="floating-cart" style="display: none;">
+    <i class="bi bi-bag-fill"></i>
+    <span class="fc-count">0 items</span>
+    <span>—</span>
+    <span class="fc-total">₹0.00</span>
+    <i class="bi bi-arrow-right"></i>
+  </a>
+
+  <!-- Footer -->
+  <footer class="site-footer reveal">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h2>Feast<span class="accent">Fleet</span></h2>
+        <p>Delicious food delivered fast to your doorstep. Order from the best restaurants in your city.</p>
+        <div class="footer-socials">
+          <a href="#"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-instagram"></i></a>
+          <a href="#"><i class="bi bi-twitter-x"></i></a>
+          <a href="#"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About Us</a>
+        <a href="#">Careers</a>
+        <a href="#">Blog</a>
+        <a href="#">Press</a>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <a href="contact.html">Contact Us</a>
+        <a href="#">Help Center</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+      <div class="footer-col">
+        <h4>Partner</h4>
+        <a href="contact.html">Become a Partner</a>
+        <a href="#">Delivery Driver</a>
+        <a href="#">Restaurant Owner</a>
+        <a href="#">Corporate Orders</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 FeastFleet. All rights reserved.</span>
+      <span>Made with ❤️ in Kerala, India</span>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
