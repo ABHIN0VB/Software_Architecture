@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AK Take Away, Pala - FeastFleet</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-brand">
+        <div class="brand-icon">
+          <img src="images/app-logo.jpg" alt="FeastFleet Logo">
+        </div>
+        Feast<span class="accent">Fleet</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html"><i class="bi bi-house"></i> Home</a></li>
+        <li><a href="restaurants.html"><i class="bi bi-shop"></i> Restaurants</a></li>
+        <li><a href="cart.html" class="cart-link"><i class="bi bi-bag"></i> Cart <span class="cart-badge">0</span></a></li>
+        <li><a href="contact.html"><i class="bi bi-envelope"></i> Contact</a></li>
+      </ul>
+      <div class="nav-auth">
+        <a href="login.html" class="btn-nav-login">Sign In</a>
+      </div>
+      <button class="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Menu Hero -->
+  <header class="menu-hero" style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=1200&h=400&fit=crop');">
+    <div class="overlay">
+      <div class="container reveal">
+        <div style="display: inline-block; background: rgba(255,107,53,0.9); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px;">
+          📍 Pala • 30-35 mins from Valavoor
+        </div>
+        <h1>AK Take Away, Pala</h1>
+        <p style="color: #cbd5e1; margin-bottom: 12px; font-size: 1.05rem;">Famous for charcoal Al Faham, authentic Kerala beef & chicken specials, flaky parottas, and creamy shakes.</p>
+        <div class="restaurant-info">
+          <span class="info-item">⭐ 4.8 (1.4k reviews)</span>
+          <span class="info-item">🕐 30-35 min delivery</span>
+          <span class="info-item">📍 Pala, Kottayam (4.1 km)</span>
+          <span class="info-item">💰 ₹40 delivery fee</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Menu Section -->
+  <main class="container section">
+    
+    <div class="menu-tabs reveal">
+      <button class="menu-tab active" data-category="all">All</button>
+      <button class="menu-tab" data-category="alfaham">Al Faham</button>
+      <button class="menu-tab" data-category="nonveg">Kerala Non-Veg</button>
+      <button class="menu-tab" data-category="veg">Vegetarian</button>
+      <button class="menu-tab" data-category="rice">Rice & Biryani</button>
+      <button class="menu-tab" data-category="noodles">Noodles</button>
+      <button class="menu-tab" data-category="breads">Parotta & Breads</button>
+      <button class="menu-tab" data-category="shakes">Cold Shakes</button>
+      <button class="menu-tab menu-tab-ai" data-category="ai-ingredients" title="Show AI food ingredient predictions"><i class="bi bi-stars"></i> AI Predictions</button>
+    </div>
+
+    <div class="menu-grid reveal">
+      
+      <!-- AL FAHAM & TANDOORI -->
+      <!-- Item 1 -->
+      <div class="menu-item" data-category="alfaham popular">
+        <img src="https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=400&h=300&fit=crop" alt="Al Faham Chicken" class="item-image">
+        <div class="item-details">
+          <h4>Al Faham Chicken</h4>
+          <p>Arabian charcoal-grilled chicken marinated with crushed pepper, lime, garlic, and special Yemeni spices.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹230</span>
+            <button class="btn-add-cart" data-id="ak-1" data-name="Al Faham Chicken" data-price="230" data-image="https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 2 -->
+      <div class="menu-item" data-category="alfaham">
+        <img src="https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=400&h=300&fit=crop" alt="Al Faham Half" class="item-image">
+        <div class="item-details">
+          <h4>Al Faham Half</h4>
+          <p>Charcoal-smoked half chicken served with rumali, garlic toum, and mint dip.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹420</span>
+            <button class="btn-add-cart" data-id="ak-2" data-name="Al Faham Half" data-price="420" data-image="https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 3 -->
+      <div class="menu-item" data-category="alfaham">
+        <img src="https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=400&h=300&fit=crop" alt="Al Faham Full" class="item-image">
+        <div class="item-details">
+          <h4>Al Faham Full</h4>
+          <p>Full whole chicken charcoal-grilled to perfection with Arabian marinades.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹800</span>
+            <button class="btn-add-cart" data-id="ak-3" data-name="Al Faham Full" data-price="800" data-image="https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 4 -->
+      <div class="menu-item" data-category="alfaham">
+        <img src="https://images.unsplash.com/photo-1610057099443-fde8c4d50f91?w=400&h=300&fit=crop" alt="Tandoori Chicken Quarter" class="item-image">
+        <div class="item-details">
+          <h4>Tandoori Chicken Quarter</h4>
+          <p>Tandoor roasted spiced chicken leg quarter with Kashmiri chili and yogurt.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹240</span>
+            <button class="btn-add-cart" data-id="ak-4" data-name="Tandoori Chicken Quarter" data-price="240" data-image="https://images.unsplash.com/photo-1610057099443-fde8c4d50f91?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- KERALA NON-VEG SPECIALS -->
+      <!-- Item 5 -->
+      <div class="menu-item" data-category="nonveg popular">
+        <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop" alt="Chilli Beef" class="item-image">
+        <div class="item-details">
+          <h4>Chilli Beef</h4>
+          <p>Crispy tender beef strips tossed with green chilies, shallots, curry leaves, and spicy dark soy glaze.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹330</span>
+            <button class="btn-add-cart" data-id="ak-5" data-name="Chilli Beef" data-price="330" data-image="https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 6 -->
+      <div class="menu-item" data-category="nonveg popular">
+        <img src="https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=400&h=300&fit=crop" alt="Chicken Pottitherichath" class="item-image">
+        <div class="item-details">
+          <h4>Chicken Pottitherichath</h4>
+          <p>Signature spicy explosive chicken stir-fried with crushed shallots, dry red chilies, garlic, and cracked pepper.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹229</span>
+            <button class="btn-add-cart" data-id="ak-6" data-name="Chicken Pottitherichath" data-price="229" data-image="https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 7 -->
+      <div class="menu-item" data-category="nonveg">
+        <img src="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=400&h=300&fit=crop" alt="Chicken Perattu" class="item-image">
+        <div class="item-details">
+          <h4>Chicken Perattu</h4>
+          <p>Dry slow-roasted country chicken coated in caramelized shallots, roasted coconut oil, and crushed peppercorns.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹210</span>
+            <button class="btn-add-cart" data-id="ak-7" data-name="Chicken Perattu" data-price="210" data-image="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 8 -->
+      <div class="menu-item" data-category="nonveg">
+        <img src="https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=400&h=300&fit=crop" alt="Dragon Chicken" class="item-image">
+        <div class="item-details">
+          <h4>Dragon Chicken</h4>
+          <p>Crispy fried chicken strips tossed in spicy sweet chili garlic sauce with bell peppers and roasted cashews.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹299</span>
+            <button class="btn-add-cart" data-id="ak-8" data-name="Dragon Chicken" data-price="299" data-image="https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 9 -->
+      <div class="menu-item" data-category="nonveg">
+        <img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=400&h=300&fit=crop" alt="Chicken 555" class="item-image">
+        <div class="item-details">
+          <h4>Chicken 555</h4>
+          <p>Chef special shredded spicy chicken fry glazed with tangy red chili sauce and fresh herbs.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹299</span>
+            <button class="btn-add-cart" data-id="ak-9" data-name="Chicken 555" data-price="299" data-image="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 10 -->
+      <div class="menu-item" data-category="nonveg">
+        <img src="https://images.unsplash.com/photo-1606471191009-63994c53433b?w=400&h=300&fit=crop" alt="Chicken 65" class="item-image">
+        <div class="item-details">
+          <h4>Chicken 65</h4>
+          <p>Crispy deep-fried boneless chicken bites flavored with ginger, garlic, and tempered curry leaves.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹199</span>
+            <button class="btn-add-cart" data-id="ak-10" data-name="Chicken 65" data-price="199" data-image="https://images.unsplash.com/photo-1606471191009-63994c53433b?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 11 -->
+      <div class="menu-item" data-category="nonveg">
+        <img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=400&h=300&fit=crop" alt="Chicken Fry 2pcs" class="item-image">
+        <div class="item-details">
+          <h4>Chicken Fry 2pcs</h4>
+          <p>Classic Kerala style shallow fried crispy chicken pieces with fried onions and green chili.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹199</span>
+            <button class="btn-add-cart" data-id="ak-11" data-name="Chicken Fry 2pcs" data-price="199" data-image="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 12 -->
+      <div class="menu-item" data-category="nonveg">
+        <img src="https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=400&h=300&fit=crop" alt="Butter Chicken" class="item-image">
+        <div class="item-details">
+          <h4>Butter Chicken</h4>
+          <p>Velvety tomato cream gravy with butter, tender chicken chunks, and aromatic kasuri methi.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹139</span>
+            <button class="btn-add-cart" data-id="ak-12" data-name="Butter Chicken" data-price="139" data-image="https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 13 -->
+      <div class="menu-item" data-category="nonveg">
+        <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop" alt="Pepper Chicken" class="item-image">
+        <div class="item-details">
+          <h4>Pepper Chicken</h4>
+          <p>Spicy peppery chicken cooked with crushed black peppercorns, onions, and curry leaves.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹139</span>
+            <button class="btn-add-cart" data-id="ak-13" data-name="Pepper Chicken" data-price="139" data-image="https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 14 -->
+      <div class="menu-item" data-category="nonveg">
+        <img src="https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=400&h=300&fit=crop" alt="Chilly Chicken" class="item-image">
+        <div class="item-details">
+          <h4>Chilly Chicken</h4>
+          <p>Indo-Chinese favorite: crispy chicken tossed with green chilies, garlic, and capsicum.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹199</span>
+            <button class="btn-add-cart" data-id="ak-14" data-name="Chilly Chicken" data-price="199" data-image="https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- VEGETARIAN DELIGHTS -->
+      <!-- Item 15 -->
+      <div class="menu-item" data-category="veg">
+        <img src="https://images.unsplash.com/photo-1625398407796-82650a8c135f?w=400&h=300&fit=crop" alt="Chilly Gopi" class="item-image">
+        <div class="item-details">
+          <h4>Chilly Gopi</h4>
+          <p>Golden cauliflower florets batter-fried and tossed in garlic chili sauce with scallions.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹120</span>
+            <button class="btn-add-cart" data-id="ak-15" data-name="Chilly Gopi" data-price="120" data-image="https://images.unsplash.com/photo-1625398407796-82650a8c135f?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 16 -->
+      <div class="menu-item" data-category="veg">
+        <img src="https://images.unsplash.com/photo-1625398407796-82650a8c135f?w=400&h=300&fit=crop" alt="Gobhi 65 Dry" class="item-image">
+        <div class="item-details">
+          <h4>Gobhi 65 Dry</h4>
+          <p>Crispy spiced cauliflower florets tossed with South Indian curry leaves and crushed spices.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹120</span>
+            <button class="btn-add-cart" data-id="ak-16" data-name="Gobhi 65 Dry" data-price="120" data-image="https://images.unsplash.com/photo-1625398407796-82650a8c135f?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 17 -->
+      <div class="menu-item" data-category="veg">
+        <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=400&h=300&fit=crop" alt="Paneer Butter Masala" class="item-image">
+        <div class="item-details">
+          <h4>Paneer Butter Masala</h4>
+          <p>Fresh cottage cheese cubes cooked in rich makhani gravy of cashew nuts, tomatoes, and butter.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹129</span>
+            <button class="btn-add-cart" data-id="ak-17" data-name="Paneer Butter Masala" data-price="129" data-image="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 18 -->
+      <div class="menu-item" data-category="veg">
+        <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop" alt="Tomatto Fry" class="item-image">
+        <div class="item-details">
+          <h4>Tomatto Fry</h4>
+          <p>Homestyle spicy tomato stir-fry with shallots, curry leaves, and green chilies.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹79</span>
+            <button class="btn-add-cart" data-id="ak-18" data-name="Tomatto Fry" data-price="79" data-image="https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RICE & BIRYANI -->
+      <!-- Item 19 -->
+      <div class="menu-item" data-category="rice popular">
+        <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&h=300&fit=crop" alt="Chicken Biryani" class="item-image">
+        <div class="item-details">
+          <h4>Chicken Biryani</h4>
+          <p>Aromatic kaima rice biryani with succulent spiced chicken, caramelized onions, boiled egg, and pickle.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹180</span>
+            <button class="btn-add-cart" data-id="ak-19" data-name="Chicken Biryani" data-price="180" data-image="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 20 -->
+      <div class="menu-item" data-category="rice">
+        <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400&h=300&fit=crop" alt="Chicken Fried Rice" class="item-image">
+        <div class="item-details">
+          <h4>Chicken Fried Rice</h4>
+          <p>Wok-tossed basmati rice with shredded chicken, scramble egg, diced carrots, and spring onions.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹169</span>
+            <button class="btn-add-cart" data-id="ak-20" data-name="Chicken Fried Rice" data-price="169" data-image="https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 21 -->
+      <div class="menu-item" data-category="rice">
+        <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400&h=300&fit=crop" alt="Schezwan Mixed Fried Rice" class="item-image">
+        <div class="item-details">
+          <h4>Schezwan Mixed Fried Rice</h4>
+          <p>Spicy Schezwan wok rice loaded with chicken, beef, egg, and fresh garden vegetables.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹199</span>
+            <button class="btn-add-cart" data-id="ak-21" data-name="Schezwan Mixed Fried Rice" data-price="199" data-image="https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 22 -->
+      <div class="menu-item" data-category="rice">
+        <img src="https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400&h=300&fit=crop" alt="Veg Fried Rice" class="item-image">
+        <div class="item-details">
+          <h4>Veg Fried Rice</h4>
+          <p>Fragrant rice stir-fried with diced bell peppers, carrots, green beans, and soy sauce.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹120</span>
+            <button class="btn-add-cart" data-id="ak-22" data-name="Veg Fried Rice" data-price="120" data-image="https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- NOODLES -->
+      <!-- Item 23 -->
+      <div class="menu-item" data-category="noodles">
+        <img src="https://images.unsplash.com/photo-1612927601601-6638404737ce?w=400&h=300&fit=crop" alt="Chicken Noodles" class="item-image">
+        <div class="item-details">
+          <h4>Chicken Noodles</h4>
+          <p>Stir-fried hakka noodles with juicy chicken strips, crisp cabbage, carrots, and light soy.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹199</span>
+            <button class="btn-add-cart" data-id="ak-23" data-name="Chicken Noodles" data-price="199" data-image="https://images.unsplash.com/photo-1612927601601-6638404737ce?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 24 -->
+      <div class="menu-item" data-category="noodles">
+        <img src="https://images.unsplash.com/photo-1612927601601-6638404737ce?w=400&h=300&fit=crop" alt="Schezwan Chicken Noodles" class="item-image">
+        <div class="item-details">
+          <h4>Schezwan Chicken Noodles</h4>
+          <p>Fiery chili garlic noodles tossed with shredded chicken, bell peppers, and scallions.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹199</span>
+            <button class="btn-add-cart" data-id="ak-24" data-name="Schezwan Chicken Noodles" data-price="199" data-image="https://images.unsplash.com/photo-1612927601601-6638404737ce?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 25 -->
+      <div class="menu-item" data-category="noodles">
+        <img src="https://images.unsplash.com/photo-1612927601601-6638404737ce?w=400&h=300&fit=crop" alt="Beef Noodles" class="item-image">
+        <div class="item-details">
+          <h4>Beef Noodles</h4>
+          <p>Wok tossed noodles loaded with tender seasoned beef chunks, cabbage, and aromatic spices.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹189</span>
+            <button class="btn-add-cart" data-id="ak-25" data-name="Beef Noodles" data-price="189" data-image="https://images.unsplash.com/photo-1612927601601-6638404737ce?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 26 -->
+      <div class="menu-item" data-category="noodles">
+        <img src="https://images.unsplash.com/photo-1612927601601-6638404737ce?w=400&h=300&fit=crop" alt="Veg Noodles" class="item-image">
+        <div class="item-details">
+          <h4>Veg Noodles</h4>
+          <p>Classic Indo-Chinese noodles cooked with shredded cabbage, carrots, beans, and spring onion.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹149</span>
+            <button class="btn-add-cart" data-id="ak-26" data-name="Veg Noodles" data-price="149" data-image="https://images.unsplash.com/photo-1612927601601-6638404737ce?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- BREADS & KOTHU -->
+      <!-- Item 27 -->
+      <div class="menu-item" data-category="breads popular">
+        <img src="https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=400&h=300&fit=crop" alt="Chicken Kothu Parotta" class="item-image">
+        <div class="item-details">
+          <h4>Chicken Kothu Parotta</h4>
+          <p>Street-style shredded flaky Malabar parotta beaten on iron griddle with spicy chicken, eggs, shallots, and rich salna.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹139</span>
+            <button class="btn-add-cart" data-id="ak-27" data-name="Chicken Kothu Parotta" data-price="139" data-image="https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 28 -->
+      <div class="menu-item" data-category="breads">
+        <img src="https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=400&h=300&fit=crop" alt="Chilli Parotta" class="item-image">
+        <div class="item-details">
+          <h4>Chilli Parotta</h4>
+          <p>Crispy parotta bites tossed in spicy wok gravy with onions, capsicum, and chili paste.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹139</span>
+            <button class="btn-add-cart" data-id="ak-28" data-name="Chilli Parotta" data-price="139" data-image="https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 29 -->
+      <div class="menu-item" data-category="breads">
+        <img src="https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=400&h=300&fit=crop" alt="Kerala Parotta" class="item-image">
+        <div class="item-details">
+          <h4>Kerala Parotta</h4>
+          <p>Layered, golden, flaky Kerala porotta made fresh with pure ghee and wheat flour.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹15</span>
+            <button class="btn-add-cart" data-id="ak-29" data-name="Kerala Parotta" data-price="15" data-image="https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 30 -->
+      <div class="menu-item" data-category="breads">
+        <img src="https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=400&h=300&fit=crop" alt="Chapati" class="item-image">
+        <div class="item-details">
+          <h4>Chapati</h4>
+          <p>Soft whole wheat flatbread made on tawa without oil.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹14</span>
+            <button class="btn-add-cart" data-id="ak-30" data-name="Chapati" data-price="14" data-image="https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLD SHAKES & BEVERAGES -->
+      <!-- Item 31 -->
+      <div class="menu-item" data-category="shakes popular">
+        <img src="https://images.unsplash.com/photo-1572490122747-3968b75bb699?w=400&h=300&fit=crop" alt="Sharjah Shake" class="item-image">
+        <div class="item-details">
+          <h4>Sharjah Shake</h4>
+          <p>Legendary Kerala frozen banana milkshake blended with malt Boost/Horlicks, chilled milk, and roasted peanuts.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹90</span>
+            <button class="btn-add-cart" data-id="ak-31" data-name="Sharjah Shake" data-price="90" data-image="https://images.unsplash.com/photo-1572490122747-3968b75bb699?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 32 -->
+      <div class="menu-item" data-category="shakes">
+        <img src="https://images.unsplash.com/photo-1572490122747-3968b75bb699?w=400&h=300&fit=crop" alt="Dates Shake" class="item-image">
+        <div class="item-details">
+          <h4>Dates Shake</h4>
+          <p>Nutritious shake made with natural Arabic dates, chilled fresh milk, and a touch of honey.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹79</span>
+            <button class="btn-add-cart" data-id="ak-32" data-name="Dates Shake" data-price="79" data-image="https://images.unsplash.com/photo-1572490122747-3968b75bb699?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 33 -->
+      <div class="menu-item" data-category="shakes">
+        <img src="https://images.unsplash.com/photo-1572490122747-3968b75bb699?w=400&h=300&fit=crop" alt="Pista Shake" class="item-image">
+        <div class="item-details">
+          <h4>Pista Shake</h4>
+          <p>Rich pistachio milkshake topped with crushed pistachios and creamy ice cream.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹125</span>
+            <button class="btn-add-cart" data-id="ak-33" data-name="Pista Shake" data-price="125" data-image="https://images.unsplash.com/photo-1572490122747-3968b75bb699?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 34 -->
+      <div class="menu-item" data-category="shakes">
+        <img src="https://images.unsplash.com/photo-1572490122747-3968b75bb699?w=400&h=300&fit=crop" alt="Chocolate Shake" class="item-image">
+        <div class="item-details">
+          <h4>Chocolate Shake</h4>
+          <p>Rich and thick chocolate milkshake topped with dark chocolate chips.</p>
+          <div class="item-bottom">
+            <span class="item-price">₹125</span>
+            <button class="btn-add-cart" data-id="ak-34" data-name="Chocolate Shake" data-price="125" data-image="https://images.unsplash.com/photo-1572490122747-3968b75bb699?w=400&h=300&fit=crop" data-restaurant="AK Take Away, Pala" aria-label="Add to cart">
+              <i class="bi bi-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Floating Cart -->
+  <a href="cart.html" class="floating-cart" style="display: none;">
+    <i class="bi bi-bag-fill"></i>
+    <span class="fc-count">0 items</span>
+    <span>—</span>
+    <span class="fc-total">₹0.00</span>
+    <i class="bi bi-arrow-right"></i>
+  </a>
+
+  <!-- Footer -->
+  <footer class="site-footer reveal">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h2>Feast<span class="accent">Fleet</span></h2>
+        <p>Delicious food delivered fast to your doorstep. Order from the best restaurants in your city.</p>
+        <div class="footer-socials">
+          <a href="#"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-instagram"></i></a>
+          <a href="#"><i class="bi bi-twitter-x"></i></a>
+          <a href="#"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About Us</a>
+        <a href="#">Careers</a>
+        <a href="#">Blog</a>
+        <a href="#">Press</a>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <a href="contact.html">Contact Us</a>
+        <a href="#">Help Center</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+      <div class="footer-col">
+        <h4>Partner</h4>
+        <a href="contact.html">Become a Partner</a>
+        <a href="#">Delivery Driver</a>
+        <a href="#">Restaurant Owner</a>
+        <a href="#">Corporate Orders</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 FeastFleet. All rights reserved.</span>
+      <span>Made with ❤️ in Kerala, India</span>
+    </div>
+  </footer>
+
+  <!-- AI Food Ingredient Prediction Modal -->
+  <div class="ai-modal-backdrop" id="ai-ingredient-modal" onclick="if(event.target === this) closeAIIngredientModal()">
+    <div class="ai-modal-dialog">
+      <div class="ai-modal-header">
+        <div class="ai-modal-title">
+          <i class="bi bi-stars" style="color: #FFB347;"></i>
+          <span>AI Food Ingredient Predictor</span>
+        </div>
+        <button class="ai-modal-close-btn" onclick="closeAIIngredientModal()" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="ai-modal-body" id="ai-modal-body-content">
+        <!-- Injected dynamically via JS -->
+      </div>
+      <div class="ai-modal-footer">
+        <button class="btn-ask-bot" id="ai-modal-ask-bot-btn">
+          <i class="bi bi-robot"></i> Ask AI Chatbot
+        </button>
+        <button class="btn-primary" style="padding: 8px 18px; font-size: 0.88rem;" onclick="closeAIIngredientModal()">
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/chatbot-widget.js"></script>
+</body>
+</html>

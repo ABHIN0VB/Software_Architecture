@@ -14,7 +14,9 @@
     <nav class="navbar">
         <div class="navbar-inner">
             <a href="index.html" class="navbar-brand">
-                <div class="brand-icon">🔥</div>
+                <div class="brand-icon">
+                    <img src="images/app-logo.jpg" alt="FeastFleet Logo">
+                </div>
                 Feast<span class="accent">Fleet</span>
             </a>
             <ul class="nav-links">
@@ -67,15 +69,33 @@
                 </div>
             </div>
 
-            <div class="tracking-card text-start mx-auto" style="max-width: 600px; margin-top: 40px;">
+            <!-- Real-time Delivery Partner & ETA Card -->
+            <div class="rider-card mx-auto" style="max-width: 600px;">
+                <div class="rider-left">
+                    <div class="rider-avatar allocating" id="rider-avatar-icon">🛵</div>
+                    <div>
+                        <div class="rider-title" id="rider-status-title">Allocating Delivery Partner...</div>
+                        <div class="rider-name" id="rider-name">Searching nearby rider...</div>
+                        <div class="rider-phone" id="rider-phone">Assigning best route in Kochi</div>
+                    </div>
+                </div>
+                <div>
+                    <div class="live-countdown-badge">
+                        <i class="bi bi-clock-history"></i>
+                        <span id="live-time-display">25:00 min</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tracking-card text-start mx-auto" style="max-width: 600px; margin-top: 24px;">
                 <h3>Order Details</h3>
                 <div class="detail-row">
                     <span>Restaurant</span>
-                    <span>Burger Palace</span>
+                    <span id="track-rest">Burger Palace</span>
                 </div>
                 <div class="detail-row">
                     <span>Items</span>
-                    <span>3 items</span>
+                    <span id="track-items">3 items</span>
                 </div>
                 <div class="detail-row">
                     <span>Payment</span>
@@ -87,7 +107,7 @@
                 </div>
                 <div class="detail-row font-weight-bold" style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: 10px; padding-top: 10px;">
                     <span>Total</span>
-                    <span class="accent">₹890.00</span>
+                    <span class="accent" id="track-total">₹890.00</span>
                 </div>
             </div>
 
@@ -136,6 +156,8 @@
         </div>
     </footer>
 
+    <script src="js/api.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/chatbot-widget.js"></script>
 </body>
 </html>

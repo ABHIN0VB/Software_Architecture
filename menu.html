@@ -14,7 +14,9 @@
   <nav class="navbar">
     <div class="navbar-inner">
       <a href="index.html" class="navbar-brand">
-        <div class="brand-icon">🔥</div>
+        <div class="brand-icon">
+          <img src="images/app-logo.jpg" alt="FeastFleet Logo">
+        </div>
         Feast<span class="accent">Fleet</span>
       </a>
       <ul class="nav-links">
@@ -56,6 +58,7 @@
       <button class="menu-tab" data-category="sides">Sides</button>
       <button class="menu-tab" data-category="drinks">Drinks</button>
       <button class="menu-tab" data-category="desserts">Desserts</button>
+      <button class="menu-tab menu-tab-ai" data-category="ai-ingredients" title="Show AI food ingredient predictions"><i class="bi bi-stars"></i> AI Predictions</button>
     </div>
 
     <div class="menu-grid reveal">
@@ -233,6 +236,32 @@
     </div>
   </footer>
 
+  <!-- AI Food Ingredient Prediction Modal -->
+  <div class="ai-modal-backdrop" id="ai-ingredient-modal" onclick="if(event.target === this) closeAIIngredientModal()">
+    <div class="ai-modal-dialog">
+      <div class="ai-modal-header">
+        <div class="ai-modal-title">
+          <i class="bi bi-stars" style="color: #FFB347;"></i>
+          <span>AI Food Ingredient Predictor</span>
+        </div>
+        <button class="ai-modal-close-btn" onclick="closeAIIngredientModal()" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="ai-modal-body" id="ai-modal-body-content">
+        <!-- Injected dynamically via JS -->
+      </div>
+      <div class="ai-modal-footer">
+        <button class="btn-ask-bot" id="ai-modal-ask-bot-btn">
+          <i class="bi bi-robot"></i> Ask AI Chatbot
+        </button>
+        <button class="btn-primary" style="padding: 8px 18px; font-size: 0.88rem;" onclick="closeAIIngredientModal()">
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/chatbot-widget.js"></script>
 </body>
 </html>

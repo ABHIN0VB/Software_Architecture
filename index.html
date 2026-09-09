@@ -11,11 +11,43 @@
 </head>
 <body>
 
+  <!-- Fullscreen App Splash Screen (2.5s) -->
+  <div id="app-splash-screen">
+    <div class="splash-content">
+      <div class="splash-logo-container">
+        <div class="splash-halo"></div>
+        <div class="splash-badge">
+          <img src="images/app-logo.jpg" alt="FeastFleet Logo" class="splash-logo-img">
+        </div>
+      </div>
+      <div class="splash-title">Feast<span>Fleet</span></div>
+      <div class="splash-tagline">Kerala's Premier Food Delivery</div>
+      <div class="splash-progress-track">
+        <div class="splash-progress-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Splash Screen: Show first, then transition smoothly to normal page after 2.4s
+    window.addEventListener('load', () => {
+      const splash = document.getElementById('app-splash-screen');
+      if (splash) {
+        setTimeout(() => {
+          splash.classList.add('fade-out');
+          setTimeout(() => splash.remove(), 700);
+        }, 2400);
+      }
+    });
+  </script>
+
   <!-- Navbar -->
   <nav class="navbar">
     <div class="navbar-inner">
       <a href="index.html" class="navbar-brand">
-        <div class="brand-icon">🔥</div>
+        <div class="brand-icon">
+          <img src="images/app-logo.jpg" alt="FeastFleet Logo">
+        </div>
         Feast<span class="accent">Fleet</span>
       </a>
       <ul class="nav-links">
@@ -47,7 +79,10 @@
     
     <div class="hero-search">
       <input type="text" class="search-input" placeholder="Enter your delivery address">
-      <button class="btn-search">Let's Go</button>
+      <button class="btn-detect-location" onclick="detectLocation()" title="Detect my location">
+        <i class="bi bi-geo-alt"></i> Detect My Location
+      </button>
+      <button class="btn-search" onclick="window.location.href='restaurants.html'">Let's Go</button>
     </div>
 
     <div class="hero-stats">
@@ -107,6 +142,22 @@
       <h2>Top Restaurants Near You</h2>
     </div>
     <div class="restaurants-grid">
+      <!-- Restaurant 0: AK Take Away, Pala -->
+      <a href="menu-aktakeaway.html" class="restaurant-card" data-cuisine="indian">
+        <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=400&h=300&fit=crop');">
+          <span class="card-tag" style="background: linear-gradient(135deg, #FF6B35, #FFB347); font-weight: 700;">Trending in Pala</span>
+          <button class="card-fav" aria-label="Favorite"><i class="bi bi-heart"></i></button>
+        </div>
+        <div class="card-body">
+          <h3>AK Take Away, Pala</h3>
+          <p class="card-cuisine">Al Faham • Kerala Non-Veg • Porotta • Shakes</p>
+          <div class="card-meta">
+            <span class="meta-item rating"><i class="bi bi-star-fill"></i> 4.8</span>
+            <span class="meta-item"><i class="bi bi-clock"></i> 30-35 min</span>
+            <span class="meta-item"><i class="bi bi-geo-alt-fill" style="color: #2DD4A8;"></i> Pala (Near Valavoor)</span>
+          </div>
+        </div>
+      </a>
       <!-- Restaurant 1 -->
       <a href="menu.html" class="restaurant-card" data-cuisine="burger">
         <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop');">
@@ -299,5 +350,7 @@
   </footer>
 
   <script src="js/app.js"></script>
+<script src="js/api.js"></script>
+<script src="js/chatbot-widget.js"></script>
 </body>
 </html>

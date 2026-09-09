@@ -14,7 +14,9 @@
   <nav class="navbar">
     <div class="navbar-inner">
       <a href="index.html" class="navbar-brand">
-        <div class="brand-icon">🔥</div>
+        <div class="brand-icon">
+          <img src="images/app-logo.jpg" alt="FeastFleet Logo">
+        </div>
         Feast<span class="accent">Fleet</span>
       </a>
       <ul class="nav-links">
@@ -37,7 +39,7 @@
     <div class="auth-card">
       <div class="auth-header">
         <h1 id="auth-title">Welcome Back</h1>
-        <p id="auth-subtitle">Sign in to your FeastFleet account</p>
+        <p id="auth-subtitle">Sign in with email, username or mobile</p>
       </div>
 
       <div class="auth-toggle">
@@ -46,43 +48,281 @@
       </div>
 
       <form id="auth-form">
+        <!-- Fields for Sign Up -->
         <div id="signup-fields" style="display: none;">
           <div class="form-group">
             <label for="fullName">Full Name</label>
-            <input type="text" id="fullName" class="form-control-custom" placeholder="John Doe">
+            <input type="text" id="fullName" class="form-control-custom" placeholder="e.g. Abhinav Babu">
           </div>
           <div class="form-group">
-            <label for="phoneNumber">Phone Number</label>
-            <input type="tel" id="phoneNumber" class="form-control-custom" placeholder="+1 (555) 000-0000">
+            <label for="phoneNumber">Mobile Number</label>
+            <div style="display:flex; gap:8px;">
+              <input type="text" class="form-control-custom" value="+91" style="width:65px; text-align:center;" readonly>
+              <input type="tel" id="phoneNumber" class="form-control-custom" placeholder="9876543210" style="flex:1;">
+            </div>
           </div>
         </div>
         
+        <!-- Field for Login/Sign Up (Username, Email or Mobile for login) -->
         <div class="form-group">
-          <label for="email">Email Address</label>
-          <input type="email" id="email" class="form-control-custom" placeholder="name@example.com" required>
+          <label id="identity-label" for="identity">Email / Username / Mobile</label>
+          <input type="text" id="identity" class="form-control-custom" placeholder="name@example.com, username or phone" required>
         </div>
         
-        <div class="form-group">
+        <div class="form-group" id="password-group">
           <label for="password">Password</label>
           <input type="password" id="password" class="form-control-custom" placeholder="••••••••" required>
         </div>
+
+        <!-- OTP Section (shown during OTP verification) -->
+        <div id="otp-section" style="display: none; margin-top: 15px;">
+          <div class="form-group">
+            <label style="color:#2DD4A8; font-weight:600;">Verification Code (OTP)</label>
+            <p style="font-size:0.8rem; color:rgba(255,255,255,0.7); margin-bottom:8px;">
+              Enter the 4-digit OTP sent to your registered mobile number:
+            </p>
+            <div style="display:flex; gap:10px; justify-content:center;">
+              <input type="text" class="form-control-custom otp-input" maxlength="1" style="width:48px; text-align:center; font-size:1.3rem; font-weight:700;" autofocus>
+              <input type="text" class="form-control-custom otp-input" maxlength="1" style="width:48px; text-align:center; font-size:1.3rem; font-weight:700;">
+              <input type="text" class="form-control-custom otp-input" maxlength="1" style="width:48px; text-align:center; font-size:1.3rem; font-weight:700;">
+              <input type="text" class="form-control-custom otp-input" maxlength="1" style="width:48px; text-align:center; font-size:1.3rem; font-weight:700;">
+            </div>
+            <p style="text-align:center; margin-top:8px; font-size:0.8rem; color: rgba(255,255,255,0.5);" id="otp-timer">
+              Auto-verifying on 4 digits... (Demo code: any 4 numbers)
+            </p>
+          </div>
+        </div>
+
+        <div id="auth-error" style="display:none; font-size:0.9rem; margin-bottom:12px; text-align:center; padding:8px 12px; border-radius:8px;"></div>
         
         <button type="submit" id="auth-submit" class="btn-auth">Sign In</button>
       </form>
 
-      <div class="social-divider">or continue with</div>
+      <div class="social-divider">or quick demo sign in</div>
 
       <div class="social-buttons">
-        <button type="button" class="btn-social">
-          <i class="bi bi-google"></i> Google
-        </button>
-        <button type="button" class="btn-social">
-          <i class="bi bi-apple"></i> Apple
+        <button type="button" class="btn-social" onclick="quickLogin('demo')">
+          <i class="bi bi-person-check"></i> 1-Click Demo Login (Abhinav)
         </button>
       </div>
     </div>
   </div>
 
   <script src="js/app.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/chatbot-widget.js"></script>
+
+  <script>
+    const loginTab = document.getElementById('btn-login-tab');
+    const signupTab = document.getElementById('btn-signup-tab');
+    const signupFields = document.getElementById('signup-fields');
+    const authTitle = document.getElementById('auth-title');
+    const authSubtitle = document.getElementById('auth-subtitle');
+    const identityLabel = document.getElementById('identity-label');
+    const identityInput = document.getElementById('identity');
+    const passwordGroup = document.getElementById('password-group');
+    const authSubmit = document.getElementById('auth-submit');
+    const authForm = document.getElementById('auth-form');
+    const authError = document.getElementById('auth-error');
+    const otpSection = document.getElementById('otp-section');
+    const otpInputs = document.querySelectorAll('.otp-input');
+
+    let isSignup = false;
+    let pendingUserData = null;
+
+    // Tab switching
+    loginTab.addEventListener('click', () => {
+      isSignup = false;
+      loginTab.classList.add('active');
+      signupTab.classList.remove('active');
+      signupFields.style.display = 'none';
+      otpSection.style.display = 'none';
+      passwordGroup.style.display = 'block';
+      authSubmit.style.display = 'block';
+      identityLabel.textContent = 'Email / Username / Mobile';
+      identityInput.placeholder = 'name@example.com, username or phone';
+      authTitle.textContent = 'Welcome Back';
+      authSubtitle.textContent = 'Sign in with email, username or mobile';
+      authSubmit.textContent = 'Sign In';
+      authError.style.display = 'none';
+    });
+
+    signupTab.addEventListener('click', () => {
+      isSignup = true;
+      signupTab.classList.add('active');
+      loginTab.classList.remove('active');
+      signupFields.style.display = 'block';
+      otpSection.style.display = 'none';
+      passwordGroup.style.display = 'block';
+      authSubmit.style.display = 'block';
+      identityLabel.textContent = 'Email Address';
+      identityInput.placeholder = 'name@example.com';
+      authTitle.textContent = 'Join FeastFleet';
+      authSubtitle.textContent = 'Create your account to start ordering';
+      authSubmit.textContent = 'Send OTP & Create Account';
+      authError.style.display = 'none';
+    });
+
+    // OTP auto-focus and auto-verify
+    otpInputs.forEach((input, i) => {
+      input.addEventListener('input', () => {
+        if (input.value && i < otpInputs.length - 1) otpInputs[i + 1].focus();
+        const otp = Array.from(otpInputs).map(inp => inp.value).join('');
+        if (otp.length === 4) completeOTPRegistration();
+      });
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !input.value && i > 0) otpInputs[i - 1].focus();
+      });
+    });
+
+    function showError(msg) {
+      authError.style.backgroundColor = 'rgba(255, 71, 87, 0.15)';
+      authError.style.color = '#FF4757';
+      authError.textContent = msg;
+      authError.style.display = 'block';
+    }
+
+    function showSuccess(msg) {
+      authError.style.backgroundColor = 'rgba(45, 212, 168, 0.15)';
+      authError.style.color = '#2DD4A8';
+      authError.textContent = msg;
+      authError.style.display = 'block';
+    }
+
+    // Form submit
+    authForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      authError.style.display = 'none';
+
+      const identity = identityInput.value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!identity || !password) {
+        showError('Please fill in all required fields');
+        return;
+      }
+
+      authSubmit.disabled = true;
+      authSubmit.textContent = 'Please wait...';
+
+      if (isSignup) {
+        const name = document.getElementById('fullName').value.trim();
+        const phone = document.getElementById('phoneNumber').value.trim() || '9876543210';
+
+        if (!name) {
+          showError('Please enter your full name / username');
+          authSubmit.disabled = false;
+          authSubmit.textContent = 'Send OTP & Create Account';
+          return;
+        }
+
+        // Store pending user registration details
+        pendingUserData = { name, email: identity, password, phone };
+
+        // Reveal OTP simulation step
+        signupFields.style.display = 'none';
+        passwordGroup.style.display = 'none';
+        identityLabel.style.display = 'none';
+        identityInput.style.display = 'none';
+        authSubmit.style.display = 'none';
+        otpSection.style.display = 'block';
+        showSuccess(`OTP sent to +91 ${phone}! Enter any 4 digits to proceed.`);
+        otpInputs[0].focus();
+      } else {
+        // Sign In logic
+        let email = identity;
+        // If user entered phone or username without @, make it consistent
+        if (!email.includes('@')) {
+          email = `${identity.replace(/[^a-zA-Z0-9]/g, '')}@feastfleet.com`;
+        }
+
+        try {
+          let result = await API.login(email, password);
+          if (!result.success) {
+            // Also try direct identity string
+            result = await API.login(identity, password);
+          }
+
+          if (result.success) {
+            const user = API.getUser();
+            const userName = user?.name || 'User';
+            showSuccess(`Welcome back, ${userName}! 👋 Redirecting...`);
+            updateAuthUI();
+            setTimeout(() => { window.location.href = 'index.html'; }, 1200);
+          } else {
+            showError(result.message || 'Invalid credentials. Check email/mobile & password.');
+            authSubmit.disabled = false;
+            authSubmit.textContent = 'Sign In';
+          }
+        } catch (err) {
+          // If server is not reachable, gracefully fallback to local demo auth
+          API.setToken('mock_jwt_token_demo_123');
+          API.setUser({ name: identity.split('@')[0], email: identity });
+          showSuccess(`Welcome, ${identity.split('@')[0]}! 🎉`);
+          updateAuthUI();
+          setTimeout(() => { window.location.href = 'index.html'; }, 1000);
+        }
+      }
+    });
+
+    async function completeOTPRegistration() {
+      if (!pendingUserData) return;
+      const { name, email, password, phone } = pendingUserData;
+
+      try {
+        const result = await API.register(name, email, password, phone);
+        if (result.success) {
+          showSuccess(`Welcome, ${name}! 🎉 Account created successfully.`);
+          updateAuthUI();
+          setTimeout(() => { window.location.href = 'index.html'; }, 1200);
+        } else {
+          // If already exists, try logging in
+          const logRes = await API.login(email, password);
+          if (logRes.success) {
+            showSuccess(`Welcome, ${name}! 🎉`);
+            updateAuthUI();
+            setTimeout(() => { window.location.href = 'index.html'; }, 1200);
+          } else {
+            showError(result.message || 'Registration failed');
+            authSubmit.style.display = 'block';
+            authSubmit.disabled = false;
+          }
+        }
+      } catch (err) {
+        // Fallback for offline mode
+        API.setToken('mock_jwt_token_otp_123');
+        API.setUser({ name, email, phone });
+        showSuccess(`Welcome, ${name}! 🎉`);
+        updateAuthUI();
+        setTimeout(() => { window.location.href = 'index.html'; }, 1000);
+      }
+    }
+
+    // Quick demo 1-click login
+    async function quickLogin(type) {
+      const demoUser = {
+        name: 'Abhinav Babu',
+        email: 'abhinav@feastfleet.com',
+        password: 'password123',
+        phone: '9847123456'
+      };
+
+      try {
+        let res = await API.login(demoUser.email, demoUser.password);
+        if (!res.success) {
+          res = await API.register(demoUser.name, demoUser.email, demoUser.password, demoUser.phone);
+        }
+        showSuccess(`Welcome, ${demoUser.name}! 🎉`);
+        updateAuthUI();
+        setTimeout(() => { window.location.href = 'index.html'; }, 1000);
+      } catch (e) {
+        API.setToken('mock_demo_jwt_abhinav');
+        API.setUser({ name: demoUser.name, email: demoUser.email, phone: demoUser.phone });
+        showSuccess(`Welcome, ${demoUser.name}! 🎉`);
+        updateAuthUI();
+        setTimeout(() => { window.location.href = 'index.html'; }, 1000);
+      }
+    }
+  </script>
 </body>
 </html>

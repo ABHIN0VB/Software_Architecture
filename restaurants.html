@@ -20,7 +20,9 @@
   <nav class="navbar">
     <div class="navbar-inner">
       <a href="index.html" class="navbar-brand">
-        <div class="brand-icon">🔥</div>
+        <div class="brand-icon">
+          <img src="images/app-logo.jpg" alt="FeastFleet Logo">
+        </div>
         Feast<span class="accent">Fleet</span>
       </a>
       <ul class="nav-links">
@@ -46,6 +48,16 @@
     </div>
   </header>
 
+  <!-- Location Bar -->
+  <div class="location-bar reveal">
+    <div class="container d-flex align-items-center justify-content-between flex-wrap gap-2">
+      <span id="location-display" class="location-text">📍 Valavoor, Kottayam</span>
+      <button class="btn-detect-location" onclick="detectLocation()">
+        <i class="bi bi-geo-alt"></i> Detect My Location
+      </button>
+    </div>
+  </div>
+
   <!-- Filter Bar -->
   <div class="filter-bar reveal">
     <div class="container">
@@ -59,7 +71,7 @@
           <button class="filter-chip" data-filter="pizza">Pizza</button>
           <button class="filter-chip" data-filter="burgers">Burgers</button>
           <button class="filter-chip" data-filter="asian">Asian</button>
-          <button class="filter-chip" data-filter="indian">Indian</button>
+          <button class="filter-chip" data-filter="indian">Indian / Kerala</button>
           <button class="filter-chip" data-filter="desserts">Desserts</button>
           <button class="filter-chip" data-filter="healthy">Healthy</button>
         </div>
@@ -72,8 +84,26 @@
     <div class="container">
       <div class="restaurants-grid">
         
+        <!-- Restaurant Card 0: AK Take Away, Pala -->
+        <a href="menu-aktakeaway.html" class="restaurant-card" data-cuisine="indian" data-restaurant-id="AK Take Away, Pala">
+          <div class="card-image">
+            <img src="https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=400&h=300&fit=crop" alt="AK Take Away, Pala">
+            <span class="card-tag" style="background: linear-gradient(135deg, #FF6B35, #FFB347); font-weight: 700;">Trending in Pala</span>
+            <button class="card-fav"><i class="bi bi-heart"></i></button>
+          </div>
+          <div class="card-body">
+            <h3>AK Take Away, Pala</h3>
+            <p class="card-cuisine">Al Faham • Kerala Non-Veg • Porotta • Shakes</p>
+            <div class="card-meta">
+              <span class="meta-item rating"><i class="bi bi-star-fill"></i> 4.8</span>
+              <span class="meta-item"><i class="bi bi-clock"></i> 30-35 min</span>
+              <span class="meta-item"><i class="bi bi-geo-alt-fill" style="color: #2DD4A8;"></i> Pala (Near Valavoor)</span>
+            </div>
+          </div>
+        </a>
+
         <!-- Restaurant Card 1 -->
-        <a href="menu.html" class="restaurant-card" data-cuisine="burgers">
+        <a href="menu.html" class="restaurant-card" data-cuisine="burgers" data-restaurant-id="Burger Palace">
           <div class="card-image">
             <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop" alt="Burger Palace">
             <span class="card-tag">Promo</span>
@@ -91,7 +121,7 @@
         </a>
 
         <!-- Restaurant Card 2 -->
-        <a href="menu.html" class="restaurant-card" data-cuisine="asian">
+        <a href="menu.html" class="restaurant-card" data-cuisine="asian" data-restaurant-id="Sushi Master">
           <div class="card-image">
             <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&h=300&fit=crop" alt="Sushi Master">
             <button class="card-fav"><i class="bi bi-heart"></i></button>
@@ -102,13 +132,13 @@
             <div class="card-meta">
               <span class="meta-item rating"><i class="bi bi-star-fill"></i> 4.9</span>
               <span class="meta-item"><i class="bi bi-clock"></i> 30-40 min</span>
-              <span class="meta-item"><i class="bi bi-bicycle"></i> $2.99</span>
+              <span class="meta-item"><i class="bi bi-bicycle"></i> ₹49</span>
             </div>
           </div>
         </a>
 
         <!-- Restaurant Card 3 -->
-        <a href="menu.html" class="restaurant-card" data-cuisine="pizza">
+        <a href="menu.html" class="restaurant-card" data-cuisine="pizza" data-restaurant-id="Pizza Roma">
           <div class="card-image">
             <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=300&fit=crop" alt="Pizza Roma">
             <span class="card-tag">Best Seller</span>
@@ -120,13 +150,13 @@
             <div class="card-meta">
               <span class="meta-item rating"><i class="bi bi-star-fill"></i> 4.7</span>
               <span class="meta-item"><i class="bi bi-clock"></i> 25-35 min</span>
-              <span class="meta-item"><i class="bi bi-bicycle"></i> $1.49</span>
+              <span class="meta-item"><i class="bi bi-bicycle"></i> ₹29</span>
             </div>
           </div>
         </a>
 
         <!-- Restaurant Card 4 -->
-        <a href="menu.html" class="restaurant-card" data-cuisine="indian">
+        <a href="menu.html" class="restaurant-card" data-cuisine="indian" data-restaurant-id="Spice Garden">
           <div class="card-image">
             <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&h=300&fit=crop" alt="Spice Garden">
             <button class="card-fav"><i class="bi bi-heart"></i></button>
@@ -137,13 +167,13 @@
             <div class="card-meta">
               <span class="meta-item rating"><i class="bi bi-star-fill"></i> 4.6</span>
               <span class="meta-item"><i class="bi bi-clock"></i> 35-45 min</span>
-              <span class="meta-item"><i class="bi bi-bicycle"></i> $3.50</span>
+              <span class="meta-item"><i class="bi bi-bicycle"></i> ₹59</span>
             </div>
           </div>
         </a>
 
         <!-- Restaurant Card 5 -->
-        <a href="menu.html" class="restaurant-card" data-cuisine="desserts">
+        <a href="menu.html" class="restaurant-card" data-cuisine="desserts" data-restaurant-id="Sweet Treats">
           <div class="card-image">
             <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&h=300&fit=crop" alt="Sweet Treats">
             <span class="card-tag">New</span>
@@ -155,13 +185,13 @@
             <div class="card-meta">
               <span class="meta-item rating"><i class="bi bi-star-fill"></i> 4.9</span>
               <span class="meta-item"><i class="bi bi-clock"></i> 10-20 min</span>
-              <span class="meta-item"><i class="bi bi-bicycle"></i> $1.99</span>
+              <span class="meta-item"><i class="bi bi-bicycle"></i> ₹39</span>
             </div>
           </div>
         </a>
 
         <!-- Restaurant Card 6 -->
-        <a href="menu.html" class="restaurant-card" data-cuisine="healthy">
+        <a href="menu.html" class="restaurant-card" data-cuisine="healthy" data-restaurant-id="The Coffee House">
           <div class="card-image">
             <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop" alt="The Coffee House">
             <button class="card-fav"><i class="bi bi-heart"></i></button>
@@ -178,7 +208,7 @@
         </a>
 
         <!-- Restaurant Card 7 -->
-        <a href="menu.html" class="restaurant-card" data-cuisine="asian">
+        <a href="menu.html" class="restaurant-card" data-cuisine="asian" data-restaurant-id="Dragon Wok">
           <div class="card-image">
             <img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=400&h=300&fit=crop" alt="Dragon Wok">
             <button class="card-fav"><i class="bi bi-heart"></i></button>
@@ -189,13 +219,13 @@
             <div class="card-meta">
               <span class="meta-item rating"><i class="bi bi-star-fill"></i> 4.4</span>
               <span class="meta-item"><i class="bi bi-clock"></i> 25-35 min</span>
-              <span class="meta-item"><i class="bi bi-bicycle"></i> $2.50</span>
+              <span class="meta-item"><i class="bi bi-bicycle"></i> ₹45</span>
             </div>
           </div>
         </a>
 
         <!-- Restaurant Card 8 -->
-        <a href="menu.html" class="restaurant-card" data-cuisine="burgers">
+        <a href="menu.html" class="restaurant-card" data-cuisine="burgers" data-restaurant-id="Taco Fiesta">
           <div class="card-image">
             <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&h=300&fit=crop" alt="Taco Fiesta">
             <span class="card-tag">Featured</span>
@@ -207,13 +237,13 @@
             <div class="card-meta">
               <span class="meta-item rating"><i class="bi bi-star-fill"></i> 4.6</span>
               <span class="meta-item"><i class="bi bi-clock"></i> 20-30 min</span>
-              <span class="meta-item"><i class="bi bi-bicycle"></i> $1.99</span>
+              <span class="meta-item"><i class="bi bi-bicycle"></i> ₹39</span>
             </div>
           </div>
         </a>
 
         <!-- Restaurant Card 9 -->
-        <a href="menu.html" class="restaurant-card" data-cuisine="indian">
+        <a href="menu.html" class="restaurant-card" data-cuisine="indian" data-restaurant-id="Royal Biryani House">
           <div class="card-image">
             <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&h=300&fit=crop" alt="Royal Biryani House">
             <button class="card-fav"><i class="bi bi-heart"></i></button>
@@ -275,5 +305,7 @@
   </footer>
 
   <script src="js/app.js"></script>
+<script src="js/api.js"></script>
+<script src="js/chatbot-widget.js"></script>
 </body>
 </html>
