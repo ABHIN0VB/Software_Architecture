@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Group Order — FeastFleet AI</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body { background: #0a0a12; color: #f0f0f5; font-family: 'Inter', sans-serif; min-height: 100vh; }
+    .page-hero {
+      padding: 60px 20px 30px;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(255,107,53,0.1), rgba(45,212,168,0.08));
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .page-hero h1 { font-size: 2rem; font-weight: 800; margin: 0; }
+    .page-hero p { color: rgba(255,255,255,0.5); margin: 8px 0 0; font-size: 0.95rem; }
+    .main-container { max-width: 900px; margin: 0 auto; padding: 32px 20px 80px; }
+    /* Members Section */
+    .section-title { font-size: 1rem; font-weight: 700; color: #FFB347; margin: 0 0 16px; display: flex; align-items: center; gap: 8px; }
+    .member-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 14px;
+      position: relative;
+      transition: border-color 0.2s;
+    }
+    .member-card:hover { border-color: rgba(255,107,53,0.3); }
+    .member-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .member-badge {
+      background: linear-gradient(135deg, #FF6B35, #FFB347);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .btn-remove-member {
+      background: rgba(255,60,60,0.15);
+      border: none;
+      color: #ff6b6b;
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-remove-member:hover { background: rgba(255,60,60,0.3); }
+    .member-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media(max-width: 480px) { .member-fields { grid-template-columns: 1fr; } }
+    .field-group label { display: block; font-size: 0.75rem; color: rgba(255,255,255,0.45); margin-bottom: 5px; font-weight: 600; letter-spacing: 0.03em; }
+    .field-group input, .field-group select {
+      width: 100%;
+      padding: 9px 12px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      color: #f0f0f5;
+      font-size: 0.85rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+    }
+    .field-group input:focus, .field-group select:focus { border-color: rgba(255,107,53,0.5); }
+    .field-group select option { background: #1a1a2e; }
+    /* Budget Bar */
+    .budget-bar {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .budget-row { display: flex; gap: 20px; flex-wrap: wrap; }
+    .budget-item { flex: 1; min-width: 140px; }
+    /* Buttons */
+    .btn-add-member {
+      width: 100%;
+      padding: 12px;
+      background: rgba(45,212,168,0.1);
+      border: 1px dashed rgba(45,212,168,0.35);
+      border-radius: 12px;
+      color: #2DD4A8;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 24px;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .btn-add-member:hover { background: rgba(45,212,168,0.18); }
+    .btn-find {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #FF6B35, #FFB347);
+      border: none;
+      border-radius: 14px;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      letter-spacing: 0.02em;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 6px 20px rgba(255,107,53,0.35);
+    }
+    .btn-find:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,107,53,0.45); }
+    .btn-find:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    /* Results */
+    #results-section { margin-top: 36px; display: none; }
+    .result-header { font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; }
+    .result-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 18px;
+      transition: border-color 0.2s;
+    }
+    .result-card.best { border-color: rgba(255,107,53,0.5); background: rgba(255,107,53,0.07); }
+    .result-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+    .result-rest-name { font-size: 1.05rem; font-weight: 700; }
+    .result-rest-meta { font-size: 0.78rem; color: rgba(255,255,255,0.45); margin-top: 3px; }
+    .best-badge {
+      background: linear-gradient(135deg, #FF6B35, #FFB347);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+    .assignments-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-bottom: 14px; }
+    .assignment-pill {
+      background: rgba(255,255,255,0.06);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.8rem;
+    }
+    .assignment-name { font-weight: 700; font-size: 0.82rem; }
+    .assignment-dish { color: rgba(255,255,255,0.6); margin: 2px 0; }
+    .assignment-price { color: #2DD4A8; font-weight: 700; }
+    .cost-breakdown {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font-size: 0.82rem;
+    }
+    .cost-item { color: rgba(255,255,255,0.5); }
+    .cost-item span { color: #f0f0f5; font-weight: 600; }
+    .cost-total { color: #FFB347; font-weight: 800; font-size: 0.95rem; }
+    .cost-per-person { color: #2DD4A8; font-weight: 700; }
+    /* Loading */
+    .loading-overlay {
+      display: none;
+      text-align: center;
+      padding: 48px;
+    }
+    .spinner {
+      width: 48px; height: 48px;
+      border: 3px solid rgba(255,255,255,0.1);
+      border-top-color: #FF6B35;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .no-results { text-align: center; padding: 48px; color: rgba(255,255,255,0.4); }
+    .no-results i { font-size: 2.5rem; display: block; margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">🍽️ FeastFleet</a>
+      <div class="nav-links">
+        <a href="restaurants.html">Restaurants</a>
+        <a href="orders.html">Orders</a>
+        <a href="contact.html">Help</a>
+      </div>
+      <div class="nav-auth"></div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="page-hero">
+    <h1>👥 AI Group Order Agent</h1>
+    <p>Add your friends' preferences — AI picks the best single restaurant for everyone with optimal dish assignments</p>
+  </div>
+
+  <div class="main-container">
+
+    <!-- BUDGET + SETTINGS -->
+    <div class="budget-bar">
+      <div class="section-title"><i class="bi bi-gear"></i> Group Settings</div>
+      <div class="budget-row">
+        <div class="budget-item">
+          <div class="field-group">
+            <label>TOTAL GROUP BUDGET (₹)</label>
+            <input type="number" id="total-budget" value="800" min="100" step="50" placeholder="e.g. 800">
+          </div>
+        </div>
+        <div class="budget-item">
+          <div class="field-group">
+            <label>MAX DELIVERY TIME</label>
+            <select id="max-delivery">
+              <option value="25">25 minutes</option>
+              <option value="35" selected>35 minutes</option>
+              <option value="45">45 minutes</option>
+              <option value="60">60 minutes</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEMBERS -->
+    <div class="section-title"><i class="bi bi-people"></i> Group Members</div>
+    <div id="members-container"></div>
+    <button class="btn-add-member" id="btn-add-member">+ Add Another Member</button>
+
+    <!-- FIND BUTTON -->
+    <button class="btn-find" id="btn-find">
+      🤖 Find Best Restaurant for Group
+    </button>
+
+    <!-- LOADING -->
+    <div class="loading-overlay" id="loading">
+      <div class="spinner"></div>
+      <div style="font-weight:600;font-size:1rem;">AI is analyzing preferences...</div>
+      <div style="color:rgba(255,255,255,0.4);font-size:0.85rem;margin-top:6px;">Checking menus, dietary needs, budgets...</div>
+    </div>
+
+    <!-- RESULTS -->
+    <div id="results-section">
+      <div class="result-header" id="results-header"></div>
+      <div id="results-container"></div>
+    </div>
+
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/foodMemory.js"></script>
+  <script src="js/chatbot-widget.js"></script>
+  <script>
+    // ── MEMBER TEMPLATE ──
+    let memberCount = 0;
+    const membersContainer = document.getElementById('members-container');
+
+    function addMember(defaults = {}) {
+      memberCount++;
+      const id = memberCount;
+      const card = document.createElement('div');
+      card.className = 'member-card';
+      card.id = `member-${id}`;
+      card.innerHTML = `
+        <div class="member-card-header">
+          <span class="member-badge">Person ${id}</span>
+          ${id > 1 ? `<button class="btn-remove-member" onclick="removeMember(${id})">✕ Remove</button>` : '<span></span>'}
+        </div>
+        <div class="member-fields">
+          <div class="field-group">
+            <label>NAME</label>
+            <input type="text" id="m${id}-name" placeholder="e.g. Rahul" value="${defaults.name || ''}">
+          </div>
+          <div class="field-group">
+            <label>FOOD PREFERENCE</label>
+            <input type="text" id="m${id}-pref" placeholder="e.g. biryani, pizza, noodles" value="${defaults.preference || ''}">
+          </div>
+          <div class="field-group">
+            <label>DIETARY</label>
+            <select id="m${id}-diet">
+              <option value="any" ${!defaults.isVeg ? 'selected' : ''}>Any (Veg + Non-Veg)</option>
+              <option value="veg" ${defaults.isVeg ? 'selected' : ''}>Vegetarian Only</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>BUDGET PER PERSON (₹)</label>
+            <input type="number" id="m${id}-budget" placeholder="e.g. 200" value="${defaults.budget || ''}" min="50">
+          </div>
+          <div class="field-group" style="grid-column: 1 / -1;">
+            <label>EXCLUSIONS (optional)</label>
+            <input type="text" id="m${id}-excl" placeholder="e.g. no onion, no spicy" value="${defaults.exclusions || ''}">
+          </div>
+        </div>
+      `;
+      membersContainer.appendChild(card);
+    }
+
+    function removeMember(id) {
+      const card = document.getElementById(`member-${id}`);
+      if (card) card.remove();
+    }
+
+    function collectMembers() {
+      const members = [];
+      const cards = membersContainer.querySelectorAll('.member-card');
+      cards.forEach(card => {
+        const id = card.id.replace('member-', '');
+        const name = document.getElementById(`m${id}-name`)?.value?.trim() || `Person ${id}`;
+        const preference = document.getElementById(`m${id}-pref`)?.value?.trim() || '';
+        const diet = document.getElementById(`m${id}-diet`)?.value || 'any';
+        const budget = parseFloat(document.getElementById(`m${id}-budget`)?.value) || null;
+        const exclusions = document.getElementById(`m${id}-excl`)?.value?.trim() || '';
+        members.push({ name, preference, isVeg: diet === 'veg', budget, exclusions });
+      });
+      return members;
+    }
+
+    document.getElementById('btn-add-member').addEventListener('click', () => addMember());
+
+    // ── FIND BEST RESTAURANT ──
+    document.getElementById('btn-find').addEventListener('click', async () => {
+      const members = collectMembers();
+      if (!members.length) return alert('Add at least one member!');
+
+      const totalBudget = parseFloat(document.getElementById('total-budget').value) || 800;
+      const maxDeliveryMin = parseInt(document.getElementById('max-delivery').value) || 35;
+
+      const loading = document.getElementById('loading');
+      const resultsSection = document.getElementById('results-section');
+      const resultsContainer = document.getElementById('results-container');
+      const resultsHeader = document.getElementById('results-header');
+      const btnFind = document.getElementById('btn-find');
+
+      loading.style.display = 'block';
+      resultsSection.style.display = 'none';
+      btnFind.disabled = true;
+
+      try {
+        const res = await API.groupOrder(members, totalBudget, maxDeliveryMin);
+        loading.style.display = 'none';
+        btnFind.disabled = false;
+
+        if (!res || !res.success || !res.data) {
+          resultsContainer.innerHTML = `<div class="no-results"><i class="bi bi-exclamation-circle"></i>${res?.data?.message || 'No results. Try increasing budget or relaxing dietary restrictions.'}</div>`;
+          resultsSection.style.display = 'block';
+          return;
+        }
+
+        const d = res.data;
+        resultsHeader.textContent = `✅ ${d.summary}`;
+        resultsContainer.innerHTML = '';
+
+        d.topOptions.forEach((opt, i) => {
+          const card = document.createElement('div');
+          card.className = 'result-card' + (i === 0 ? ' best' : '');
+
+          const assignmentsHtml = opt.assignments.map(a => `
+            <div class="assignment-pill">
+              <div class="assignment-name">${a.member}</div>
+              <div class="assignment-dish">${a.dish}</div>
+              <div class="assignment-price">₹${a.price}</div>
+            </div>
+          `).join('');
+
+          card.innerHTML = `
+            <div class="result-card-header">
+              <div>
+                <div class="result-rest-name">${opt.restaurant}</div>
+                <div class="result-rest-meta">⭐ ${opt.restaurantRating} · ${opt.deliveryTime} · ${(opt.cuisine || []).join(', ')}</div>
+              </div>
+              ${i === 0 ? '<span class="best-badge">🏆 Best Match</span>' : ''}
+            </div>
+
+            <div style="font-size:0.78rem;color:rgba(255,255,255,0.4);margin-bottom:10px;font-weight:600;">DISH ASSIGNMENTS</div>
+            <div class="assignments-grid">${assignmentsHtml}</div>
+
+            <div class="cost-breakdown">
+              <div class="cost-item">Food: <span>₹${opt.foodSubtotal}</span></div>
+              <div class="cost-item">Delivery: <span>₹${opt.deliveryFee}</span></div>
+              <div class="cost-item">Platform fee: <span>₹${opt.platformFee}</span></div>
+              <div class="cost-total">Total: ₹${opt.grandTotal} ${opt.fitsInBudget ? '✅' : '⚠️'}</div>
+              <div class="cost-per-person">₹${opt.perPersonSplit}/person</div>
+            </div>
+          `;
+
+          resultsContainer.appendChild(card);
+        });
+
+        resultsSection.style.display = 'block';
+        resultsSection.scrollIntoView({ behavior: 'smooth' });
+
+      } catch (err) {
+        loading.style.display = 'none';
+        btnFind.disabled = false;
+        resultsContainer.innerHTML = `<div class="no-results"><i class="bi bi-wifi-off"></i>Server error. Make sure the FeastFleet server is running.</div>`;
+        resultsSection.style.display = 'block';
+      }
+    });
+
+    // ── INIT: Add 3 sample members ──
+    addMember({ name: 'Rahul', preference: 'biryani', isVeg: false, budget: 200 });
+    addMember({ name: 'Anu', preference: 'paneer', isVeg: true, budget: 150 });
+    addMember({ name: 'Akhil', preference: 'chicken noodles', isVeg: false, budget: 200 });
+  </script>
+
+</body>
+</html>

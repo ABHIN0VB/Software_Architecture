@@ -109,6 +109,18 @@ class API {
   static async predictIngredients(name, description, cuisine) {
     return this.post('/ai/predict-ingredients', { name, description, cuisine });
   }
+  static async foodAgent(message) {
+    return this.post('/ai/food-agent', { message });
+  }
+  static async budgetOptimize(budget, people, cuisine, mealStructure) {
+    return this.post('/ai/budget-optimize', { budget, people, cuisine, mealStructure });
+  }
+  static async groupOrder(members, totalBudget, maxDeliveryMin) {
+    return this.post('/ai/group-order', { members, totalBudget, maxDeliveryMin });
+  }
+  static async visualSearch(dishQuery, colorHint) {
+    return this.post('/ai/visual-search', { dishQuery, colorHint });
+  }
 }
 
 // ── UPDATE NAVBAR AUTH UI ──
