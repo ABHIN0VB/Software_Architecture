@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Food Agent — FeastFleet</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body { background: #0a0a12; color: #f0f0f5; font-family: 'Inter', sans-serif; min-height: 100vh; margin: 0; }
+
+    /* HERO */
+    .agent-hero {
+      padding: 52px 20px 28px;
+      text-align: center;
+      background: radial-gradient(ellipse at 50% 0%, rgba(255,107,53,0.13) 0%, transparent 70%);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .agent-hero .badge { display: inline-block; background: rgba(255,107,53,0.15); border: 1px solid rgba(255,107,53,0.3); color: #FF6B35; font-size: 0.72rem; font-weight: 700; padding: 4px 14px; border-radius: 20px; letter-spacing: 0.08em; margin-bottom: 14px; }
+    .agent-hero h1 { font-size: 2.1rem; font-weight: 900; margin: 0 0 10px; background: linear-gradient(135deg, #FF6B35, #FFB347, #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .agent-hero p { color: rgba(255,255,255,0.5); font-size: 0.95rem; margin: 0; }
+
+    /* MAIN LAYOUT */
+    .agent-layout { max-width: 1000px; margin: 0 auto; padding: 32px 20px 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    @media(max-width: 700px) { .agent-layout { grid-template-columns: 1fr; } }
+
+    /* CONSTRAINT PANEL */
+    .panel { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 18px; padding: 24px; }
+    .panel-title { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.1em; color: rgba(255,255,255,0.35); margin: 0 0 20px; text-transform: uppercase; }
+
+    .field { margin-bottom: 18px; }
+    .field label { display: block; font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.45); margin-bottom: 6px; letter-spacing: 0.04em; }
+    .field input, .field select {
+      width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
+      color: #f0f0f5; font-size: 0.88rem; font-family: inherit; outline: none;
+      transition: border-color 0.2s; box-sizing: border-box;
+    }
+    .field input:focus, .field select:focus { border-color: rgba(255,107,53,0.5); background: rgba(255,107,53,0.04); }
+    .field select option { background: #1a1a2e; }
+
+    /* BUDGET SLIDER */
+    .budget-display { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    .budget-val { font-size: 1.4rem; font-weight: 800; color: #FF6B35; }
+    input[type="range"] { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 4px; appearance: none; cursor: pointer; outline: none; }
+    input[type="range"]::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, #FF6B35, #FFB347); border: 2px solid #fff; cursor: pointer; box-shadow: 0 2px 8px rgba(255,107,53,0.5); }
+
+    /* CHIP SELECTORS */
+    .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { padding: 6px 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; user-select: none; }
+    .chip:hover { background: rgba(255,107,53,0.1); border-color: rgba(255,107,53,0.3); }
+    .chip.active { background: rgba(255,107,53,0.2); border-color: #FF6B35; color: #FF6B35; }
+    .chip.excl { background: rgba(255,60,60,0.08); border-color: rgba(255,60,60,0.2); }
+    .chip.excl.active { background: rgba(255,60,60,0.2); border-color: #ff6b6b; color: #ff6b6b; }
+
+    /* QUICK PROMPT */
+    .quick-prompts { margin-top: 20px; }
+    .quick-prompt-btn {
+      display: block; width: 100%; text-align: left; background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px 14px;
+      color: rgba(255,255,255,0.6); font-size: 0.8rem; cursor: pointer; margin-bottom: 8px;
+      transition: all 0.2s; font-family: inherit;
+    }
+    .quick-prompt-btn:hover { background: rgba(255,107,53,0.08); border-color: rgba(255,107,53,0.25); color: #fff; }
+    .quick-prompt-btn span { color: rgba(255,255,255,0.35); font-size: 0.72rem; display: block; margin-top: 2px; }
+
+    /* FIND BUTTON */
+    .btn-find {
+      width: 100%; padding: 14px; background: linear-gradient(135deg, #FF6B35, #FFB347);
+      border: none; border-radius: 12px; color: #fff; font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; font-family: inherit; transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 6px 20px rgba(255,107,53,0.35); margin-top: 8px; letter-spacing: 0.02em;
+    }
+    .btn-find:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,107,53,0.45); }
+    .btn-find:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* RESULTS PANEL */
+    .results-panel { display: flex; flex-direction: column; gap: 12px; }
+    .reasoning-steps { background: rgba(45,212,168,0.05); border: 1px solid rgba(45,212,168,0.15); border-radius: 12px; padding: 16px; margin-bottom: 4px; }
+    .reasoning-title { font-size: 0.72rem; font-weight: 700; color: #2DD4A8; letter-spacing: 0.06em; margin-bottom: 10px; }
+    .step { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; font-size: 0.82rem; }
+    .step-icon { width: 20px; height: 20px; border-radius: 50%; background: rgba(45,212,168,0.2); display: flex; align-items: center; justify-content: center; font-size: 0.65rem; flex-shrink: 0; margin-top: 1px; color: #2DD4A8; }
+    .step-done .step-icon { background: rgba(45,212,168,0.3); }
+
+    .result-card {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px; padding: 18px; transition: border-color 0.2s;
+    }
+    .result-card.top-pick { border-color: rgba(255,107,53,0.4); background: rgba(255,107,53,0.06); }
+    .result-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .result-name { font-size: 1rem; font-weight: 700; }
+    .result-restaurant { font-size: 0.78rem; color: rgba(255,255,255,0.45); margin-top: 2px; }
+    .result-price { font-size: 1.1rem; font-weight: 800; color: #FF6B35; }
+    .result-price small { font-size: 0.72rem; color: rgba(255,255,255,0.4); font-weight: 400; }
+    .result-meta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; font-size: 0.75rem; }
+    .meta-pill { background: rgba(255,255,255,0.06); padding: 3px 10px; border-radius: 12px; color: rgba(255,255,255,0.55); }
+    .meta-pill.green { background: rgba(45,212,168,0.12); color: #2DD4A8; }
+    .meta-pill.red { background: rgba(255,107,53,0.12); color: #FFB347; }
+
+    .top-badge { background: linear-gradient(135deg,#FF6B35,#FFB347); color:#fff; font-size:0.68rem; font-weight:700; padding:3px 10px; border-radius:20px; }
+
+    .empty-state { text-align: center; padding: 48px 20px; color: rgba(255,255,255,0.3); }
+    .empty-state i { font-size: 3rem; display: block; margin-bottom: 14px; color: rgba(255,255,255,0.12); }
+    .empty-state p { font-size: 0.88rem; margin: 0; }
+
+    .spinner { width: 36px; height: 36px; border: 3px solid rgba(255,255,255,0.1); border-top-color: #FF6B35; border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 12px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-state { text-align: center; padding: 40px 20px; }
+    .reasoning-live { font-size: 0.8rem; color: rgba(255,255,255,0.45); margin-top: 6px; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">🍽️ FeastFleet</a>
+      <div class="nav-links">
+        <a href="restaurants.html">Restaurants</a>
+        <a href="ai-agent.html" style="color:#FF6B35;">🤖 Food Agent</a>
+        <a href="group-order.html">👥 Group</a>
+      </div>
+      <div class="nav-auth"></div>
+    </div>
+  </nav>
+
+  <div class="agent-hero">
+    <div class="badge">POWERED BY AI</div>
+    <h1>🤖 Personal Food Agent</h1>
+    <p>Tell me what you want — I'll search every menu, filter your constraints, and build your perfect order</p>
+  </div>
+
+  <div class="agent-layout">
+
+    <!-- LEFT: CONSTRAINTS PANEL -->
+    <div>
+      <div class="panel">
+        <div class="panel-title">Your Constraints</div>
+
+        <!-- BUDGET -->
+        <div class="field">
+          <label>BUDGET (including delivery)</label>
+          <div class="budget-display">
+            <div class="budget-val" id="budget-display">₹250</div>
+            <div style="font-size:0.72rem;color:rgba(255,255,255,0.3);">Drag to adjust</div>
+          </div>
+          <input type="range" id="budget-slider" min="80" max="800" step="10" value="250">
+          <div style="display:flex;justify-content:space-between;font-size:0.7rem;color:rgba(255,255,255,0.25);margin-top:4px;">
+            <span>₹80</span><span>₹800</span>
+          </div>
+        </div>
+
+        <!-- MOOD / FLAVOR -->
+        <div class="field">
+          <label>WHAT ARE YOU IN THE MOOD FOR?</label>
+          <div class="chip-row" id="mood-chips">
+            <div class="chip" data-val="spicy">🌶️ Spicy</div>
+            <div class="chip" data-val="creamy">🥛 Creamy</div>
+            <div class="chip" data-val="grilled">🔥 Grilled</div>
+            <div class="chip" data-val="crispy">🍟 Crispy</div>
+            <div class="chip" data-val="light">🥗 Light</div>
+            <div class="chip" data-val="sweet">🍮 Sweet</div>
+            <div class="chip" data-val="healthy">💚 Healthy</div>
+          </div>
+        </div>
+
+        <!-- DIETARY -->
+        <div class="field">
+          <label>DIETARY PREFERENCE</label>
+          <select id="dietary">
+            <option value="any">Any (Veg + Non-Veg)</option>
+            <option value="veg">Vegetarian Only 🥦</option>
+            <option value="nonveg">Non-Vegetarian Only 🍗</option>
+          </select>
+        </div>
+
+        <!-- PROTEIN -->
+        <div class="field">
+          <label>PREFER HIGH PROTEIN?</label>
+          <div class="chip-row">
+            <div class="chip" id="protein-chip" data-val="protein">💪 High Protein</div>
+          </div>
+        </div>
+
+        <!-- EXCLUSIONS -->
+        <div class="field">
+          <label>EXCLUDE (tap to avoid)</label>
+          <div class="chip-row" id="excl-chips">
+            <div class="chip excl" data-val="chicken">🐔 Chicken</div>
+            <div class="chip excl" data-val="beef">🐄 Beef</div>
+            <div class="chip excl" data-val="fish">🐟 Fish</div>
+            <div class="chip excl" data-val="paneer">Paneer</div>
+            <div class="chip excl" data-val="egg">🥚 Egg</div>
+          </div>
+        </div>
+
+        <!-- CUISINE -->
+        <div class="field">
+          <label>CUISINE PREFERENCE (optional)</label>
+          <div class="chip-row" id="cuisine-chips">
+            <div class="chip" data-val="indian">🇮🇳 Indian</div>
+            <div class="chip" data-val="chinese">🥢 Chinese</div>
+            <div class="chip" data-val="biryani">🍚 Biryani</div>
+            <div class="chip" data-val="burger">🍔 Burger</div>
+            <div class="chip" data-val="pizza">🍕 Pizza</div>
+            <div class="chip" data-val="arabic">🥙 Arabic</div>
+          </div>
+        </div>
+
+        <button class="btn-find" id="btn-find" onclick="runAgent()">
+          🤖 Find My Perfect Food
+        </button>
+      </div>
+
+      <!-- QUICK PROMPTS -->
+      <div class="panel" style="margin-top:16px;">
+        <div class="panel-title">Quick Examples</div>
+        <button class="quick-prompt-btn" onclick="applyQuickPrompt(250, ['spicy'], 'nonveg', true, ['chicken'], [])">
+          🌶️ Spicy, high protein, no chicken, budget ₹250
+          <span>Popular choice</span>
+        </button>
+        <button class="quick-prompt-btn" onclick="applyQuickPrompt(200, ['light','healthy'], 'veg', false, [], ['indian'])">
+          💚 Light vegetarian Indian meal, budget ₹200
+          <span>Healthy option</span>
+        </button>
+        <button class="quick-prompt-btn" onclick="applyQuickPrompt(350, ['grilled','crispy'], 'nonveg', false, [], ['arabic'])">
+          🔥 Grilled Arabic style, budget ₹350
+          <span>AK Take Away special</span>
+        </button>
+        <button class="quick-prompt-btn" onclick="applyQuickPrompt(180, ['sweet'], 'veg', false, [], [])">
+          🍮 Something sweet and affordable, budget ₹180
+          <span>Dessert lover</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- RIGHT: RESULTS PANEL -->
+    <div class="results-panel" id="results-panel">
+      <div class="empty-state" id="empty-state">
+        <i class="bi bi-robot"></i>
+        <p>Set your constraints and click<br><strong>Find My Perfect Food</strong></p>
+        <p style="margin-top:8px;font-size:0.78rem;">The AI will reason through budget → mood → exclusions → menus → best match</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/foodMemory.js"></script>
+  <script src="js/chatbot-widget.js"></script>
+  <script>
+    // ── CHIP TOGGLES ──
+    document.querySelectorAll('#mood-chips .chip').forEach(chip => {
+      chip.addEventListener('click', () => chip.classList.toggle('active'));
+    });
+    document.querySelectorAll('#excl-chips .chip').forEach(chip => {
+      chip.addEventListener('click', () => chip.classList.toggle('active'));
+    });
+    document.querySelectorAll('#cuisine-chips .chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('#cuisine-chips .chip').forEach(c => c.classList.remove('active'));
+        chip.classList.toggle('active');
+      });
+    });
+    document.getElementById('protein-chip').addEventListener('click', () => {
+      document.getElementById('protein-chip').classList.toggle('active');
+    });
+
+    // ── BUDGET SLIDER ──
+    const slider = document.getElementById('budget-slider');
+    const budgetDisplay = document.getElementById('budget-display');
+    slider.addEventListener('input', () => { budgetDisplay.textContent = '₹' + slider.value; });
+
+    // ── QUICK PROMPT APPLIER ──
+    function applyQuickPrompt(budget, moods, dietary, protein, exclusions, cuisines) {
+      slider.value = budget;
+      budgetDisplay.textContent = '₹' + budget;
+
+      document.querySelectorAll('#mood-chips .chip').forEach(c => {
+        c.classList.toggle('active', moods.includes(c.dataset.val));
+      });
+      document.getElementById('dietary').value = dietary;
+      document.getElementById('protein-chip').classList.toggle('active', protein);
+      document.querySelectorAll('#excl-chips .chip').forEach(c => {
+        c.classList.toggle('active', exclusions.includes(c.dataset.val));
+      });
+      document.querySelectorAll('#cuisine-chips .chip').forEach(c => {
+        c.classList.toggle('active', cuisines.includes(c.dataset.val));
+      });
+    }
+
+    // ── BUILD QUERY FROM UI ──
+    function buildQuery() {
+      const budget = parseInt(slider.value);
+      const moods = [...document.querySelectorAll('#mood-chips .chip.active')].map(c => c.dataset.val);
+      const dietary = document.getElementById('dietary').value;
+      const protein = document.getElementById('protein-chip').classList.contains('active');
+      const exclusions = [...document.querySelectorAll('#excl-chips .chip.active')].map(c => c.dataset.val);
+      const cuisine = document.querySelector('#cuisine-chips .chip.active')?.dataset.val || '';
+
+      let q = `I have ₹${budget} budget.`;
+      if (moods.length) q += ` I want something ${moods.join(', ')}.`;
+      if (dietary === 'veg') q += ' I am vegetarian.';
+      if (dietary === 'nonveg') q += ' I want non-vegetarian food.';
+      if (protein) q += ' I prefer high protein food.';
+      if (exclusions.length) q += ` No ${exclusions.join(', ')}.`;
+      if (cuisine) q += ` I prefer ${cuisine} cuisine.`;
+      return { query: q, budget, moods, dietary, protein, exclusions, cuisine };
+    }
+
+    // ── RENDER REASONING STEPS ──
+    function renderReasoning(intent, query) {
+      const steps = [
+        { icon: '💰', text: `Budget parsed: <strong>₹${intent.budget || 'Any'}</strong>` },
+        { icon: '🔍', text: `Mood filters: <strong>${intent.mood?.length ? intent.mood.join(', ') : 'none'}</strong>` },
+        { icon: '🚫', text: `Exclusions: <strong>${intent.excludedProteins?.length ? intent.excludedProteins.join(', ') : 'none'}</strong>` },
+        { icon: '🥗', text: `Dietary: <strong>${intent.isVeg === true ? 'Vegetarian' : intent.isVeg === false ? 'Non-veg' : 'Any'}</strong>` },
+        { icon: '✅', text: 'Searching across all restaurant menus...' },
+        { icon: '📊', text: 'Scoring and ranking results...' },
+      ];
+      let html = `<div class="reasoning-steps"><div class="reasoning-title">🧠 AGENT REASONING TRACE</div>`;
+      steps.forEach(s => {
+        html += `<div class="step step-done"><div class="step-icon">${s.icon}</div><div>${s.text}</div></div>`;
+      });
+      html += '</div>';
+      return html;
+    }
+
+    // ── RENDER RESULTS ──
+    function renderResults(data, query) {
+      const panel = document.getElementById('results-panel');
+
+      if (!data.success || !data.suggestions || !data.suggestions.length) {
+        panel.innerHTML = `
+          <div class="empty-state">
+            <i class="bi bi-search-heart"></i>
+            <p>No dishes matched your constraints.</p>
+            <p style="margin-top:8px;font-size:0.78rem;">Try increasing your budget or removing some exclusions.</p>
+          </div>`;
+        return;
+      }
+
+      let html = renderReasoning(data.intent, query.query);
+
+      html += `<div style="font-size:0.72rem;color:rgba(255,255,255,0.3);font-weight:600;letter-spacing:0.05em;margin-bottom:4px;">TOP MATCHES (${data.suggestions.length} found)</div>`;
+
+      data.suggestions.forEach((s, i) => {
+        const isTop = i === 0;
+        const vegBadge = s.item.isVeg
+          ? '<span class="meta-pill green">🟢 Veg</span>'
+          : '<span class="meta-pill red">🔴 Non-Veg</span>';
+        const budgetBadge = s.fitsInBudget
+          ? '<span class="meta-pill green">✅ Fits budget</span>'
+          : '<span class="meta-pill red">⚠️ Slightly over</span>';
+
+        html += `
+          <div class="result-card ${isTop ? 'top-pick' : ''}">
+            <div class="result-card-top">
+              <div>
+                <div class="result-name">${isTop ? '<span class="top-badge">⭐ BEST MATCH</span> ' : '#' + (i+1) + ' '}${s.item.name}</div>
+                <div class="result-restaurant">@ ${s.restaurant} · ⭐${s.restaurantRating} · ${s.deliveryTime}</div>
+              </div>
+              <div style="text-align:right;">
+                <div class="result-price">₹${s.totalWithDelivery}<small><br>total</small></div>
+              </div>
+            </div>
+            <div style="font-size:0.8rem;color:rgba(255,255,255,0.5);margin-bottom:10px;">${s.item.description || 'Delicious dish from ' + s.restaurant}</div>
+            <div class="result-meta">
+              ${vegBadge}
+              ${budgetBadge}
+              <span class="meta-pill">₹${s.item.price} food</span>
+              <span class="meta-pill">₹${s.deliveryFee} delivery</span>
+            </div>
+          </div>`;
+      });
+
+      panel.innerHTML = html;
+    }
+
+    // ── MAIN AGENT RUNNER ──
+    async function runAgent() {
+      const query = buildQuery();
+      const panel = document.getElementById('results-panel');
+      const btn = document.getElementById('btn-find');
+      btn.disabled = true;
+
+      panel.innerHTML = `
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <div style="font-weight:600;">🤖 Agent is thinking...</div>
+          <div class="reasoning-live" id="reasoning-live">Parsing your constraints...</div>
+        </div>`;
+
+      const steps = [
+        'Parsing your constraints...',
+        'Searching 66 menu items across 9 restaurants...',
+        'Applying budget filter (₹' + parseInt(slider.value) + ')...',
+        'Scoring mood & protein matches...',
+        'Applying exclusion filters...',
+        'Ranking results...'
+      ];
+      let step = 0;
+      const stepInterval = setInterval(() => {
+        if (step < steps.length - 1) {
+          document.getElementById('reasoning-live').textContent = steps[++step];
+        }
+      }, 400);
+
+      try {
+        const res = await API.foodAgent(query.query);
+        clearInterval(stepInterval);
+        btn.disabled = false;
+
+        if (res && res.success && res.data) {
+          renderResults(res.data, query);
+        } else {
+          panel.innerHTML = `<div class="empty-state"><i class="bi bi-exclamation-circle"></i><p>Server error. Is the server running on port 5000?</p></div>`;
+        }
+      } catch(e) {
+        clearInterval(stepInterval);
+        btn.disabled = false;
+        panel.innerHTML = `<div class="empty-state"><i class="bi bi-wifi-off"></i><p>Cannot reach server. Start it with: <code>node server/server.js</code></p></div>`;
+      }
+    }
+  </script>
+</body>
+</html>

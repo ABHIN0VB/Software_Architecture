@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visual Food Search — FeastFleet AI</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body { background: #0a0a12; color: #f0f0f5; font-family: 'Inter', sans-serif; min-height: 100vh; margin: 0; }
+
+    .hero {
+      padding: 52px 20px 28px; text-align: center;
+      background: radial-gradient(ellipse at 50% 0%, rgba(255,107,53,0.1) 0%, transparent 70%);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .hero .badge { display: inline-block; background: rgba(255,107,53,0.12); border: 1px solid rgba(255,107,53,0.3); color: #FF6B35; font-size: 0.72rem; font-weight: 700; padding: 4px 14px; border-radius: 20px; letter-spacing: 0.08em; margin-bottom: 14px; }
+    .hero h1 { font-size: 2rem; font-weight: 900; margin: 0 0 10px; }
+    .hero p { color: rgba(255,255,255,0.5); font-size: 0.93rem; margin: 0; }
+
+    .main { max-width: 960px; margin: 0 auto; padding: 36px 20px 80px; }
+    .layout { display: grid; grid-template-columns: 380px 1fr; gap: 28px; }
+    @media(max-width: 720px) { .layout { grid-template-columns: 1fr; } }
+
+    /* UPLOAD ZONE */
+    .upload-zone {
+      border: 2px dashed rgba(255,107,53,0.3); border-radius: 18px; padding: 36px 20px;
+      text-align: center; cursor: pointer; transition: all 0.25s; position: relative;
+      background: rgba(255,107,53,0.03); margin-bottom: 20px;
+    }
+    .upload-zone:hover, .upload-zone.drag-over { border-color: #FF6B35; background: rgba(255,107,53,0.07); }
+    .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .upload-icon { font-size: 2.8rem; margin-bottom: 12px; display: block; }
+    .upload-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+    .upload-sub { font-size: 0.78rem; color: rgba(255,255,255,0.4); }
+    #preview-img { max-width: 100%; max-height: 200px; border-radius: 12px; object-fit: cover; margin-top: 12px; display: none; }
+
+    /* OR DIVIDER */
+    .or-divider { display: flex; align-items: center; gap: 12px; margin: 18px 0; }
+    .or-line { flex: 1; height: 1px; background: rgba(255,255,255,0.07); }
+    .or-text { font-size: 0.72rem; color: rgba(255,255,255,0.3); font-weight: 600; letter-spacing: 0.06em; }
+
+    /* DISH PICKER GRID */
+    .picker-title { font-size: 0.72rem; font-weight: 700; color: rgba(255,255,255,0.35); letter-spacing: 0.08em; margin-bottom: 12px; }
+    .dish-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 20px; }
+    .dish-option {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px; padding: 12px; text-align: center; cursor: pointer;
+      transition: all 0.2s; font-size: 0.82rem; font-weight: 600;
+    }
+    .dish-option:hover { border-color: rgba(255,107,53,0.4); background: rgba(255,107,53,0.06); }
+    .dish-option.selected { border-color: #FF6B35; background: rgba(255,107,53,0.12); color: #FF6B35; }
+    .dish-emoji { font-size: 1.4rem; display: block; margin-bottom: 4px; }
+
+    /* TEXT SEARCH */
+    .search-row { display: flex; gap: 10px; margin-bottom: 20px; }
+    .search-input {
+      flex: 1; padding: 11px 16px; background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+      color: #f0f0f5; font-size: 0.88rem; font-family: inherit; outline: none; transition: border-color 0.2s;
+    }
+    .search-input:focus { border-color: rgba(255,107,53,0.5); }
+    .search-input::placeholder { color: rgba(255,255,255,0.25); }
+
+    /* COLOR HINT */
+    .color-title { font-size: 0.72rem; font-weight: 700; color: rgba(255,255,255,0.35); letter-spacing: 0.08em; margin-bottom: 10px; }
+    .color-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+    .color-chip {
+      width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 3px solid transparent;
+      transition: all 0.2s; position: relative;
+    }
+    .color-chip.selected { border-color: #fff; transform: scale(1.15); }
+    .color-chip[title="red"] { background: #ef4444; }
+    .color-chip[title="orange"] { background: #f97316; }
+    .color-chip[title="yellow"] { background: #eab308; }
+    .color-chip[title="green"] { background: #22c55e; }
+    .color-chip[title="brown"] { background: #78350f; }
+    .color-chip[title="white"] { background: #e5e7eb; }
+    .color-chip[title="none"] { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); font-size: 0.7rem; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.4); width: auto; padding: 0 10px; border-radius: 20px; height: 32px; }
+
+    /* SEARCH BUTTON */
+    .btn-search {
+      width: 100%; padding: 13px; background: linear-gradient(135deg, #FF6B35, #FFB347);
+      border: none; border-radius: 12px; color: #fff; font-size: 0.92rem; font-weight: 700;
+      cursor: pointer; font-family: inherit; box-shadow: 0 6px 20px rgba(255,107,53,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-search:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(255,107,53,0.45); }
+    .btn-search:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* RESULTS */
+    .results-col { display: flex; flex-direction: column; gap: 14px; }
+    .empty-state { text-align: center; padding: 60px 20px; color: rgba(255,255,255,0.3); }
+    .empty-state i { font-size: 3.5rem; display: block; margin-bottom: 14px; }
+    .spinner { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.08); border-top-color: #FF6B35; border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 12px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* RESULT CARD */
+    .result-card {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px; overflow: hidden; transition: border-color 0.2s;
+    }
+    .result-card.top { border-color: rgba(255,107,53,0.45); background: rgba(255,107,53,0.05); }
+    .card-inner { display: flex; gap: 0; }
+    .card-image { width: 110px; flex-shrink: 0; }
+    .card-image img { width: 100%; height: 100%; object-fit: cover; }
+    .card-image .img-placeholder {
+      width: 100%; height: 100%; min-height: 100px;
+      background: rgba(255,255,255,0.04); display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem;
+    }
+    .card-body { flex: 1; padding: 16px; }
+    .card-match-badge { font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; display: inline-block; }
+    .top-match-badge { background: linear-gradient(135deg,#FF6B35,#FFB347); color: #fff; }
+    .other-badge { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); }
+    .card-dish-name { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .card-rest { font-size: 0.78rem; color: rgba(255,255,255,0.45); margin-bottom: 10px; }
+    .card-price { font-size: 1.05rem; font-weight: 800; color: #FF6B35; }
+    .card-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+    .meta-pill { background: rgba(255,255,255,0.06); padding: 3px 10px; border-radius: 12px; font-size: 0.72rem; color: rgba(255,255,255,0.5); }
+    .meta-pill.veg { background: rgba(45,212,168,0.12); color: #2DD4A8; }
+
+    /* SEARCH TERMS TAGS */
+    .terms-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+    .term-tag { background: rgba(255,107,53,0.1); border: 1px solid rgba(255,107,53,0.2); color: #FFB347; padding: 3px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">🍽️ FeastFleet</a>
+      <div class="nav-links">
+        <a href="ai-agent.html">🤖 Food Agent</a>
+        <a href="visual-search.html" style="color:#FF6B35;">📷 Visual Search</a>
+        <a href="restaurants.html">Restaurants</a>
+      </div>
+      <div class="nav-auth"></div>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="badge">COMPUTER VISION AI</div>
+    <h1>📷 See Food → Find Food → Order</h1>
+    <p>Upload a photo or describe what you see — AI finds the closest matching dishes near you</p>
+  </div>
+
+  <div class="main">
+    <div class="layout">
+
+      <!-- LEFT: INPUT PANEL -->
+      <div>
+        <!-- IMAGE UPLOAD -->
+        <div class="upload-zone" id="upload-zone">
+          <input type="file" accept="image/*" id="file-input" onchange="handleImageUpload(event)">
+          <span class="upload-icon">📸</span>
+          <div class="upload-title">Drop a food photo here</div>
+          <div class="upload-sub">JPG, PNG — or take a photo on mobile</div>
+          <img id="preview-img" alt="Preview">
+        </div>
+
+        <div class="or-divider">
+          <div class="or-line"></div>
+          <div class="or-text">OR PICK WHAT IT LOOKS LIKE</div>
+          <div class="or-line"></div>
+        </div>
+
+        <!-- DISH PICKER GRID -->
+        <div class="picker-title">WHAT DOES THE DISH LOOK LIKE?</div>
+        <div class="dish-grid" id="dish-grid">
+          <div class="dish-option" data-query="grilled chicken tandoori al faham" onclick="selectDish(this)"><span class="dish-emoji">🍗</span>Grilled / Tandoori</div>
+          <div class="dish-option" data-query="biryani rice dum pulao" onclick="selectDish(this)"><span class="dish-emoji">🍚</span>Biryani / Rice</div>
+          <div class="dish-option" data-query="burger sandwich wrap bun" onclick="selectDish(this)"><span class="dish-emoji">🍔</span>Burger / Sandwich</div>
+          <div class="dish-option" data-query="noodles pasta spaghetti ramen" onclick="selectDish(this)"><span class="dish-emoji">🍜</span>Noodles / Pasta</div>
+          <div class="dish-option" data-query="pizza flatbread" onclick="selectDish(this)"><span class="dish-emoji">🍕</span>Pizza</div>
+          <div class="dish-option" data-query="curry masala gravy tikka" onclick="selectDish(this)"><span class="dish-emoji">🍛</span>Curry / Gravy</div>
+          <div class="dish-option" data-query="fried crispy starter 65 555" onclick="selectDish(this)"><span class="dish-emoji">🍟</span>Fried / Crispy</div>
+          <div class="dish-option" data-query="cake dessert ice cream brownie sweet" onclick="selectDish(this)"><span class="dish-emoji">🍰</span>Dessert / Sweet</div>
+          <div class="dish-option" data-query="shake milkshake smoothie drink" onclick="selectDish(this)"><span class="dish-emoji">🥤</span>Shake / Drink</div>
+          <div class="dish-option" data-query="parotta bread chapati naan flatbread" onclick="selectDish(this)"><span class="dish-emoji">🫓</span>Parotta / Bread</div>
+        </div>
+
+        <div class="or-divider">
+          <div class="or-line"></div>
+          <div class="or-text">OR DESCRIBE IN WORDS</div>
+          <div class="or-line"></div>
+        </div>
+
+        <!-- TEXT SEARCH -->
+        <div class="search-row">
+          <input class="search-input" type="text" id="text-input" placeholder="e.g. spicy red curry with rice…">
+        </div>
+
+        <!-- COLOR HINT -->
+        <div class="color-title">DOMINANT COLOUR (optional — helps AI)</div>
+        <div class="color-row">
+          <div class="color-chip selected" title="none" id="color-none" onclick="selectColor('none')">Any</div>
+          <div class="color-chip" title="red" onclick="selectColor('red')"></div>
+          <div class="color-chip" title="orange" onclick="selectColor('orange')"></div>
+          <div class="color-chip" title="yellow" onclick="selectColor('yellow')"></div>
+          <div class="color-chip" title="green" onclick="selectColor('green')"></div>
+          <div class="color-chip" title="brown" onclick="selectColor('brown')"></div>
+          <div class="color-chip" title="white" onclick="selectColor('white')"></div>
+        </div>
+
+        <button class="btn-search" id="btn-search" onclick="runVisualSearch()">
+          📷 Find This Dish Near Me
+        </button>
+      </div>
+
+      <!-- RIGHT: RESULTS -->
+      <div class="results-col" id="results-col">
+        <div class="empty-state">
+          <i class="bi bi-camera"></i>
+          <p style="font-size:0.9rem;font-weight:600;margin-bottom:6px;">Upload a photo or pick a dish type</p>
+          <p style="font-size:0.8rem;">I'll search across all restaurant menus<br>to find the closest matching dish near you.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/foodMemory.js"></script>
+  <script src="js/chatbot-widget.js"></script>
+  <script>
+    let selectedDishQuery = '';
+    let selectedColor = 'none';
+
+    // ── DISH PICKER ──
+    function selectDish(el) {
+      document.querySelectorAll('.dish-option').forEach(d => d.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedDishQuery = el.dataset.query;
+      document.getElementById('text-input').value = el.querySelector('.dish-emoji').textContent + ' ' + el.textContent.trim().replace(/^./, '');
+    }
+
+    // ── COLOR PICKER ──
+    function selectColor(color) {
+      document.querySelectorAll('.color-chip').forEach(c => c.classList.remove('selected'));
+      const target = color === 'none'
+        ? document.getElementById('color-none')
+        : document.querySelector(`.color-chip[title="${color}"]`);
+      if (target) target.classList.add('selected');
+      selectedColor = color;
+    }
+
+    // ── IMAGE UPLOAD HANDLER (simulated) ──
+    function handleImageUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const img = document.getElementById('preview-img');
+        img.src = ev.target.result;
+        img.style.display = 'block';
+        // Simulate AI detecting a dish from filename
+        const fname = file.name.toLowerCase();
+        const keywords = ['biryani','chicken','curry','burger','pizza','noodles','fish','paneer','beef','rice','cake','shake','coffee'];
+        const detected = keywords.find(k => fname.includes(k));
+        if (detected) {
+          document.getElementById('text-input').value = detected;
+          selectedDishQuery = detected;
+          // Highlight matching dish option
+          document.querySelectorAll('.dish-option').forEach(d => {
+            if (d.dataset.query.includes(detected)) {
+              d.classList.add('selected');
+              selectedDishQuery = d.dataset.query;
+            }
+          });
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // ── DRAG AND DROP ──
+    const zone = document.getElementById('upload-zone');
+    zone.addEventListener('dragover', (e) => { e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) {
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        document.getElementById('file-input').files = dt.files;
+        handleImageUpload({ target: { files: [file] } });
+      }
+    });
+
+    // ── RENDER RESULTS ──
+    function renderResults(data) {
+      const col = document.getElementById('results-col');
+
+      if (!data.success || !data.matches || !data.matches.length) {
+        col.innerHTML = `
+          <div class="empty-state">
+            <i class="bi bi-search-heart" style="color:rgba(255,107,53,0.3)"></i>
+            <p>No matching dishes found.</p>
+            <p style="font-size:0.78rem;margin-top:6px;">Try a different dish type or describe it in words.</p>
+          </div>`;
+        return;
+      }
+
+      let html = '';
+
+      // Search terms used
+      if (data.searchTerms && data.searchTerms.length) {
+        html += `<div>
+          <div style="font-size:0.7rem;color:rgba(255,255,255,0.3);font-weight:700;letter-spacing:0.06em;margin-bottom:6px;">AI SEARCH TERMS USED</div>
+          <div class="terms-bar">
+            ${data.searchTerms.slice(0, 8).map(t => `<span class="term-tag">${t}</span>`).join('')}
+          </div>
+        </div>`;
+      }
+
+      html += `<div style="font-size:0.72rem;color:rgba(255,255,255,0.3);font-weight:700;letter-spacing:0.06em;">${data.matches.length} RESTAURANTS FOUND</div>`;
+
+      data.matches.forEach((m, i) => {
+        const isTop = i === 0;
+        const emojiMap = { 'Grilled': '🍗', 'Biryani': '🍚', 'Burger': '🍔', 'Noodles': '🍜', 'Pizza': '🍕', 'Curry': '🍛', 'Fried': '🍟', 'Cake': '🍰', 'Shake': '🥤' };
+        const emoji = Object.entries(emojiMap).find(([k]) => m.item.name.toLowerCase().includes(k.toLowerCase()))?.[1] || '🍽️';
+
+        html += `
+          <div class="result-card ${isTop ? 'top' : ''}">
+            <div class="card-inner">
+              <div class="card-image">
+                ${m.item.image ? `<img src="${m.item.image}" alt="${m.item.name}" loading="lazy">` : `<div class="img-placeholder">${emoji}</div>`}
+              </div>
+              <div class="card-body">
+                <div class="card-match-badge ${isTop ? 'top-match-badge' : 'other-badge'}">
+                  ${isTop ? '🎯 Closest Match' : '#' + (i + 1) + ' Match'}
+                </div>
+                <div class="card-dish-name">${m.item.name}</div>
+                <div class="card-rest">@ ${m.restaurant} · ⭐${m.restaurantRating}</div>
+                <div class="card-price">₹${m.item.price}</div>
+                <div class="card-meta">
+                  <span class="meta-pill ${m.item.isVeg ? 'veg' : ''}">${m.item.isVeg ? '🟢 Veg' : '🔴 Non-Veg'}</span>
+                  <span class="meta-pill">🕐 ${m.deliveryTime}</span>
+                  <span class="meta-pill">🛵 ₹${m.deliveryFee} delivery</span>
+                </div>
+              </div>
+            </div>
+          </div>`;
+      });
+
+      col.innerHTML = html;
+    }
+
+    // ── RUN VISUAL SEARCH ──
+    async function runVisualSearch() {
+      const textInput = document.getElementById('text-input').value.trim();
+      const query = textInput || selectedDishQuery;
+
+      if (!query) {
+        alert('Please select a dish type or describe what you see!');
+        return;
+      }
+
+      const col = document.getElementById('results-col');
+      const btn = document.getElementById('btn-search');
+      btn.disabled = true;
+
+      col.innerHTML = `
+        <div style="text-align:center;padding:60px 20px;">
+          <div class="spinner"></div>
+          <div style="font-weight:600;">📷 Scanning menus...</div>
+          <div style="font-size:0.8rem;color:rgba(255,255,255,0.35);margin-top:6px;">Matching "${query.slice(0,30)}" across all restaurants</div>
+        </div>`;
+
+      try {
+        const colorHint = selectedColor !== 'none' ? selectedColor : null;
+        const res = await API.visualSearch(query, colorHint);
+        btn.disabled = false;
+
+        if (res && res.success && res.data) {
+          renderResults(res.data);
+        } else {
+          col.innerHTML = `<div class="empty-state"><i class="bi bi-exclamation-circle"></i><p>Search failed. Is the server running?</p></div>`;
+        }
+      } catch(e) {
+        btn.disabled = false;
+        col.innerHTML = `<div class="empty-state"><i class="bi bi-wifi-off"></i><p>Server unreachable. Start it with: <code>node server/server.js</code></p></div>`;
+      }
+    }
+
+    // Allow pressing Enter in text box
+    document.getElementById('text-input').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') runVisualSearch();
+    });
+  </script>
+</body>
+</html>

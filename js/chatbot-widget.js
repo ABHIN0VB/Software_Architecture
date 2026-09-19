@@ -544,10 +544,26 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Enter') sendMessage(input.value);
   });
 
+  // Map quick buttons to dedicated pages or chat actions
+  const PAGE_MAP = {
+    'Food Agent':       'ai-agent.html',
+    'Budget Optimizer': 'budget-optimizer.html',
+    'My Food Profile':  'food-profile.html',
+    'Visual Search':    'visual-search.html',
+    'Group Order':      'group-order.html',
+  };
+
   quickBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      const query = btn.textContent.replace(/^[^\s]+\s/, '');
-      sendMessage(query);
+      // Strip leading emoji
+      const label = btn.textContent.trim().replace(/^[\p{Emoji}\s]+/u, '').trim();
+      if (PAGE_MAP[label]) {
+        window.location.href = PAGE_MAP[label];
+      } else {
+        // Track Order, AI Ingredients, Recommend → chat as before
+        const query = btn.textContent.replace(/^[^\s]+\s/, '');
+        sendMessage(query);
+      }
     });
   });
 });
