@@ -1,19 +1,20 @@
+import os
 import docx
 from docx.shared import Inches, Pt, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.enum.table import WD_TABLE_ALIGNMENT, WD_ALIGN_VERTICAL
-from docx.oxml import parse_xml, OxmlElement
-from docx.oxml.ns import nsdecls, qn
+from docx.enum.table import WD_TABLE_ALIGNMENT
+from docx.oxml import parse_xml
+from docx.oxml.ns import nsdecls
 
 def create_manual():
     doc = docx.Document()
 
     # Set Margins
     for section in doc.sections:
-        section.top_margin = Inches(1.0)
-        section.bottom_margin = Inches(1.0)
-        section.left_margin = Inches(1.0)
-        section.right_margin = Inches(1.0)
+        section.top_margin = Inches(0.8)
+        section.bottom_margin = Inches(0.8)
+        section.left_margin = Inches(0.8)
+        section.right_margin = Inches(0.8)
 
     # Color Palette
     PRIMARY = RGBColor(255, 107, 53)    # Orange #FF6B35
@@ -26,37 +27,47 @@ def create_manual():
         shading = parse_xml(f'<w:shd {nsdecls("w")} w:fill="{fill_hex}"/>')
         cell._tc.get_or_add_tcPr().append(shading)
 
-    def add_screenshot_box(caption):
-        tbl = doc.add_table(rows=1, cols=1)
-        tbl.alignment = WD_TABLE_ALIGNMENT.CENTER
-        cell = tbl.cell(0, 0)
-        set_cell_background(cell, "F3F4F6")
-        cell.width = Inches(6.5)
-        p = cell.paragraphs[0]
-        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        p.paragraph_format.space_before = Pt(20)
-        p.paragraph_format.space_after = Pt(20)
-        run = p.add_run(f"📷 [INSERT SCREENSHOT: {caption}]")
-        run.bold = True
-        run.font.color.rgb = RGBColor(107, 114, 128)
-        run.font.size = Pt(10.5)
-        
-        # Border
-        tcPr = cell._tc.get_or_add_tcPr()
-        borders = parse_xml(
-            f'<w:tcBorders {nsdecls("w")}>'
-            f'<w:top w:val="dashed" w:sz="6" w:space="0" w:color="FF6B35"/>'
-            f'<w:left w:val="dashed" w:sz="6" w:space="0" w:color="FF6B35"/>'
-            f'<w:bottom w:val="dashed" w:sz="6" w:space="0" w:color="FF6B35"/>'
-            f'<w:right w:val="dashed" w:sz="6" w:space="0" w:color="FF6B35"/>'
-            f'</w:tcBorders>'
-        )
-        tcPr.append(borders)
-        doc.add_paragraph().paragraph_format.space_after = Pt(6)
+    fig_counter = [1]
+
+    def add_figure(img_name, caption):
+        img_path = os.path.join("docs", "screenshots", img_name)
+        if os.path.exists(img_path):
+            p_img = doc.add_paragraph()
+            p_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            p_img.paragraph_format.space_before = Pt(8)
+            p_img.paragraph_format.space_after = Pt(3)
+            run_img = p_img.add_run()
+            run_img.add_picture(img_path, width=Inches(6.2))
+            
+            p_cap = doc.add_paragraph()
+            p_cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            p_cap.paragraph_format.space_before = Pt(2)
+            p_cap.paragraph_format.space_after = Pt(14)
+            run_cap = p_cap.add_run(f"Figure {fig_counter[0]}: {caption}")
+            fig_counter[0] += 1
+            run_cap.font.size = Pt(9.5)
+            run_cap.font.bold = True
+            run_cap.font.color.rgb = RGBColor(80, 80, 95)
+        else:
+            tbl = doc.add_table(rows=1, cols=1)
+            tbl.alignment = WD_TABLE_ALIGNMENT.CENTER
+            cell = tbl.cell(0, 0)
+            set_cell_background(cell, "F3F4F6")
+            cell.width = Inches(6.5)
+            p = cell.paragraphs[0]
+            p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            p.paragraph_format.space_before = Pt(16)
+            p.paragraph_format.space_after = Pt(16)
+            run = p.add_run(f"📷 [Figure {fig_counter[0]}: {caption}]")
+            fig_counter[0] += 1
+            run.bold = True
+            run.font.color.rgb = RGBColor(107, 114, 128)
+            run.font.size = Pt(10)
+            doc.add_paragraph().paragraph_format.space_after = Pt(6)
 
     def add_h1(text):
         h = doc.add_heading(level=1)
-        h.paragraph_format.space_before = Pt(16)
+        h.paragraph_format.space_before = Pt(18)
         h.paragraph_format.space_after = Pt(6)
         run = h.add_run(text)
         run.font.size = Pt(18)
@@ -66,20 +77,20 @@ def create_manual():
 
     def add_h2(text):
         h = doc.add_heading(level=2)
-        h.paragraph_format.space_before = Pt(12)
+        h.paragraph_format.space_before = Pt(14)
         h.paragraph_format.space_after = Pt(4)
         run = h.add_run(text)
-        run.font.size = Pt(14)
+        run.font.size = Pt(13.5)
         run.font.color.rgb = DARK
         run.bold = True
         return h
 
     def add_h3(text):
         h = doc.add_heading(level=3)
-        h.paragraph_format.space_before = Pt(8)
+        h.paragraph_format.space_before = Pt(10)
         h.paragraph_format.space_after = Pt(2)
         run = h.add_run(text)
-        run.font.size = Pt(11.5)
+        run.font.size = Pt(11)
         run.font.color.rgb = PRIMARY
         run.bold = True
         return h
@@ -91,9 +102,9 @@ def create_manual():
         if bold_prefix:
             r_pre = p.add_run(bold_prefix)
             r_pre.bold = True
-            r_pre.font.size = Pt(10.5)
+            r_pre.font.size = Pt(10)
         run = p.add_run(text)
-        run.font.size = Pt(10.5)
+        run.font.size = Pt(10)
         run.italic = italic
         return p
 
@@ -104,27 +115,27 @@ def create_manual():
         if bold_prefix:
             r_pre = p.add_run(bold_prefix)
             r_pre.bold = True
-            r_pre.font.size = Pt(10)
+            r_pre.font.size = Pt(9.5)
         run = p.add_run(text)
-        run.font.size = Pt(10)
+        run.font.size = Pt(9.5)
         return p
 
     # -------------------------------------------------------------
     # 1. TITLE PAGE
     # -------------------------------------------------------------
     title_p = doc.add_paragraph()
-    title_p.paragraph_format.space_before = Pt(100)
-    title_p.paragraph_format.space_after = Pt(12)
+    title_p.paragraph_format.space_before = Pt(80)
+    title_p.paragraph_format.space_after = Pt(10)
     title_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     r_title = title_p.add_run("FEASTFLEET")
-    r_title.font.size = Pt(36)
+    r_title.font.size = Pt(38)
     r_title.bold = True
     r_title.font.color.rgb = PRIMARY
 
     sub_p = doc.add_paragraph()
     sub_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    sub_p.paragraph_format.space_after = Pt(30)
-    r_sub = sub_p.add_run("Next-Generation Food Delivery Platform with Behavioral & Conversational AI\nUSER MANUAL & SYSTEM DOCUMENTATION")
+    sub_p.paragraph_format.space_after = Pt(24)
+    r_sub = sub_p.add_run("Next-Generation Food Delivery Platform with Behavioral & Conversational AI\nUSER MANUAL & SYSTEM DEMONSTRATION")
     r_sub.font.size = Pt(13)
     r_sub.font.color.rgb = GRAY
     r_sub.bold = True
@@ -139,12 +150,12 @@ def create_manual():
     rule_cell.paragraphs[0].paragraph_format.space_after = Pt(2)
 
     meta_p = doc.add_paragraph()
-    meta_p.paragraph_format.space_before = Pt(120)
+    meta_p.paragraph_format.space_before = Pt(100)
     meta_p.paragraph_format.space_after = Pt(0)
     meta_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     
-    r_m = meta_p.add_run("PROJECT progress & final demonstration manual\n")
-    r_m.font.size = Pt(10)
+    r_m = meta_p.add_run("Software Architecture & Engineering Coursework\n")
+    r_m.font.size = Pt(10.5)
     r_m.font.color.rgb = GRAY
 
     tbl_team = doc.add_table(rows=4, cols=2)
@@ -185,12 +196,16 @@ def create_manual():
         "exploration and radius-validated cart management to accelerated 5:1 real-time delivery tracking with live rider allocation."
     )
 
+    add_figure("01-splash.png", "FeastFleet Animated Application Splash & Initialization Screen")
+
     add_h2("1.2 Purpose of the System")
-    add_bullet("Solve Recommender Flattening: Avoid repetitive, static suggestions by maintaining active memory of user dietary habits and repetition fatigue.", "• ")
+    add_bullet("Solve Recommender Flattening: Avoid repetitive, static suggestions by maintaining active memory of user dining habits and repetition fatigue.", "• ")
     add_bullet("Natural Language Food Ordering: Allow users to state ambiguous or complex dietary and financial constraints (e.g., 'I have ₹250, want something spicy, high protein, but no chicken today') and compute optimal meal matches instantly.", "• ")
     add_bullet("Solve Group Dining Deadlocks: Automatically aggregate multiple individual cravings, dietary rules, and budgets from team members or friends into a single optimal restaurant order with automated per-person payment splits.", "• ")
     add_bullet("Budget Optimization: Provide combinatorial meal solutions (main course + sides + beverages) that mathematically maximize value under strict budget limits while factoring in delivery fees and platform costs.", "• ")
     add_bullet("Transparent Food Intelligence: Enable customers to inspect complete ingredients, preparation methods, and allergen warnings through an AI Ingredient Predictor prior to ordering.", "• ")
+
+    add_figure("02-home.png", "FeastFleet Interactive Home Screen featuring Cravings Categories and Next-Gen AI Food Suite")
 
     add_h2("1.3 Intended Users")
     add_bullet("Individual Diners & Students: Fast ordering on strict budgets, seeking high-protein or quick meals near Valavoor / Kottayam campuses.", "• ")
@@ -234,33 +249,27 @@ def create_manual():
     add_h2("2.3 Browser & Platform Requirements")
     add_p(
         "FeastFleet is engineered as a zero-build, responsive web application supporting modern ECMAScript standards, "
-        "CSS Grid, Flexbox, and HTML5 Web Storage APIs. Supported browsers include:"
+        "CSS Grid, Flexbox, and HTML5 Web Storage APIs. Supported browsers include Google Chrome (v100+), Microsoft Edge (v100+), "
+        "Mozilla Firefox (v100+), and Apple Safari (v15+)."
     )
-    add_bullet("Google Chrome: Version 100 or later (Recommended).", "• ")
-    add_bullet("Microsoft Edge: Version 100 or later.", "• ")
-    add_bullet("Mozilla Firefox: Version 100 or later.", "• ")
-    add_bullet("Apple Safari: Version 15 or later (macOS / iOS).", "• ")
-    add_bullet("Mobile Browsers: Chrome for Android, Safari for iOS (Fully responsive layout).", "• ")
 
     # -------------------------------------------------------------
     # 4. INSTALLATION & SETUP
     # -------------------------------------------------------------
     add_h1("3. Installation & Setup")
     add_h2("3.1 Step-by-Step Installation Instructions")
-    add_p("Follow these exact steps to run FeastFleet locally on your development or demonstration machine:")
-    
-    add_p("Step 1: Clone or Extract the Repository", bold_prefix="1. ")
+    add_p("Step 1: Clone or Extract Repository", bold_prefix="1. ")
     add_p("git clone https://github.com/ABHIN0VB/Software_Architecture.git\ncd Software_Architecture/feastfleet", italic=True)
     
     add_p("Step 2: Install Node.js Dependencies", bold_prefix="2. ")
-    add_p("Run the following command in the feastfleet project root directory to install Express, Mongoose, JWT, bcryptjs, and MongoDB Memory Server:\n\nnpm install", italic=True)
+    add_p("npm install", italic=True)
 
     add_p("Step 3: Launch the FeastFleet Server", bold_prefix="3. ")
-    add_p("Start the full-stack server using the unified launch command:\n\nnode server/server.js", italic=True)
-    add_p("The system will detect whether a local MongoDB instance is present. If not found, it automatically boots an in-memory MongoDB database and runs the auto-seed script inserting 9 curated restaurants and 66 menu items (including AK Take Away Pala, Burger Palace, Spice Garden, Royal Biryani House, etc.).")
+    add_p("node server/server.js", italic=True)
+    add_p("The server automatically boots an in-memory MongoDB instance if local MongoDB is not running, seeding 9 restaurants and 66 items.")
 
-    add_p("Step 4: Access the Application", bold_prefix="4. ")
-    add_p("Open your web browser and navigate to the application URL:\n\nhttp://localhost:5000\n\nThe full interactive interface is immediately live with all backend APIs and AI services active.")
+    add_p("Step 4: Access Application in Web Browser", bold_prefix="4. ")
+    add_p("http://localhost:5000", italic=True)
 
     # -------------------------------------------------------------
     # 5. USER LOGIN & REGISTRATION
@@ -272,18 +281,23 @@ def create_manual():
         "authentication provides persistent synchronization."
     )
     add_h2("4.1 Account Registration")
-    add_bullet("Click the 'Sign In' button located at the top-right corner of the navigation bar.", "1. ")
-    add_bullet("Select the 'Create an Account' tab on the login page (login.html).", "2. ")
-    add_bullet("Enter your Full Name, Email Address, 10-digit Phone Number, and Password.", "3. ")
-    add_bullet("Click 'Sign Up'. The system securely hashes passwords with bcrypt and returns a JSON Web Token (JWT), storing user credentials in browser localStorage.", "4. ")
+    add_bullet("Click 'Sign In' at the top-right corner of the navbar.", "1. ")
+    add_bullet("Select 'Create an Account' tab on login.html.", "2. ")
+    add_bullet("Enter Full Name, Email Address, 10-digit Phone Number, and Password.", "3. ")
+    add_bullet("Click 'Sign Up'. The system securely encrypts passwords via bcrypt and sets JWT token in localStorage.", "4. ")
 
-    add_h2("4.2 User Login")
-    add_bullet("Navigate to login.html and ensure the 'Sign In' tab is active.", "1. ")
+    add_figure("04-register.png", "User Registration Interface with Validation Fields - login.html")
+
+    add_h2("4.2 User Login & Profile Dropdown")
+    add_bullet("Navigate to login.html with the 'Sign In' tab active.", "1. ")
     add_bullet("Enter your registered Email Address and Password.", "2. ")
-    add_bullet("Click 'Sign In'. The user profile avatar with initials will appear in the top-right navbar.", "3. ")
-    add_bullet("Clicking the avatar reveals a dropdown menu providing direct access to Order History, Live Tracking, Cart, and Log Out.", "4. ")
+    add_bullet("Click 'Sign In'. Your user avatar with initials will appear in the top-right navbar.", "3. ")
+    add_bullet("Click the avatar to reveal the Profile Menu with links to Order History, Live Tracking, Cart, and Log Out.", "4. ")
 
-    add_screenshot_box("User Login and Registration Screen - login.html")
+    add_figure("03-login.png", "User Login Interface - login.html")
+    add_figure("05-login-error.png", "Form Validation & Error Notification on Invalid Credentials")
+    add_figure("06-home-logged-in.png", "Homepage in Authenticated User State with Profile Avatar in Navbar")
+    add_figure("07-profile-menu.png", "Interactive User Profile Dropdown Menu")
 
     # -------------------------------------------------------------
     # 6. SYSTEM FEATURES & FUNCTIONALITIES
@@ -296,10 +310,8 @@ def create_manual():
         "and cuisine category filtering. It features a hardcoded hyper-local detection for Valavoor, Kottayam (9.7360° N, 76.6570° E), "
         "placing AK Take Away, Pala (4.1 km away, 30-35 min delivery) at the top of recommendations."
     )
-    add_bullet("Click 'Restaurants' in the navbar or 'Detect My Location' on restaurants.html.", "• ")
-    add_bullet("The location badge confirms: '📍 Valavoor, Kottayam'.", "• ")
-    add_bullet("Clicking any restaurant card opens its dedicated menu page (e.g., menu-aktakeaway.html or menu.html) with category tabs, dish images, and prices.", "• ")
-    add_screenshot_box("Restaurant Catalog & AK Take Away Pala Menu Screen - restaurants.html")
+    add_figure("08-restaurants.png", "Restaurant Directory Screen with Active 'Valavoor, Kottayam' Geolocation Badge")
+    add_figure("09-menu-ak.png", "AK Take Away Pala Dedicated Menu Screen with Category Tabs and Dish Cards")
 
     add_h2("5.2 🤖 Feature 1: Personal Food Agent (ai-agent.html)")
     add_p(
@@ -316,7 +328,8 @@ def create_manual():
     add_bullet("Click '🤖 Find My Perfect Food'.", "7. ")
     add_bullet("The AI displays a step-by-step reasoning trace, filters all 66 items, computes food price + delivery fee, and highlights the '⭐ BEST MATCH'.", "8. ")
     add_bullet("Click '🛒 Add to Cart' directly on the recommendation card to stage the meal into the cart.", "9. ")
-    add_screenshot_box("Personal Food Agent with Reasoning Trace & Ranked Matches - ai-agent.html")
+    
+    add_figure("14-ai-agent.html.png" if os.path.exists("docs/screenshots/14-ai-agent.html.png") else "14-ai-agent.png", "Personal Food Agent Screen with Budget Slider, Flavor Chips, and Reasoning Trace")
 
     add_h2("5.3 💰 Feature 2: AI Food Budget Optimizer (budget-optimizer.html)")
     add_p(
@@ -325,13 +338,14 @@ def create_manual():
     )
     add_p("Step-by-Step Operation:", bold_prefix="Workflow: ")
     add_bullet("Navigate to budget-optimizer.html.", "1. ")
-    add_bullet("Set your total group budget slider (e.g., ₹500) and select headcount with the +/- buttons (e.g., 4 people).", "2. ")
+    add_bullet("Set total group budget slider (e.g., ₹500) and select headcount with +/- buttons (e.g., 4 people).", "2. ")
     add_bullet("Choose preferred cuisine (Any, Indian, Chinese, Italian, Biryani, etc.).", "3. ")
     add_bullet("Select meal structure checkboxes: Main Course, Side Dish, Drink, Dessert.", "4. ")
     add_bullet("Click '💰 Optimize My Budget'.", "5. ")
     add_bullet("The algorithm evaluates all restaurants, builds the cheapest valid combo per person, and outputs ranked comparison cards showing Food Subtotal, Delivery Fee, Platform Fee, Total, and Per-Person Split.", "6. ")
     add_bullet("Click '🛒 Add Entire Combo for N People' to push the entire group combo directly to the cart with one click.", "7. ")
-    add_screenshot_box("AI Budget Optimizer with Per-Person Split & Combo Breakdown - budget-optimizer.html")
+    
+    add_figure("15-budget-optimizer.png", "AI Budget Optimizer with Combinatorial Meal Combos and Per-Person Split Table")
 
     add_h2("5.4 🧠 Feature 3: AI Food Memory & Habit Profiling (food-profile.html)")
     add_p(
@@ -341,12 +355,13 @@ def create_manual():
     add_p("Step-by-Step Operation:", bold_prefix="Workflow: ")
     add_bullet("Navigate to food-profile.html or ask the chatbot 'My Food Profile'.", "1. ")
     add_bullet("View dynamic analytics: Total Items Ordered, Weekly Orders, Avg Spend per Item, Peak Order Time, and Favorite Restaurant.", "2. ")
-    add_bullet("Repetition Fatigue Detection: If you have ordered the same dish (e.g., Biryani) 2+ times in 7 days, an alert banner warns: 'You've had Chicken Biryani 3 times this week. Want something different?'", "3. ")
+    add_bullet("Repetition Fatigue Detection: If you order the same dish (e.g., Biryani) 2+ times in 7 days, an alert banner warns: 'You've had Chicken Biryani 3 times this week. Want something different?'", "3. ")
     add_bullet("Diet Balance: An interactive SVG pie chart visualizes your Vegetarian vs. Non-Vegetarian consumption ratio.", "4. ")
     add_bullet("Category Frequency: Progress bars show consumption breakdown across Biryani, Curries, Breads, and Shakes.", "5. ")
     add_bullet("Weekly Activity Timeline: Day dots indicate order activity from Sunday through Saturday.", "6. ")
     add_bullet("Click 'Load Demo Profile' to immediately preview active behavioral data with one click.", "7. ")
-    add_screenshot_box("AI Food Memory Analytics Dashboard & Repetition Alert - food-profile.html")
+
+    add_figure("16-food-profile.png", "AI Food Memory Dashboard with Diet Balance Pie Chart, Habit Tracker, and Repetition Fatigue Alert")
 
     add_h2("5.5 📷 Feature 4: Visual Food Search (See Food → Find Food → Order, visual-search.html)")
     add_p(
@@ -360,7 +375,8 @@ def create_manual():
     add_bullet("Optionally select a dominant color chip (Red, Orange, Yellow, Green, Brown, White) to refine flavor matching.", "4. ")
     add_bullet("Click '📷 Find This Dish Near Me'.", "5. ")
     add_bullet("View ranked matches tagged with '🎯 Closest Match', restaurant ratings, delivery fees, and an instant '🛒 Add to Cart' button.", "6. ")
-    add_screenshot_box("Visual Food Search with Photo Upload & Closest Match Card - visual-search.html")
+
+    add_figure("17-visual-search.png", "Visual Food Search with Drag-and-Drop Photo Uploader and Category Chips")
 
     add_h2("5.6 👥 Feature 5: AI Group Ordering Agent (group-order.html)")
     add_p(
@@ -376,7 +392,8 @@ def create_manual():
     add_bullet("The AI checks menu overlap, eliminates restaurants lacking vegetarian dishes for veg members, and displays the winning restaurant.", "5. ")
     add_bullet("Dish Assignments: Displays each member's assigned dish with prices.", "6. ")
     add_bullet("Click '🛒 Add All Dishes to Cart' to add all items labeled with member names (e.g., 'Paneer Butter Masala (Anu)') directly into the cart.", "7. ")
-    add_screenshot_box("AI Group Ordering Interface with Individual Assignments - group-order.html")
+
+    add_figure("18-group-order.png", "AI Group Ordering Agent Interface with Multi-Member Dietary Solver")
 
     add_h2("5.7 AI Ingredient Predictor & Recipe Explainer Modal")
     add_p(
@@ -384,7 +401,8 @@ def create_manual():
         "an AI modal detailing the complete culinary recipe, key spices, fresh ingredients, allergen warnings (nuts, dairy, gluten), "
         "flavor profiles, and estimated preparation time."
     )
-    add_screenshot_box("AI Ingredient Predictor Modal - menu-aktakeaway.html")
+    add_figure("10-ai-ingredients.png", "AI Ingredient Predictor & Allergen Explainer Modal")
+    add_figure("10b-item-added.png", "Real-Time Cart Staging Notification with Floating Cart Counter")
 
     add_h2("5.8 Floating Conversational AI Chatbot Widget (FeastBot)")
     add_p(
@@ -392,7 +410,7 @@ def create_manual():
         "linking to Track Order, Food Agent, Budget Optimizer, Food Profile, Visual Search, and Group Order. Users can type natural queries "
         "like 'I'm hungry, ₹250, spicy, no chicken' and receive rich interactive cards with direct '[+ Cart]' buttons inside the chat."
     )
-    add_screenshot_box("FeastBot Floating AI Chatbot Widget with Quick Actions")
+    add_figure("20-chatbot.png", "FeastBot Floating AI Chatbot Widget with Proactive Food Intelligence and Quick Buttons")
 
     add_h2("5.9 Multi-Restaurant Cart with 1km Radius Rule & 5:1 Tracking")
     add_p(
@@ -400,12 +418,16 @@ def create_manual():
         "a 1.0 km radius of each other (calculated via the Haversine formula). If a user attempts to add an item from a restaurant too far away, "
         "a clear warning toast prevents order conflict."
     )
+    add_figure("11-cart.png", "Shopping Cart Page with Inter-Restaurant Radius Verification and Order Summary")
+
     add_p(
         "Upon checkout, the user is redirected to tracking.html. FeastFleet employs an accelerated 5:1 real-time delivery simulator: "
         "a 25-minute delivery finishes in 5 real minutes. A randomized Kerala delivery partner (Arjun, Rahul, Aditya, Karthik, etc.) "
         "is allocated with live contact info, and status transitions through Order Placed → Confirmed → Preparing Food → Out for Delivery → Delivered."
     )
-    add_screenshot_box("Real-Time Order Tracking Page with 5:1 Speed Clock - tracking.html")
+    add_figure("12-tracking.png", "Real-Time Order Tracking Page with 5:1 Speed Clock and Assigned Delivery Partner")
+    add_figure("13-orders.png", "User Order History Screen - orders.html")
+    add_figure("19-contact.png", "Help, Contact & Support Screen - contact.html")
 
     # -------------------------------------------------------------
     # 7. NAVIGATION
@@ -508,7 +530,7 @@ def create_manual():
 
     # Save document
     doc.save("FEASTFLEET_USER_MANUAL.docx")
-    print("Successfully generated FEASTFLEET_USER_MANUAL.docx")
+    print("Successfully generated FEASTFLEET_USER_MANUAL.docx with all screenshots embedded!")
 
 if __name__ == "__main__":
     create_manual()
