@@ -372,6 +372,14 @@
               <span class="meta-pill">₹${s.item.price} food</span>
               <span class="meta-pill">₹${s.deliveryFee} delivery</span>
             </div>
+            <div style="margin-top: 14px; display: flex; gap: 8px; align-items: center;">
+              <button onclick="addAgentItemToCart('${s.item.name.replace(/'/g, "\\'")}', ${s.item.price}, '${s.restaurant.replace(/'/g, "\\'")}', '${(s.item.image || '').replace(/'/g, "\\'")}')" style="flex: 1; padding: 9px 14px; background: linear-gradient(135deg, #FF6B35, #FFB347); border: none; border-radius: 8px; color: #fff; font-weight: 700; font-size: 0.82rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 12px rgba(255,107,53,0.3);">
+                🛒 Add to Cart (₹${s.item.price})
+              </button>
+              <a href="cart.html" style="padding: 9px 14px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #f0f0f5; text-decoration: none; font-size: 0.82rem; font-weight: 600;">
+                View Cart →
+              </a>
+            </div>
           </div>`;
       });
 
@@ -421,6 +429,33 @@
         clearInterval(stepInterval);
         btn.disabled = false;
         panel.innerHTML = `<div class="empty-state"><i class="bi bi-wifi-off"></i><p>Cannot reach server. Start it with: <code>node server/server.js</code></p></div>`;
+      }
+    }
+
+    // ── ADD AGENT RECOMMENDED ITEM TO CART ──
+    function addAgentItemToCart(name, price, restaurant, image) {
+      if (typeof cart !== 'undefined') {
+        const item = {
+          id: 'agent-' + Math.random().toString(36).substr(2, 9),
+          name: name,
+          price: Number(price),
+          restaurant: restaurant,
+          image: image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop'
+        };
+        const added = cart.addItem(item);
+        if (added) {
+          // Visual feedback on the button
+          const btn = event?.currentTarget;
+          if (btn) {
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '✓ Added!';
+            btn.style.background = '#2DD4A8';
+            setTimeout(() => {
+              btn.innerHTML = originalHtml;
+              btn.style.background = 'linear-gradient(135deg, #FF6B35, #FFB347)';
+            }, 1200);
+          }
+        }
       }
     }
   </script>

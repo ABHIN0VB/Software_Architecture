@@ -1336,6 +1336,11 @@ async function placeOrder() {
   // Save order for tracking page immediately
   localStorage.setItem('feastfleet_last_order', JSON.stringify(orderSummary));
 
+  // Record into AI Food Memory immediately
+  if (typeof FoodMemory !== 'undefined') {
+    FoodMemory.recordOrder(orderSummary);
+  }
+
   // If user is logged in, also sync to database via API
   if (typeof API !== 'undefined' && API.isLoggedIn()) {
     try {

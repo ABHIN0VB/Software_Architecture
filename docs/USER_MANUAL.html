@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FeastFleet — User Manual</title>
+  <style>
+    @page { size: A4; margin: 18mm 16mm 20mm; }
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Calibri", "Segoe UI", Arial, sans-serif;
+      color: #1a1a1a;
+      line-height: 1.45;
+      font-size: 11.5pt;
+      margin: 0;
+    }
+    h1 { font-size: 20pt; color: #c2410c; margin: 0 0 10px; }
+    h2 { font-size: 15pt; color: #9a3412; border-bottom: 2px solid #fb923c; padding-bottom: 4px; margin: 22px 0 10px; page-break-after: avoid; }
+    h3 { font-size: 12.5pt; color: #7c2d12; margin: 16px 0 6px; page-break-after: avoid; }
+    p { margin: 0 0 8px; }
+    ul, ol { margin: 0 0 10px; padding-left: 22px; }
+    li { margin-bottom: 3px; }
+    table { width: 100%; border-collapse: collapse; margin: 8px 0 14px; font-size: 11pt; }
+    th, td { border: 1px solid #d6d3d1; padding: 7px 9px; text-align: left; vertical-align: top; }
+    th { background: #fff7ed; }
+    .cover {
+      page-break-after: always;
+      min-height: 240mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: center;
+      padding: 18mm 8mm;
+    }
+    .cover-badge {
+      display: inline-block;
+      background: #fff7ed;
+      color: #9a3412;
+      border: 1px solid #fdba74;
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: 10pt;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .cover h1 { font-size: 28pt; margin: 18px 0 6px; }
+    .subtitle { font-size: 14pt; color: #444; margin-bottom: 28px; }
+    .meta-box {
+      text-align: left;
+      max-width: 520px;
+      margin: 0 auto;
+      border: 1px solid #e7e5e4;
+      border-radius: 8px;
+      padding: 14px 18px;
+    }
+    .footer-note { font-size: 10pt; color: #57534e; }
+    .fig {
+      page-break-inside: avoid;
+      margin: 10px 0 16px;
+      text-align: center;
+      position: relative;
+    }
+    .fig img {
+      display: none;
+    }
+    .fig::before {
+      content: "INSERT SCREENSHOT HERE";
+      display: block;
+      width: 100%;
+      min-height: 82mm;
+      border: 2px dashed #fb923c;
+      border-radius: 8px;
+      background: #fff7ed;
+      color: #9a3412;
+      font-size: 12pt;
+      font-weight: 700;
+      letter-spacing: .08em;
+      line-height: 82mm;
+      text-transform: uppercase;
+    }
+    .caption { font-size: 10pt; color: #57534e; font-style: italic; margin-top: 4px; }
+    .toc a { color: #1a1a1a; text-decoration: none; }
+    .toc li { margin-bottom: 5px; }
+    .note {
+      background: #fff7ed;
+      border-left: 4px solid #fb923c;
+      padding: 8px 12px;
+      margin: 10px 0 14px;
+    }
+    .warn {
+      background: #fef2f2;
+      border-left: 4px solid #ef4444;
+      padding: 8px 12px;
+      margin: 10px 0 14px;
+    }
+    code, .path { font-family: Consolas, "Courier New", monospace; font-size: 10.5pt; background: #f5f5f4; padding: 1px 5px; border-radius: 3px; }
+    .keep { page-break-inside: avoid; }
+  </style>
+</head>
+<body>
+
+<section class="cover">
+  <div>
+    <div class="cover-badge">User Manual</div>
+    <h1>FeastFleet</h1>
+    <p class="subtitle">Intelligent Hyperlocal Food Delivery Platform<br>with AI Culinary Services</p>
+    <p><strong>Software Architecture &amp; Engineering</strong><br>Academic Year 2025–26</p>
+  </div>
+  <div class="meta-box">
+    <p><strong>Project name:</strong> FeastFleet</p>
+    <p><strong>Document type:</strong> End-user / demonstration user manual</p>
+    <p><strong>Version:</strong> 1.0 &nbsp;|&nbsp; <strong>Date:</strong> September 2026</p>
+    <p><strong>Repository:</strong> Software_Architecture (FeastFleet)</p>
+    <p style="margin-bottom:0;"><strong>Prepared for:</strong> Project review and laboratory submission</p>
+  </div>
+  <div>
+    <h3 style="border:none; color:#1a1a1a;">Team Members</h3>
+    <table>
+      <thead>
+        <tr><th>Name</th><th>Role</th><th>Roll Number</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Abhinav Babu</td><td>Developer</td><td>________________</td></tr>
+        <tr><td>________________</td><td>________________</td><td>________________</td></tr>
+        <tr><td>________________</td><td>________________</td><td>________________</td></tr>
+        <tr><td>________________</td><td>________________</td><td>________________</td></tr>
+      </tbody>
+    </table>
+    <p class="footer-note">Fill remaining names and roll numbers before final print submission if not already printed on this page.</p>
+  </div>
+</section>
+
+<h2>Table of Contents</h2>
+<ol class="toc">
+  <li>Introduction</li>
+  <li>System Requirements</li>
+  <li>Installation / Setup</li>
+  <li>User Login / Registration</li>
+  <li>System Features / Functionalities</li>
+  <li>Navigation</li>
+  <li>Input and Output</li>
+  <li>Error Handling / Messages</li>
+  <li>Logout / Exit</li>
+  <li>Troubleshooting / FAQ</li>
+  <li>Appendix — Screenshot Index</li>
+</ol>
+<div class="note">
+  <strong>Screenshot placeholders:</strong> The marked figure boxes are intentionally blank. Insert screenshots of the implemented system into these boxes before final submission.
+</div>
+
+<h2>1. Introduction</h2>
+<h3>1.1 Brief description of the software product</h3>
+<p><strong>FeastFleet</strong> is a full-stack web application for ordering food from nearby restaurants, with a focus on Kerala / hyperlocal delivery. Users can browse restaurants, view menus, add dishes to a cart, place orders, and follow a live delivery timeline. The product also includes AI-assisted tools: a personal food agent, budget optimizer, food memory profile, visual food search, group-order planner, ingredient/allergen predictions, and FeastBot (a floating chatbot).</p>
+<p>The frontend is a multi-page HTML/CSS/JavaScript interface. The backend is an Express.js REST API with JWT authentication and MongoDB (or an automatic in-memory MongoDB fallback for demos).</p>
+
+<h3>1.2 Purpose of the system</h3>
+<p>The system is designed to:</p>
+<ul>
+  <li>Let customers discover restaurants and dishes and complete an order in a few steps.</li>
+  <li>Show proximity (distance and estimated time) based on a set delivery location.</li>
+  <li>Keep cart items consistent by limiting multi-restaurant carts to a 1 km radius.</li>
+  <li>Help users choose food using budget, diet, group, and allergen constraints.</li>
+  <li>Provide order history and live tracking after checkout.</li>
+</ul>
+
+<h3>1.3 Intended users</h3>
+<table>
+  <thead><tr><th>User type</th><th>How they use FeastFleet</th></tr></thead>
+  <tbody>
+    <tr><td>Customers / end users</td><td>Register or sign in, search restaurants, order food, track delivery, contact support.</td></tr>
+    <tr><td>Demo / evaluators</td><td>Use 1-click demo login, walk through AI tools, and inspect the running API.</td></tr>
+    <tr><td>Developers / testers</td><td>Install Node.js, start the server, and exercise frontend + REST endpoints.</td></tr>
+  </tbody>
+</table>
+
+<h2>2. System Requirements</h2>
+<h3>2.1 Hardware requirements</h3>
+<table>
+  <thead><tr><th>Item</th><th>Minimum</th><th>Recommended</th></tr></thead>
+  <tbody>
+    <tr><td>Processor</td><td>Dual-core CPU</td><td>Quad-core or better</td></tr>
+    <tr><td>RAM</td><td>4 GB</td><td>8 GB or more</td></tr>
+    <tr><td>Disk space</td><td>~300 MB for project + Node modules</td><td>1 GB free</td></tr>
+    <tr><td>Display</td><td>1366 × 768</td><td>1920 × 1080 (desktop)</td></tr>
+    <tr><td>Network</td><td>Localhost is enough for demo</td><td>Internet for CDN (Bootstrap, icons, some images)</td></tr>
+  </tbody>
+</table>
+
+<h3>2.2 Software requirements</h3>
+<ul>
+  <li><strong>Node.js</strong> 18 or later (includes npm)</li>
+  <li><strong>Optional:</strong> MongoDB Community Server. If MongoDB is not installed, the server starts <code>mongodb-memory-server</code> automatically.</li>
+  <li>Git (optional, for cloning the repository)</li>
+</ul>
+
+<h3>2.3 Browser / platform requirements</h3>
+<ul>
+  <li><strong>Supported browsers:</strong> Google Chrome, Microsoft Edge, Firefox, or Safari (latest two versions).</li>
+  <li><strong>OS:</strong> Windows 10/11, macOS, or Linux.</li>
+  <li>JavaScript must be enabled. A modern browser is required for geolocation UI, localStorage, and fetch APIs.</li>
+  <li><strong>Default URL:</strong> <code>http://localhost:5000</code> (port 5000 unless <code>PORT</code> is set in the environment).</li>
+</ul>
+
+<h2>3. Installation / Setup</h2>
+<p>These steps start FeastFleet on the local machine for demonstration or academic evaluation.</p>
+<ol>
+  <li>Install Node.js from <code>https://nodejs.org</code> and confirm in a terminal: <code>node -v</code> and <code>npm -v</code>.</li>
+  <li>Open the project folder (example): <code>feastfleet</code>.</li>
+  <li>Install dependencies: <code>npm install</code>.</li>
+  <li>Start the application: <code>npm start</code>.</li>
+  <li>Wait until the console prints that the FeastFleet server is running on port 5000.</li>
+  <li>Open a browser and go to <code>http://localhost:5000</code> (or <code>http://localhost:5000/index.html</code>).</li>
+</ol>
+<div class="note">
+  <strong>Optional seed:</strong> <code>npm run seed</code> loads restaurant/menu data into MongoDB. The in-memory database used for demos is seeded as part of a normal start when configured that way; if the catalog looks empty, run seed and restart.
+</div>
+<p><strong>Access without a full install:</strong> HTML files can be opened directly, but login, AI APIs, and order sync need the Express server. Always use <code>npm start</code> for a complete demo.</p>
+<p>On first load you should see the brand splash screen, then the home storefront.</p>
+<div class="fig">
+  <img src="screenshots/01-splash.png" alt="FeastFleet splash screen">
+  <div class="caption">Figure 1. Splash screen shown for about 2.5 seconds at launch.</div>
+</div>
+<div class="fig">
+  <img src="screenshots/02-home.png" alt="Home page">
+  <div class="caption">Figure 2. Home page after the splash animation.</div>
+</div>
+
+<h2>4. User Login / Registration</h2>
+<p>Open <strong>Sign In</strong> from the top-right of the navbar, or go to <code>login.html</code>.</p>
+
+<h3>4.1 Sign in (existing account)</h3>
+<ol>
+  <li>Keep the <strong>Sign In</strong> tab active.</li>
+  <li>Enter email, username, or mobile in <strong>Email / Username / Mobile</strong>.</li>
+  <li>Enter the password (minimum 6 characters on the server).</li>
+  <li>Click <strong>Sign In</strong>.</li>
+  <li>On success you see a welcome message and are redirected to Home. The navbar shows your initials instead of Sign In.</li>
+</ol>
+<div class="fig">
+  <img src="screenshots/03-login.png" alt="Login screen">
+  <div class="caption">Figure 3. Sign In form.</div>
+</div>
+<p><strong>Demo login (recommended for review):</strong> click <strong>1-Click Demo Login (Abhinav)</strong>. Demo account:</p>
+<ul>
+  <li>Name: Abhinav Babu</li>
+  <li>Email: <code>abhinav@feastfleet.com</code></li>
+  <li>Password: <code>password123</code></li>
+</ul>
+<div class="fig">
+  <img src="screenshots/06-home-logged-in.png" alt="Home after login">
+  <div class="caption">Figure 4. Home page after a successful sign-in (profile avatar on the right).</div>
+</div>
+
+<h3>4.2 Registration (new account)</h3>
+<ol>
+  <li>Click the <strong>Sign Up</strong> tab.</li>
+  <li>Enter <strong>Full Name</strong>, <strong>Mobile Number</strong> (+91), <strong>Email Address</strong>, and <strong>Password</strong>.</li>
+  <li>Click <strong>Create Account</strong> / <strong>Send OTP &amp; Create Account</strong>.</li>
+  <li>Enter any 4-digit OTP (demo mode). The account is created and you are signed in.</li>
+</ol>
+<div class="fig">
+  <img src="screenshots/04-register.png" alt="Registration screen">
+  <div class="caption">Figure 5. Sign Up form.</div>
+</div>
+<div class="note">If the API is unreachable, the page still signs you in locally so the rest of the demo can continue.</div>
+
+<h2>5. System Features / Functionalities</h2>
+
+<h3>5.1 Set delivery location</h3>
+<ol>
+  <li>On Home, use the address field or click <strong>Detect My Location</strong> / location control.</li>
+  <li>For this build, detection sets <strong>Valavoor, Kottayam</strong>.</li>
+  <li>Restaurant cards then show distance (km) and estimated time.</li>
+</ol>
+<p><strong>Expected result:</strong> location label updates; nearby restaurants (for example AK Take Away, Pala) appear closer than Kochi outlets.</p>
+
+<h3>5.2 Browse restaurants</h3>
+<ol>
+  <li>Click <strong>Restaurants</strong> in the navbar, or <strong>Let’s Go</strong> from the home search.</li>
+  <li>Use cuisine chips (All, Burgers, Asian, Indian / Kerala, Desserts, and similar) to filter.</li>
+  <li>Click a restaurant card to open its menu. AK Take Away, Pala opens a dedicated menu page.</li>
+</ol>
+<div class="fig">
+  <img src="screenshots/08-restaurants.png" alt="Restaurants catalog">
+  <div class="caption">Figure 6. Restaurant catalog.</div>
+</div>
+
+<h3>5.3 View menu and add items</h3>
+<ol>
+  <li>Open a restaurant (example: AK Take Away, Pala).</li>
+  <li>Filter by category chips (Al Faham, Kerala Non-Veg, Vegetarian, Rice &amp; Biryani, and so on).</li>
+  <li>Click the orange <strong>+</strong> button on a dish to add it to the cart.</li>
+  <li>The cart badge in the navbar increases.</li>
+</ol>
+<div class="fig">
+  <img src="screenshots/09-menu-ak.png" alt="Restaurant menu">
+  <div class="caption">Figure 7. Menu with prices, AI Ingredients, and add-to-cart controls.</div>
+</div>
+
+<h3>5.4 AI ingredient and allergen prediction</h3>
+<ol>
+  <li>On a dish card, click <strong>AI Ingredients</strong>.</li>
+  <li>Read predicted ingredients, dietary notes, flavor notes, match %, and allergen warnings.</li>
+  <li>Optionally click <strong>Ask AI Chatbot</strong>, or <strong>Done</strong> to close.</li>
+</ol>
+<div class="fig">
+  <img src="screenshots/10-ai-ingredients.png" alt="AI ingredient modal">
+  <div class="caption">Figure 8. AI Food Ingredient Predictor for Al Faham Chicken.</div>
+</div>
+
+<h3>5.5 Cart and checkout</h3>
+<ol>
+  <li>Open <strong>Cart</strong> from the navbar.</li>
+  <li>Change quantity with − / +, or delete an item.</li>
+  <li>Optional: enter a promo code and click <strong>Apply</strong>.</li>
+  <li>Review subtotal, delivery fee (typically ₹49 in the cart summary), and total.</li>
+  <li>Click <strong>Place Order</strong>.</li>
+</ol>
+<p><strong>Expected result:</strong> cart clears, you are taken to live tracking, and the last order is stored for this browser session.</p>
+<div class="note">Items from a second restaurant are allowed only if that restaurant is within <strong>1 km</strong> of restaurants already in the cart. Otherwise a warning toast is shown and the item is not added.</div>
+<div class="fig">
+  <img src="screenshots/11-cart.png" alt="Cart page">
+  <div class="caption">Figure 9. Cart with order summary and Place Order.</div>
+</div>
+
+<h3>5.6 Live order tracking</h3>
+<ol>
+  <li>After placing an order, the tracking page opens automatically, or choose <strong>Track Live Order</strong> from the profile menu.</li>
+  <li>Watch stages: Confirmed → Preparing → On The Way → Delivered.</li>
+  <li>The countdown and rider card update in real time. Leaving and returning does not reset the timer to the full duration.</li>
+</ol>
+<div class="fig">
+  <img src="screenshots/12-tracking.png" alt="Order tracking">
+  <div class="caption">Figure 10. Live tracking timeline and rider allocation.</div>
+</div>
+
+<h3>5.7 Order history</h3>
+<ol>
+  <li>Open the profile avatar → <strong>Order History</strong> (<code>orders.html</code>).</li>
+  <li>Logged-in users see orders associated with their account when the API is available.</li>
+</ol>
+<div class="fig">
+  <img src="screenshots/13-orders.png" alt="Orders page">
+  <div class="caption">Figure 11. Order history.</div>
+</div>
+
+<h3>5.8 Personal Food Agent</h3>
+<ol>
+  <li>From Home, open <strong>Personal Food Agent</strong> (or navbar Food Agent).</li>
+  <li>Set budget, mood tags (spicy, grilled, etc.), diet, exclusions, and cuisine.</li>
+  <li>Run the agent to get a constrained meal suggestion that can be added to the cart.</li>
+</ol>
+<div class="fig">
+  <img src="screenshots/14-ai-agent.png" alt="Food agent">
+  <div class="caption">Figure 12. Personal Food Agent constraints panel.</div>
+</div>
+
+<h3>5.9 Budget optimizer</h3>
+<ol>
+  <li>Open <strong>Budget Optimizer</strong> from Home.</li>
+  <li>Enter group size, total budget, and meal preferences.</li>
+  <li>Run optimize to get a combination of dishes that fits price and delivery constraints.</li>
+</ol>
+<div class="fig">
+  <img src="screenshots/15-budget-optimizer.png" alt="Budget optimizer">
+  <div class="caption">Figure 13. Budget Optimizer.</div>
+</div>
+
+<h3>5.10 Food memory profile</h3>
+<ol>
+  <li>Open <strong>Food Memory Profile</strong>.</li>
+  <li>Review patterns built from previous orders in this browser (weekday habits, price band, repetition).</li>
+  <li>Use suggested variations when the profile recommends a change of dish.</li>
+</ol>
+<div class="fig">
+  <img src="screenshots/16-food-profile.png" alt="Food profile">
+  <div class="caption">Figure 14. Food Memory Profile.</div>
+</div>
+
+<h3>5.11 Visual food search</h3>
+<ol>
+  <li>Open <strong>See Food → Find Food</strong>.</li>
+  <li>Upload a food photo or pick a visual category.</li>
+  <li>The system matches nearby menu items and lists the closest dishes to order.</li>
+</ol>
+<div class="fig">
+  <img src="screenshots/17-visual-search.png" alt="Visual search">
+  <div class="caption">Figure 15. Visual food search.</div>
+</div>
+
+<h3>5.12 AI group order</h3>
+<ol>
+  <li>Open <strong>AI Group Order Agent</strong>.</li>
+  <li>Set total group budget and maximum delivery time.</li>
+  <li>For each person, enter name, food preference, diet, per-person budget, and optional exclusions.</li>
+  <li>Add or remove members, then run the agent.</li>
+  <li><strong>Output:</strong> one recommended restaurant, a dish per person, and a per-person split. You can send the plan to the cart.</li>
+</ol>
+<div class="fig">
+  <img src="screenshots/18-group-order.png" alt="Group order">
+  <div class="caption">Figure 16. Group Order Agent with sample members.</div>
+</div>
+
+<h3>5.13 FeastBot chatbot</h3>
+<ol>
+  <li>If the panel is minimized, click the circular FeastBot button (bottom-right).</li>
+  <li>Use quick replies (Track Order, Food Agent, Budget Optimizer, etc.) or type a question.</li>
+  <li>Minimize with the header control when you need the full page.</li>
+</ol>
+<div class="fig">
+  <img src="screenshots/20-chatbot.png" alt="FeastBot">
+  <div class="caption">Figure 17. FeastBot assistant on the home page.</div>
+</div>
+
+<h3>5.14 Contact and support</h3>
+<ol>
+  <li>Open <strong>Contact</strong>.</li>
+  <li>Fill name, email, subject, and message, then <strong>Send Message</strong>.</li>
+  <li>Use listed email <code>support@feastfleet.com</code>, phone <code>+91 484 123 4567</code>, or the FAQ accordion on the same page.</li>
+</ol>
+<div class="fig">
+  <img src="screenshots/19-contact.png" alt="Contact page">
+  <div class="caption">Figure 18. Contact form and support details.</div>
+</div>
+
+<h2>6. Navigation</h2>
+<p>Primary movement is through the top navbar. On narrow screens, open the hamburger menu to reach the same links.</p>
+<table>
+  <thead><tr><th>Control</th><th>Goes to</th></tr></thead>
+  <tbody>
+    <tr><td>Logo / Home</td><td>Storefront (<code>index.html</code>)</td></tr>
+    <tr><td>Restaurants</td><td>Restaurant catalog</td></tr>
+    <tr><td>Food Agent</td><td>Personal Food Agent (when shown)</td></tr>
+    <tr><td>Cart (with badge)</td><td>Cart and checkout</td></tr>
+    <tr><td>Contact</td><td>Support form and FAQ</td></tr>
+    <tr><td>Sign In</td><td>Login / registration</td></tr>
+    <tr><td>Profile avatar (after login)</td><td>Order History, Track Live Order, My Cart, Support, Log Out</td></tr>
+    <tr><td>Home AI cards</td><td>Agent, Budget, Food Profile, Visual Search, Group Order</td></tr>
+    <tr><td>Restaurant card</td><td>That restaurant’s menu</td></tr>
+    <tr><td>Place Order</td><td>Tracking page</td></tr>
+    <tr><td>FeastBot quick replies</td><td>Matching tool or tracking conversation</td></tr>
+  </tbody>
+</table>
+<div class="fig">
+  <img src="screenshots/07-profile-menu.png" alt="Profile dropdown">
+  <div class="caption">Figure 19. Profile menu used to jump between orders, tracking, cart, support, and logout.</div>
+</div>
+
+<h2>7. Input and Output</h2>
+<table>
+  <thead><tr><th>Screen</th><th>Important inputs</th><th>Expected output</th></tr></thead>
+  <tbody>
+    <tr><td>Login</td><td>Identity + password</td><td>Session, avatar, redirect to Home</td></tr>
+    <tr><td>Sign Up</td><td>Name, phone, email, password, 4-digit OTP</td><td>New account and signed-in session</td></tr>
+    <tr><td>Home location</td><td>Address or Detect Location</td><td>Location label; distance badges on restaurants</td></tr>
+    <tr><td>Menu</td><td>Category filter; + to add; AI Ingredients</td><td>Cart badge; ingredient modal</td></tr>
+    <tr><td>Cart</td><td>Qty, delete, promo, Place Order</td><td>Updated totals; tracking page</td></tr>
+    <tr><td>Tracking</td><td>(none after order)</td><td>Status steps, ETA, rider card</td></tr>
+    <tr><td>Food Agent</td><td>Budget, mood, diet, exclusions</td><td>Recommended dishes within constraints</td></tr>
+    <tr><td>Budget Optimizer</td><td>People count, budget, cuisine</td><td>Priced combo within budget</td></tr>
+    <tr><td>Group Order</td><td>Members, diets, budgets, max delivery time</td><td>One restaurant, assigned dishes, split</td></tr>
+    <tr><td>Visual Search</td><td>Photo or category</td><td>Matching menu items</td></tr>
+    <tr><td>Contact</td><td>Name, email, subject, message</td><td>Success toast that the message was sent</td></tr>
+  </tbody>
+</table>
+
+<h2>8. Error Handling / Messages</h2>
+<table>
+  <thead><tr><th>Message / situation</th><th>Cause</th><th>What the user should do</th></tr></thead>
+  <tbody>
+    <tr><td>“Please fill in all required fields”</td><td>Empty identity or password</td><td>Complete the form and submit again.</td></tr>
+    <tr><td>“Please enter your full name / username”</td><td>Sign up without a name</td><td>Enter full name.</td></tr>
+    <tr><td>“Invalid credentials”</td><td>Wrong email/mobile or password</td><td>Recheck details or use demo login.</td></tr>
+    <tr><td>“User already exists”</td><td>Email already registered</td><td>Sign In instead of Sign Up.</td></tr>
+    <tr><td>Password too short (server)</td><td>Password under 6 characters</td><td>Choose a longer password.</td></tr>
+    <tr><td>Toast: restaurant is X km from another, must be within 1 km</td><td>Multi-restaurant cart rule</td><td>Finish the first restaurant’s order, or pick a closer second restaurant.</td></tr>
+    <tr><td>Empty cart: “Your cart is empty”</td><td>No items added</td><td>Browse restaurants and add dishes.</td></tr>
+    <tr><td>Place Order does nothing</td><td>Cart still empty</td><td>Add at least one item.</td></tr>
+    <tr><td>Group order alert: add at least one member</td><td>No member cards</td><td>Add a member and run again.</td></tr>
+    <tr><td>API / network failure</td><td>Server not running</td><td>Start <code>npm start</code>. Auth may still work in local demo mode.</td></tr>
+    <tr><td>401 session cleared</td><td>Expired or invalid token</td><td>Sign in again.</td></tr>
+  </tbody>
+</table>
+<div class="fig">
+  <img src="screenshots/05-login-error.png" alt="Invalid credentials">
+  <div class="caption">Figure 20. Invalid credentials shown after a failed sign-in.</div>
+</div>
+
+<h2>9. Logout / Exit</h2>
+<ol>
+  <li>Click the circular <strong>profile avatar</strong> (initials) at the top right.</li>
+  <li>Click <strong>Log Out</strong> (red item at the bottom of the menu).</li>
+  <li>The token and stored user are removed. The navbar returns to <strong>Sign In</strong> and you are sent to Home.</li>
+</ol>
+<p>To leave the application entirely, close the browser tab. Stopping the backend: in the terminal where the server is running, press <strong>Ctrl+C</strong>.</p>
+<div class="warn">Logging out does not always wipe the cart in localStorage. If you share a computer, also clear the cart or use a private window.</div>
+
+<h2>10. Troubleshooting / FAQ</h2>
+<table>
+  <thead><tr><th>Problem</th><th>Solution</th></tr></thead>
+  <tbody>
+    <tr><td>Page will not load / connection refused</td><td>Confirm <code>npm start</code> is running and visit <code>http://localhost:5000</code>, not a random Live Server port, if the API must work.</td></tr>
+    <tr><td>Port 5000 already in use</td><td>Stop the other process or set environment variable <code>PORT</code> to another value and use that URL.</td></tr>
+    <tr><td>MongoDB not installed</td><td>No action required for a typical demo; in-memory MongoDB starts automatically.</td></tr>
+    <tr><td>Images or Bootstrap look broken</td><td>Connect to the internet so CDNs can load, or refresh after the network is up.</td></tr>
+    <tr><td>Location never changes from Valavoor</td><td>This demonstration build is configured to Valavoor, Kottayam for a consistent review.</td></tr>
+    <tr><td>Cannot add a second restaurant</td><td>Respect the 1 km cart radius, or place the first order first.</td></tr>
+    <tr><td>Tracking timer looks “stuck” after refresh</td><td>It continues from elapsed time; it does not restart at 5 minutes.</td></tr>
+    <tr><td>Chatbot covers the page</td><td>Click the minimize (▾) control on the FeastBot header.</td></tr>
+    <tr><td>How do I track an order?</td><td>Place an order, or open profile → Track Live Order, or ask FeastBot “Track my order”.</td></tr>
+    <tr><td>What payment methods?</td><td>Described on Contact FAQ as cash, cards, and Apple Pay (demonstration copy).</td></tr>
+  </tbody>
+</table>
+
+<h2>11. Appendix — Screenshot Index</h2>
+<p>Use the following screenshot list when filling the placeholders. Capture each view from the implemented system at <code>http://localhost:5000</code> and keep the final images in <code>docs/screenshots/</code>.</p>
+<ol>
+  <li>01-splash.png — Launch splash</li>
+  <li>02-home.png — Home</li>
+  <li>03-login.png — Sign In</li>
+  <li>04-register.png — Sign Up</li>
+  <li>05-login-error.png — Invalid credentials</li>
+  <li>06-home-logged-in.png — Authenticated home</li>
+  <li>07-profile-menu.png — Profile / logout menu</li>
+  <li>08-restaurants.png — Restaurant list</li>
+  <li>09-menu-ak.png — AK Take Away menu</li>
+  <li>10-ai-ingredients.png — Ingredient predictor</li>
+  <li>11-cart.png — Cart</li>
+  <li>12-tracking.png — Live tracking</li>
+  <li>13-orders.png — Order history</li>
+  <li>14-ai-agent.png — Food Agent</li>
+  <li>15-budget-optimizer.png — Budget Optimizer</li>
+  <li>16-food-profile.png — Food Memory</li>
+  <li>17-visual-search.png — Visual search</li>
+  <li>18-group-order.png — Group Order Agent</li>
+  <li>19-contact.png — Contact</li>
+  <li>20-chatbot.png — FeastBot</li>
+</ol>
+<p class="footer-note">End of user manual. Insert the actual screenshots into the marked placeholders before final submission, then submit this PDF with the screenshot folder and updated source code as required by the course.</p>
+</body>
+</html>

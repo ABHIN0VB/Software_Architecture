@@ -348,6 +348,7 @@
         }
 
         const d = res.data;
+        lastGroupOptions = d.topOptions;
         resultsHeader.textContent = `✅ ${d.summary}`;
         resultsContainer.innerHTML = '';
 
@@ -382,6 +383,15 @@
               <div class="cost-total">Total: ₹${opt.grandTotal} ${opt.fitsInBudget ? '✅' : '⚠️'}</div>
               <div class="cost-per-person">₹${opt.perPersonSplit}/person</div>
             </div>
+
+            <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; gap: 10px; align-items: center;">
+              <button onclick="addGroupOrderToCart(${i}, event)" style="flex: 1; padding: 11px 18px; background: linear-gradient(135deg, #38bdf8, #0284c7); border: none; border-radius: 10px; color: #fff; font-weight: 700; font-size: 0.88rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 14px rgba(56,189,248,0.25);">
+                🛒 Add All ${opt.assignments.length} Dishes to Cart (₹${opt.grandTotal})
+              </button>
+              <a href="cart.html" style="padding: 11px 18px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; color: #f0f0f5; text-decoration: none; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center;">
+                Checkout →
+              </a>
+            </div>
           `;
 
           resultsContainer.appendChild(card);
@@ -397,6 +407,36 @@
         resultsSection.style.display = 'block';
       }
     });
+
+    let lastGroupOptions = [];
+
+    // ── ADD GROUP ORDER TO CART ──
+    function addGroupOrderToCart(index, ev) {
+      if (!lastGroupOptions || !lastGroupOptions[index]) return;
+      const opt = lastGroupOptions[index];
+      if (typeof cart !== 'undefined') {
+        opt.assignments.forEach(a => {
+          cart.addItem({
+            id: 'grp-' + Math.random().toString(36).substr(2, 9),
+            name: `${a.dish} (${a.member})`,
+            price: Number(a.price),
+            restaurant: opt.restaurant,
+            image: a.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop'
+          });
+        });
+
+        const btn = ev?.currentTarget;
+        if (btn) {
+          const orig = btn.innerHTML;
+          btn.innerHTML = `✓ All ${opt.assignments.length} Dishes Added to Cart!`;
+          btn.style.background = '#2DD4A8';
+          setTimeout(() => {
+            btn.innerHTML = orig;
+            btn.style.background = 'linear-gradient(135deg, #38bdf8, #0284c7)';
+          }, 1600);
+        }
+      }
+    }
 
     // ── INIT: Add 3 sample members ──
     addMember({ name: 'Rahul', preference: 'biryani', isVeg: false, budget: 200 });

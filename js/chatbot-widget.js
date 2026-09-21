@@ -344,6 +344,16 @@ document.addEventListener('DOMContentLoaded', () => {
     return msgDiv;
   }
 
+  // ── PROACTIVE AI FOOD MEMORY NUDGE ──
+  setTimeout(() => {
+    if (typeof FoodMemory !== 'undefined') {
+      const proactive = FoodMemory.getProactiveSuggestion();
+      if (proactive) {
+        addMessage(proactive, 'bot');
+      }
+    }
+  }, 1200);
+
   // ── SEND MESSAGE ──
   async function sendMessage(text) {
     if (!text || !text.trim()) return;
@@ -377,12 +387,19 @@ document.addEventListener('DOMContentLoaded', () => {
               d.suggestions.forEach((s, i) => {
                 const badge = s.fitsInBudget ? '✅ Fits budget' : '⚠️ Slightly over';
                 html += `<div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:10px;margin-bottom:8px;border-left:3px solid ${i===0?'#FF6B35':'#2DD4A8'};">
-                  <div style="font-weight:700;font-size:0.88rem;">${i===0?'⭐ ':''}${s.item.name}</div>
-                  <div style="color:rgba(255,255,255,0.5);font-size:0.75rem;">@ ${s.restaurant} · ⭐${s.restaurantRating} · ${s.deliveryTime}</div>
+                  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;">
+                    <div>
+                      <div style="font-weight:700;font-size:0.88rem;">${i===0?'⭐ ':''}${s.item.name}</div>
+                      <div style="color:rgba(255,255,255,0.5);font-size:0.75rem;">@ ${s.restaurant} · ⭐${s.restaurantRating} · ${s.deliveryTime}</div>
+                    </div>
+                    <button onclick="if(typeof cart!=='undefined'){cart.addItem({id:'chat-'+Math.random().toString(36).substr(2,8),name:'${s.item.name.replace(/'/g, "\\'")}',price:${s.item.price},restaurant:'${s.restaurant.replace(/'/g, "\\'")}'});this.textContent='✓ Added';this.style.background='#2DD4A8';}" style="background:#FF6B35;color:#fff;border:none;border-radius:6px;padding:4px 8px;font-size:0.75rem;font-weight:700;cursor:pointer;flex-shrink:0;">
+                      + Cart
+                    </button>
+                  </div>
                   <div style="margin-top:4px;font-size:0.82rem;">₹${s.item.price} + ₹${s.deliveryFee} delivery = <strong>₹${s.totalWithDelivery}</strong> · ${badge}</div>
                 </div>`;
               });
-              html += `<div style="font-size:0.75rem;color:rgba(255,255,255,0.35);margin-top:4px;">Tap any item in the menu to add to cart →</div>`;
+              html += `<div style="font-size:0.75rem;color:rgba(255,255,255,0.35);margin-top:4px;"><a href="cart.html" style="color:#FFB347;text-decoration:none;">View Cart & Checkout →</a></div>`;
               addMessageHTML(html, 'bot');
             } else {
               addMessage('No perfect matches found. Try adjusting your budget or removing exclusions.', 'bot');
@@ -470,11 +487,19 @@ document.addEventListener('DOMContentLoaded', () => {
               let html = `<div style="font-size:0.82rem;color:#FFB347;font-weight:700;margin-bottom:8px;">📷 Visual Search — "${d.detectedDish}"</div>`;
               d.matches.forEach((m, i) => {
                 html += `<div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:10px;margin-bottom:8px;border-left:3px solid ${i===0?'#FF6B35':'rgba(255,255,255,0.15)'};">
-                  <div style="font-weight:700;">${i===0?'🎯 Closest Match: ':'#'+(i+1)+' '}${m.item.name}</div>
-                  <div style="color:rgba(255,255,255,0.5);font-size:0.75rem;">@ ${m.restaurant} · ⭐${m.restaurantRating} · ${m.deliveryTime}</div>
-                  <div style="margin-top:3px;font-size:0.82rem;font-weight:700;">₹${m.item.price}</div>
+                  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;">
+                    <div>
+                      <div style="font-weight:700;">${i===0?'🎯 Closest Match: ':'#'+(i+1)+' '}${m.item.name}</div>
+                      <div style="color:rgba(255,255,255,0.5);font-size:0.75rem;">@ ${m.restaurant} · ⭐${m.restaurantRating} · ${m.deliveryTime}</div>
+                      <div style="margin-top:3px;font-size:0.82rem;font-weight:700;">₹${m.item.price}</div>
+                    </div>
+                    <button onclick="if(typeof cart!=='undefined'){cart.addItem({id:'chat-'+Math.random().toString(36).substr(2,8),name:'${m.item.name.replace(/'/g, "\\'")}',price:${m.item.price},restaurant:'${m.restaurant.replace(/'/g, "\\'")}'});this.textContent='✓ Added';this.style.background='#2DD4A8';}" style="background:#FF6B35;color:#fff;border:none;border-radius:6px;padding:4px 8px;font-size:0.75rem;font-weight:700;cursor:pointer;flex-shrink:0;">
+                      + Cart
+                    </button>
+                  </div>
                 </div>`;
               });
+              html += `<div style="font-size:0.75rem;color:rgba(255,255,255,0.35);margin-top:4px;"><a href="cart.html" style="color:#FFB347;text-decoration:none;">View Cart & Checkout →</a></div>`;
               addMessageHTML(html, 'bot');
             } else {
               addMessage('No matching dishes found. Try describing the dish differently — e.g. "spicy grilled chicken" or "creamy pasta".', 'bot');

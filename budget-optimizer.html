@@ -270,6 +270,8 @@
         }
 
         const d = res.data;
+        lastOptimizedOptions = d.topOptions;
+        lastOptimizedPeople = people;
         let html = `<div style="font-size:0.72rem;font-weight:700;color:rgba(255,255,255,0.3);letter-spacing:0.06em;margin-bottom:4px;">
           OPTIMIZED FOR ${people} PEOPLE — BUDGET ₹${budget}
         </div>`;
@@ -311,6 +313,14 @@
                 <div style="font-size:0.78rem;color:rgba(255,255,255,0.35);">Per person: <strong style="color:#2DD4A8;">₹${opt.perPerson}</strong></div>
                 ${opt.savings > 0 ? `<div style="font-size:0.78rem;color:#2DD4A8;">You save ₹${opt.savings} from your budget!</div>` : ''}
               </div>
+              <div style="padding: 14px 20px 18px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; gap: 10px; align-items: center;">
+                <button onclick="addComboToCart(${i}, event)" style="flex: 1; padding: 10px 16px; background: linear-gradient(135deg, #2DD4A8, #00bfa5); border: none; border-radius: 10px; color: #fff; font-weight: 700; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 14px rgba(45,212,168,0.25);">
+                  🛒 Add Entire Combo for ${people} People
+                </button>
+                <a href="cart.html" style="padding: 10px 16px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; color: #f0f0f5; text-decoration: none; font-size: 0.82rem; font-weight: 600; display: flex; align-items: center;">
+                  Go to Cart →
+                </a>
+              </div>
             </div>`;
         });
 
@@ -323,6 +333,39 @@
             <i class="bi bi-wifi-off"></i>
             <p>Server unreachable. Please start the server.</p>
           </div>`;
+      }
+    }
+
+    // ── ADD COMBO TO CART ──
+    function addComboToCart(index, ev) {
+      if (!lastOptimizedOptions || !lastOptimizedOptions[index]) return;
+      const opt = lastOptimizedOptions[index];
+      const count = lastOptimizedPeople || 1;
+
+      if (typeof cart !== 'undefined') {
+        Object.entries(opt.combo).forEach(([type, item]) => {
+          for (let c = 0; c < count; c++) {
+            cart.addItem({
+              id: (item._id || item.id || 'combo-' + Math.random().toString(36).substr(2, 9)),
+              name: item.name,
+              price: item.price,
+              restaurant: opt.restaurant,
+              image: item.image || ''
+            });
+          }
+        });
+
+        // Button feedback
+        const btn = ev?.currentTarget;
+        if (btn) {
+          const orig = btn.innerHTML;
+          btn.innerHTML = `✓ Added for ${count} people!`;
+          btn.style.background = '#FF6B35';
+          setTimeout(() => {
+            btn.innerHTML = orig;
+            btn.style.background = 'linear-gradient(135deg, #2DD4A8, #00bfa5)';
+          }, 1500);
+        }
       }
     }
   </script>
