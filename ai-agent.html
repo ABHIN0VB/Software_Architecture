@@ -301,8 +301,8 @@
 
       let q = `I have ₹${budget} budget.`;
       if (moods.length) q += ` I want something ${moods.join(', ')}.`;
-      if (dietary === 'veg') q += ' I am vegetarian.';
-      if (dietary === 'nonveg') q += ' I want non-vegetarian food.';
+      if (dietary === 'veg') q += ' I am vegetarian only, no non-veg items.';
+      if (dietary === 'nonveg') q += ' I want non-veg food with meat.';
       if (protein) q += ' I prefer high protein food.';
       if (exclusions.length) q += ` No ${exclusions.join(', ')}.`;
       if (cuisine) q += ` I prefer ${cuisine} cuisine.`;
@@ -416,7 +416,7 @@
       }, 400);
 
       try {
-        const res = await API.foodAgent(query.query);
+        const res = await API.foodAgent(query.query, query.dietary);
         clearInterval(stepInterval);
         btn.disabled = false;
 

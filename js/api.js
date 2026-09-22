@@ -109,8 +109,10 @@ class API {
   static async predictIngredients(name, description, cuisine) {
     return this.post('/ai/predict-ingredients', { name, description, cuisine });
   }
-  static async foodAgent(message) {
-    return this.post('/ai/food-agent', { message });
+  static async foodAgent(message, dietary) {
+    const payload = { message };
+    if (dietary && dietary !== 'any') payload.dietary = dietary;
+    return this.post('/ai/food-agent', payload);
   }
   static async budgetOptimize(budget, people, cuisine, mealStructure) {
     return this.post('/ai/budget-optimize', { budget, people, cuisine, mealStructure });

@@ -34,9 +34,9 @@ function parseIntent(message) {
   });
 
   // Dietary preference
-  if (msg.includes('vegetarian') || msg.includes('veg only') || msg.includes('no meat') || msg.includes('plant based')) {
+  if (msg.includes('vegetarian') || msg.includes('veg only') || msg.includes('no meat') || msg.includes('plant based') || msg.includes('no non-veg')) {
     intent.isVeg = true;
-  } else if (msg.includes('non-veg') || msg.includes('non veg') || msg.includes('meat')) {
+  } else if (msg.includes('non-veg') || msg.includes('nonveg') || msg.includes('non veg') || msg.includes('non-vegetarian') || msg.includes('meat') || msg.includes('with meat')) {
     intent.isVeg = false;
   }
 
@@ -112,9 +112,14 @@ function scoreItem(item, intent) {
 }
 
 // ── MAIN FOOD AGENT FUNCTION ──
-const runFoodAgent = async (message) => {
+const runFoodAgent = async (message, dietary) => {
   try {
     const intent = parseIntent(message);
+
+    // Hard override from explicit UI selection (more reliable than text parsing)
+    if (dietary === 'veg') intent.isVeg = true;
+    else if (dietary === 'nonveg') intent.isVeg = false;
+    // dietary === 'any' or undefined → keep whatever text parsing found (may be null)
 
     // Build exclusion regex from excluded proteins
     const exclusionRegexes = intent.excludedProteins.map(p => new RegExp(p, 'i'));

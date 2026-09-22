@@ -136,9 +136,9 @@ exports.predictIngredients = async (req, res) => {
  */
 exports.foodAgent = async (req, res) => {
   try {
-    const { message } = req.body;
+    const { message, dietary } = req.body;
     if (!message) return res.status(400).json({ success: false, message: 'Message is required' });
-    const result = await runFoodAgent(message);
+    const result = await runFoodAgent(message, dietary);
     res.status(200).json({ success: true, data: result });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Food agent failed', error: error.message });
