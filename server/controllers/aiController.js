@@ -183,7 +183,8 @@ exports.groupOrder = async (req, res) => {
  */
 exports.visualSearch = async (req, res) => {
   try {
-    const { dishQuery, colorHint } = req.body;
+    const dishQuery = req.body.dishQuery || req.body.query;
+    const colorHint = req.body.colorHint;
     if (!dishQuery) return res.status(400).json({ success: false, message: 'dishQuery is required' });
     const result = await runVisualSearch({ dishQuery, colorHint });
     res.status(200).json({ success: true, data: result });

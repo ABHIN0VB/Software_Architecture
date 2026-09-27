@@ -177,16 +177,29 @@
 </head>
 <body>
 
-  <!-- NAVBAR -->
+  <!-- Standard FeastFleet Navbar -->
   <nav class="navbar">
-    <div class="nav-container">
-      <a href="index.html" class="nav-logo">🍽️ FeastFleet</a>
-      <div class="nav-links">
-        <a href="restaurants.html">Restaurants</a>
-        <a href="orders.html">Orders</a>
-        <a href="contact.html">Help</a>
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-brand">
+        <div class="brand-icon">
+          <img src="images/app-logo.jpg" alt="FeastFleet Logo">
+        </div>
+        Feast<span class="accent">Fleet</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html"><i class="bi bi-house"></i> Home</a></li>
+        <li><a href="restaurants.html"><i class="bi bi-shop"></i> Restaurants</a></li>
+        <li><a href="ai-agent.html"><i class="bi bi-robot"></i> 🤖 Food Agent</a></li>
+        <li><a href="group-order.html" class="active" style="color: #38bdf8;"><i class="bi bi-people"></i> 👥 Group Order</a></li>
+        <li><a href="cart.html" class="cart-link"><i class="bi bi-bag"></i> Cart <span class="cart-badge">0</span></a></li>
+        <li><a href="contact.html"><i class="bi bi-envelope"></i> Contact</a></li>
+      </ul>
+      <div class="nav-auth">
+        <a href="login.html" class="btn-nav-login">Sign In</a>
       </div>
-      <div class="nav-auth"></div>
+      <button class="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
@@ -403,10 +416,193 @@
       } catch (err) {
         loading.style.display = 'none';
         btnFind.disabled = false;
-        resultsContainer.innerHTML = `<div class="no-results"><i class="bi bi-wifi-off"></i>Server error. Make sure the FeastFleet server is running.</div>`;
-        resultsSection.style.display = 'block';
+        
+        // Fall back gracefully to offline group order solver
+        const offlineRes = runOfflineGroupOrder(members, totalBudget, maxDeliveryMin);
+        if (offlineRes && offlineRes.data && offlineRes.data.topOptions) {
+          const d = offlineRes.data;
+          lastGroupOptions = d.topOptions;
+          resultsHeader.textContent = `✅ ${d.summary}`;
+          resultsContainer.innerHTML = '';
+
+          d.topOptions.forEach((opt, i) => {
+            const card = document.createElement('div');
+            card.className = 'result-card' + (i === 0 ? ' best' : '');
+
+            const assignmentsHtml = opt.assignments.map(a => `
+              <div class="assignment-pill">
+                <div class="assignment-name">${a.member}</div>
+                <div class="assignment-dish">${a.dish}</div>
+                <div class="assignment-price">₹${a.price}</div>
+              </div>
+            `).join('');
+
+            card.innerHTML = `
+              <div class="result-card-header">
+                <div>
+                  <div class="result-rest-name">${opt.restaurant}</div>
+                  <div class="result-rest-meta">⭐ ${opt.restaurantRating} · ${opt.deliveryTime} · ${(opt.cuisine || []).join(', ')}</div>
+                </div>
+                ${i === 0 ? '<span class="best-badge">🏆 Best Match</span>' : ''}
+              </div>
+
+              <div style="font-size:0.78rem;color:rgba(255,255,255,0.4);margin-bottom:10px;font-weight:600;">DISH ASSIGNMENTS</div>
+              <div class="assignments-grid">${assignmentsHtml}</div>
+
+              <div class="cost-breakdown">
+                <div class="cost-item">Food: <span>₹${opt.foodSubtotal}</span></div>
+                <div class="cost-item">Delivery: <span>₹${opt.deliveryFee}</span></div>
+                <div class="cost-item">Platform fee: <span>₹${opt.platformFee}</span></div>
+                <div class="cost-total">Total: ₹${opt.grandTotal} ${opt.fitsInBudget ? '✅' : '⚠️'}</div>
+                <div class="cost-per-person">₹${opt.perPersonSplit}/person</div>
+              </div>
+
+              <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; gap: 10px; align-items: center;">
+                <button onclick="addGroupOrderToCart(${i}, event)" style="flex: 1; padding: 11px 18px; background: linear-gradient(135deg, #38bdf8, #0284c7); border: none; border-radius: 10px; color: #fff; font-weight: 700; font-size: 0.88rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 14px rgba(56,189,248,0.25);">
+                  🛒 Add All ${opt.assignments.length} Dishes to Cart (₹${opt.grandTotal})
+                </button>
+                <a href="cart.html" style="padding: 11px 18px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; color: #f0f0f5; text-decoration: none; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center;">
+                  Checkout →
+                </a>
+              </div>
+            `;
+
+            resultsContainer.appendChild(card);
+          });
+
+          resultsSection.style.display = 'block';
+          resultsSection.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          resultsContainer.innerHTML = `<div class="no-results"><i class="bi bi-exclamation-circle"></i>No matching restaurant found. Try adjusting member budgets.</div>`;
+          resultsSection.style.display = 'block';
+        }
       }
     });
+
+    // ── OFFLINE GROUP ORDER SOLVER ──
+    function runOfflineGroupOrder(members, totalBudget, maxDeliveryMin) {
+      const RESTAURANTS = [
+        {
+          name: 'AK Take Away, Pala',
+          rating: 4.8,
+          deliveryTime: '30-35 min',
+          deliveryFee: 49,
+          platformFee: 15,
+          cuisine: ['Kerala', 'Arabic', 'Non-Veg'],
+          menu: [
+            { name: 'Al Faham Chicken', price: 230, isVeg: false, keywords: ['faham', 'chicken', 'grilled', 'roast'] },
+            { name: 'Chicken Kothu Parotta', price: 180, isVeg: false, keywords: ['parotta', 'kothu', 'chicken', 'noodles'] },
+            { name: 'Kerala Chilli Beef', price: 210, isVeg: false, keywords: ['beef', 'meat', 'spicy'] },
+            { name: 'Veg Fried Rice', price: 159, isVeg: true, keywords: ['rice', 'veg', 'fried', 'paneer'] },
+            { name: 'Fresh Mango Shake', price: 80, isVeg: true, keywords: ['shake', 'drink', 'sweet'] }
+          ]
+        },
+        {
+          name: 'Royal Biryani House',
+          rating: 4.8,
+          deliveryTime: '30-45 min',
+          deliveryFee: 0,
+          platformFee: 15,
+          cuisine: ['Indian', 'Biryani'],
+          menu: [
+            { name: 'Hyderabadi Chicken Biryani', price: 289, isVeg: false, keywords: ['biryani', 'chicken', 'rice'] },
+            { name: 'Veg Dum Biryani', price: 219, isVeg: true, keywords: ['veg', 'biryani', 'rice', 'paneer'] },
+            { name: 'Paneer Tikka Biryani', price: 249, isVeg: true, keywords: ['paneer', 'tikka', 'veg'] },
+            { name: 'Mutton Biryani', price: 349, isVeg: false, keywords: ['mutton', 'meat'] }
+          ]
+        },
+        {
+          name: 'Burger Palace',
+          rating: 4.8,
+          deliveryTime: '15-25 min',
+          deliveryFee: 0,
+          platformFee: 15,
+          cuisine: ['Burgers', 'American'],
+          menu: [
+            { name: 'Classic Smash Burger', price: 249, isVeg: false, keywords: ['burger', 'beef', 'meat'] },
+            { name: 'Crispy Chicken Burger', price: 219, isVeg: false, keywords: ['chicken', 'burger', 'crispy'] },
+            { name: 'Veggie Black Bean Burger', price: 179, isVeg: true, keywords: ['veg', 'paneer', 'burger'] },
+            { name: 'Crispy French Fries', price: 99, isVeg: true, keywords: ['fries', 'side', 'potato'] }
+          ]
+        },
+        {
+          name: 'Spice Garden',
+          rating: 4.6,
+          deliveryTime: '35-45 min',
+          deliveryFee: 59,
+          platformFee: 15,
+          cuisine: ['North Indian', 'Tandoor'],
+          menu: [
+            { name: 'Chicken Tikka Masala', price: 279, isVeg: false, keywords: ['chicken', 'curry'] },
+            { name: 'Paneer Tikka Masala', price: 249, isVeg: true, keywords: ['paneer', 'veg', 'cottage cheese'] },
+            { name: 'Dal Makhani with Naan', price: 199, isVeg: true, keywords: ['dal', 'veg', 'curry'] }
+          ]
+        }
+      ];
+
+      const topOptions = RESTAURANTS.map(r => {
+        let assignments = [];
+        let foodSubtotal = 0;
+
+        members.forEach(m => {
+          let dish = null;
+          const pref = (m.preference || '').toLowerCase();
+          const excl = (m.exclusions || '').toLowerCase();
+
+          for (const item of r.menu) {
+            if (m.isVeg && !item.isVeg) continue;
+            if (excl && item.name.toLowerCase().includes(excl)) continue;
+            if (pref && (item.name.toLowerCase().includes(pref) || item.keywords.some(k => pref.includes(k)))) {
+              dish = item;
+              break;
+            }
+          }
+
+          if (!dish) {
+            dish = r.menu.find(item => (!m.isVeg || item.isVeg)) || r.menu[0];
+          }
+
+          foodSubtotal += dish.price;
+          assignments.push({
+            member: m.name,
+            dish: dish.name,
+            price: dish.price
+          });
+        });
+
+        const grandTotal = foodSubtotal + r.deliveryFee + r.platformFee;
+        const perPersonSplit = Math.round(grandTotal / members.length);
+        const fitsInBudget = grandTotal <= totalBudget;
+
+        return {
+          restaurant: r.name,
+          restaurantRating: r.rating,
+          deliveryTime: r.deliveryTime,
+          cuisine: r.cuisine,
+          assignments,
+          foodSubtotal,
+          deliveryFee: r.deliveryFee,
+          platformFee: r.platformFee,
+          grandTotal,
+          perPersonSplit,
+          fitsInBudget
+        };
+      });
+
+      topOptions.sort((a, b) => {
+        if (a.fitsInBudget && !b.fitsInBudget) return -1;
+        if (!a.fitsInBudget && b.fitsInBudget) return 1;
+        return a.grandTotal - b.grandTotal;
+      });
+
+      return {
+        success: true,
+        data: {
+          summary: `Found optimal restaurant combinations for ${members.length} members within ₹${totalBudget}`,
+          topOptions: topOptions.slice(0, 3)
+        }
+      };
+    }
 
     let lastGroupOptions = [];
 
@@ -444,5 +640,44 @@
     addMember({ name: 'Akhil', preference: 'chicken noodles', isVeg: false, budget: 200 });
   </script>
 
+  <!-- Standard FeastFleet Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h2>Feast<span class="accent">Fleet</span></h2>
+        <p>Delicious food delivered fast to your doorstep. Powered by transparent culinary AI.</p>
+        <div class="footer-socials">
+          <a href="#"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-instagram"></i></a>
+          <a href="#"><i class="bi bi-twitter-x"></i></a>
+          <a href="#"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="index.html">About Us</a>
+        <a href="restaurants.html">Restaurants</a>
+        <a href="ai-agent.html">AI Food Agent</a>
+        <a href="budget-optimizer.html">Budget Optimizer</a>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <a href="contact.html">Contact Us</a>
+        <a href="tracking.html">Track Order</a>
+        <a href="food-profile.html">Food Profile</a>
+        <a href="group-order.html">Group Order</a>
+      </div>
+      <div class="footer-col">
+        <h4>Partner</h4>
+        <a href="contact.html">Become a Partner</a>
+        <a href="#">Delivery Driver</a>
+        <a href="#">Restaurant Owner</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 FeastFleet. All rights reserved.</span>
+      <span>Made with ❤️ in Kerala, India</span>
+    </div>
+  </footer>
 </body>
 </html>

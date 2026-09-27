@@ -113,14 +113,26 @@
 <body>
 
   <nav class="navbar">
-    <div class="nav-container">
-      <a href="index.html" class="nav-logo">🍽️ FeastFleet</a>
-      <div class="nav-links">
-        <a href="restaurants.html">Restaurants</a>
-        <a href="ai-agent.html" style="color:#FF6B35;">🤖 Food Agent</a>
-        <a href="group-order.html">👥 Group</a>
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-brand">
+        <div class="brand-icon">
+          <img src="images/app-logo.jpg" alt="FeastFleet Logo">
+        </div>
+        Feast<span class="accent">Fleet</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html"><i class="bi bi-house"></i> Home</a></li>
+        <li><a href="restaurants.html"><i class="bi bi-shop"></i> Restaurants</a></li>
+        <li><a href="ai-agent.html" class="active"><i class="bi bi-robot"></i> 🤖 Food Agent</a></li>
+        <li><a href="cart.html" class="cart-link"><i class="bi bi-bag"></i> Cart <span class="cart-badge">0</span></a></li>
+        <li><a href="contact.html"><i class="bi bi-envelope"></i> Contact</a></li>
+      </ul>
+      <div class="nav-auth">
+        <a href="login.html" class="btn-nav-login">Sign In</a>
       </div>
-      <div class="nav-auth"></div>
+      <button class="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
@@ -245,8 +257,8 @@
 
   </div>
 
-  <script src="js/api.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/api.js"></script>
   <script src="js/foodMemory.js"></script>
   <script src="js/chatbot-widget.js"></script>
   <script>
@@ -346,7 +358,6 @@
       html += `<div style="font-size:0.72rem;color:rgba(255,255,255,0.3);font-weight:600;letter-spacing:0.05em;margin-bottom:4px;">TOP MATCHES (${data.suggestions.length} found)</div>`;
 
       data.suggestions.forEach((s, i) => {
-        const isTop = i === 0;
         const vegBadge = s.item.isVeg
           ? '<span class="meta-pill green">🟢 Veg</span>'
           : '<span class="meta-pill red">🔴 Non-Veg</span>';
@@ -355,10 +366,10 @@
           : '<span class="meta-pill red">⚠️ Slightly over</span>';
 
         html += `
-          <div class="result-card ${isTop ? 'top-pick' : ''}">
+          <div class="result-card">
             <div class="result-card-top">
               <div>
-                <div class="result-name">${isTop ? '<span class="top-badge">⭐ BEST MATCH</span> ' : '#' + (i+1) + ' '}${s.item.name}</div>
+                <div class="result-name">#${i + 1} ${s.item.name}</div>
                 <div class="result-restaurant">@ ${s.restaurant} · ⭐${s.restaurantRating} · ${s.deliveryTime}</div>
               </div>
               <div style="text-align:right;">
@@ -373,7 +384,7 @@
               <span class="meta-pill">₹${s.deliveryFee} delivery</span>
             </div>
             <div style="margin-top: 14px; display: flex; gap: 8px; align-items: center;">
-              <button onclick="addAgentItemToCart('${s.item.name.replace(/'/g, "\\'")}', ${s.item.price}, '${s.restaurant.replace(/'/g, "\\'")}', '${(s.item.image || '').replace(/'/g, "\\'")}')" style="flex: 1; padding: 9px 14px; background: linear-gradient(135deg, #FF6B35, #FFB347); border: none; border-radius: 8px; color: #fff; font-weight: 700; font-size: 0.82rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 12px rgba(255,107,53,0.3);">
+              <button onclick="addAgentItemToCart('${s.item.name.replace(/'/g, "\\'")}', ${s.item.price}, '${s.restaurant.replace(/'/g, "\\'")}', '${(s.item.image || '').replace(/'/g, "\\'")}', this)" style="flex: 1; padding: 9px 14px; background: linear-gradient(135deg, #FF6B35, #FFB347); border: none; border-radius: 8px; color: #fff; font-weight: 700; font-size: 0.82rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 12px rgba(255,107,53,0.3);">
                 🛒 Add to Cart (₹${s.item.price})
               </button>
               <a href="cart.html" style="padding: 9px 14px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; color: #f0f0f5; text-decoration: none; font-size: 0.82rem; font-weight: 600;">
@@ -384,6 +395,118 @@
       });
 
       panel.innerHTML = html;
+    }
+
+    // ── OFFLINE MENU DATABASE (mirrors server seed data) ──
+    const OFFLINE_MENU = [
+      // AK Take Away
+      { name: 'Al Faham Chicken', price: 230, isVeg: false, restaurant: 'AK Take Away, Pala', rating: 4.8, deliveryTime: '30-35 min', deliveryFee: 49, description: 'Charcoal grilled Arabic-spiced chicken, smoky and juicy', tags: ['grilled','spicy','arabic','protein','chicken'] },
+      { name: 'Chicken Kothu Parotta', price: 180, isVeg: false, restaurant: 'AK Take Away, Pala', rating: 4.8, deliveryTime: '30-35 min', deliveryFee: 49, description: 'Shredded Malabar porotta with spiced chicken and egg', tags: ['spicy','filling','chicken'] },
+      { name: 'Chilli Beef', price: 210, isVeg: false, restaurant: 'AK Take Away, Pala', rating: 4.8, deliveryTime: '30-35 min', deliveryFee: 49, description: 'Tender beef with crushed black pepper and green chilli', tags: ['spicy','protein','beef'] },
+      { name: 'Mango Shake', price: 80, isVeg: true, restaurant: 'AK Take Away, Pala', rating: 4.8, deliveryTime: '30-35 min', deliveryFee: 49, description: 'Fresh mango blended shake', tags: ['sweet','light','veg'] },
+      // Burger Palace
+      { name: 'Classic Smash Burger', price: 249, isVeg: false, restaurant: 'Burger Palace', rating: 4.8, deliveryTime: '15-25 min', deliveryFee: 0, description: 'Two smashed beef patties with caramelized onions and secret sauce', tags: ['crispy','burger','beef','protein'] },
+      { name: 'Crispy Chicken Burger', price: 219, isVeg: false, restaurant: 'Burger Palace', rating: 4.8, deliveryTime: '15-25 min', deliveryFee: 0, description: 'Buttermilk fried chicken breast with chipotle mayo', tags: ['crispy','spicy','burger','chicken'] },
+      { name: 'Veggie Burger', price: 179, isVeg: true, restaurant: 'Burger Palace', rating: 4.8, deliveryTime: '15-25 min', deliveryFee: 0, description: 'Black bean patty with avocado and crisp lettuce', tags: ['veg','healthy','burger','light'] },
+      { name: 'French Fries', price: 99, isVeg: true, restaurant: 'Burger Palace', rating: 4.8, deliveryTime: '15-25 min', deliveryFee: 0, description: 'Crispy double-fried russet potato fries', tags: ['crispy','veg','light'] },
+      { name: 'Chocolate Shake', price: 149, isVeg: true, restaurant: 'Burger Palace', rating: 4.8, deliveryTime: '15-25 min', deliveryFee: 0, description: 'Rich Belgian cocoa shake with soft serve', tags: ['sweet','creamy','veg'] },
+      // Sushi Master
+      { name: 'Salmon Nigiri', price: 320, isVeg: false, restaurant: 'Sushi Master', rating: 4.9, deliveryTime: '30-40 min', deliveryFee: 49, description: 'Hand-pressed rice with fresh Atlantic salmon', tags: ['light','healthy','fish','japanese'] },
+      { name: 'Spicy Tuna Roll', price: 349, isVeg: false, restaurant: 'Sushi Master', rating: 4.9, deliveryTime: '30-40 min', deliveryFee: 49, description: 'Tuna with spicy sriracha mayo and cucumber', tags: ['spicy','light','fish','japanese'] },
+      { name: 'Avocado Roll', price: 249, isVeg: true, restaurant: 'Sushi Master', rating: 4.9, deliveryTime: '30-40 min', deliveryFee: 49, description: 'Creamy avocado with sesame and soy', tags: ['veg','healthy','creamy','japanese'] },
+      // Pizza Roma
+      { name: 'Margherita Pizza', price: 279, isVeg: true, restaurant: 'Pizza Roma', rating: 4.7, deliveryTime: '25-35 min', deliveryFee: 29, description: 'San Marzano tomato, fresh mozzarella, basil', tags: ['veg','italian','pizza','creamy'] },
+      { name: 'Pepperoni Pizza', price: 329, isVeg: false, restaurant: 'Pizza Roma', rating: 4.7, deliveryTime: '25-35 min', deliveryFee: 29, description: 'Classic pepperoni with mozzarella and tomato sauce', tags: ['italian','pizza','spicy'] },
+      { name: 'Pasta Carbonara', price: 259, isVeg: false, restaurant: 'Pizza Roma', rating: 4.7, deliveryTime: '25-35 min', deliveryFee: 29, description: 'Creamy egg and pancetta pasta', tags: ['creamy','italian','filling'] },
+      // Spice Garden
+      { name: 'Chicken Biryani', price: 289, isVeg: false, restaurant: 'Spice Garden', rating: 4.6, deliveryTime: '35-45 min', deliveryFee: 59, description: 'Fragrant basmati rice with spiced chicken and saffron', tags: ['spicy','indian','chicken','biryani','filling'] },
+      { name: 'Paneer Tikka', price: 249, isVeg: true, restaurant: 'Spice Garden', rating: 4.6, deliveryTime: '35-45 min', deliveryFee: 59, description: 'Marinated cottage cheese grilled in tandoor', tags: ['veg','grilled','indian','spicy','protein','paneer'] },
+      { name: 'Dal Makhani', price: 199, isVeg: true, restaurant: 'Spice Garden', rating: 4.6, deliveryTime: '35-45 min', deliveryFee: 59, description: 'Slow cooked black lentils in rich tomato cream', tags: ['veg','creamy','indian','healthy','protein'] },
+      { name: 'Lamb Rogan Josh', price: 349, isVeg: false, restaurant: 'Spice Garden', rating: 4.6, deliveryTime: '35-45 min', deliveryFee: 59, description: 'Tender slow-braised lamb in Kashmiri spices', tags: ['spicy','indian','filling','protein'] },
+      // Sweet Treats
+      { name: 'Chocolate Lava Cake', price: 149, isVeg: true, restaurant: 'Sweet Treats', rating: 4.9, deliveryTime: '10-20 min', deliveryFee: 39, description: 'Warm dark chocolate cake with molten center', tags: ['sweet','veg','dessert'] },
+      { name: 'Tiramisu', price: 169, isVeg: true, restaurant: 'Sweet Treats', rating: 4.9, deliveryTime: '10-20 min', deliveryFee: 39, description: 'Italian mascarpone cream with espresso-soaked ladyfingers', tags: ['sweet','creamy','veg','dessert'] },
+      { name: 'Fresh Fruit Bowl', price: 99, isVeg: true, restaurant: 'Sweet Treats', rating: 4.9, deliveryTime: '10-20 min', deliveryFee: 39, description: 'Seasonal fresh fruits with honey', tags: ['veg','healthy','light','sweet'] },
+      // The Coffee House
+      { name: 'Caesar Salad', price: 199, isVeg: true, restaurant: 'The Coffee House', rating: 4.5, deliveryTime: '15-25 min', deliveryFee: 0, description: 'Crisp romaine lettuce with Caesar dressing and croutons', tags: ['veg','healthy','light','salad'] },
+      { name: 'Grilled Sandwich', price: 149, isVeg: true, restaurant: 'The Coffee House', rating: 4.5, deliveryTime: '15-25 min', deliveryFee: 0, description: 'Multigrain bread with grilled vegetables and hummus', tags: ['veg','healthy','grilled','light'] },
+      { name: 'Cappuccino', price: 89, isVeg: true, restaurant: 'The Coffee House', rating: 4.5, deliveryTime: '15-25 min', deliveryFee: 0, description: 'Rich espresso with steamed milk foam', tags: ['veg','light','sweet'] },
+      // Dragon Wok
+      { name: 'Dragon Chicken', price: 249, isVeg: false, restaurant: 'Dragon Wok', rating: 4.4, deliveryTime: '25-35 min', deliveryFee: 45, description: 'Crispy chicken strips with red chilli paste and cashews', tags: ['crispy','spicy','chinese','chicken','protein'] },
+      { name: 'Hakka Noodles', price: 179, isVeg: false, restaurant: 'Dragon Wok', rating: 4.4, deliveryTime: '25-35 min', deliveryFee: 45, description: 'Stir-fried noodles with vegetables and soy', tags: ['chinese','light','filling'] },
+      { name: 'Veg Fried Rice', price: 159, isVeg: true, restaurant: 'Dragon Wok', rating: 4.4, deliveryTime: '25-35 min', deliveryFee: 45, description: 'Wok-tossed rice with seasonal vegetables', tags: ['veg','chinese','light','healthy'] },
+      // Royal Biryani House
+      { name: 'Hyderabadi Chicken Biryani', price: 289, isVeg: false, restaurant: 'Royal Biryani House', rating: 4.8, deliveryTime: '30-45 min', deliveryFee: 0, description: 'Dum-cooked biryani with tender chicken and caramelized onions', tags: ['spicy','indian','chicken','biryani','filling','protein'] },
+      { name: 'Mutton Biryani', price: 349, isVeg: false, restaurant: 'Royal Biryani House', rating: 4.8, deliveryTime: '30-45 min', deliveryFee: 0, description: 'Slow-cooked mutton with saffron basmati and rose water', tags: ['spicy','indian','biryani','filling','protein'] },
+      { name: 'Veg Biryani', price: 219, isVeg: true, restaurant: 'Royal Biryani House', rating: 4.8, deliveryTime: '30-45 min', deliveryFee: 0, description: 'Garden vegetables dum-cooked with fragrant basmati', tags: ['veg','indian','biryani','filling'] },
+    ];
+
+    // ── OFFLINE FOOD AGENT (runs in browser when server is offline) ──
+    function runOfflineAgent(query) {
+      const { budget, moods, dietary, protein, exclusions, cuisine } = query;
+      let items = [...OFFLINE_MENU];
+
+      // Dietary filter
+      if (dietary === 'veg') items = items.filter(i => i.isVeg);
+      if (dietary === 'nonveg') items = items.filter(i => !i.isVeg);
+
+      // Exclusion filter
+      if (exclusions.length) {
+        items = items.filter(i =>
+          !exclusions.some(ex => i.tags.includes(ex) || i.name.toLowerCase().includes(ex))
+        );
+      }
+
+      // Score each item
+      const scored = items.map(item => {
+        let score = 0;
+        const total = item.price + item.deliveryFee;
+
+        // Budget
+        if (budget > 0) {
+          if (total <= budget) score += 30;
+          else if (item.price <= budget) score += 10;
+          else score -= 60;
+        }
+
+        // Mood
+        moods.forEach(m => { if (item.tags.includes(m)) score += 15; });
+
+        // Cuisine
+        if (cuisine && (item.tags.includes(cuisine) || item.restaurant.toLowerCase().includes(cuisine))) score += 25;
+
+        // Protein preference
+        if (protein) {
+          if (!item.isVeg) score += 20;
+          if (['chicken','beef','fish','egg','paneer'].some(p => item.tags.includes(p))) score += 10;
+        }
+
+        // Rating boost
+        score += (item.rating - 4) * 10;
+
+        return { item, score, total };
+      });
+
+      const results = scored
+        .filter(x => x.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 5)
+        .map(({ item, total }) => ({
+          restaurant: item.restaurant,
+          restaurantRating: item.rating,
+          deliveryTime: item.deliveryTime,
+          deliveryFee: item.deliveryFee,
+          item: { name: item.name, description: item.description, price: item.price, isVeg: item.isVeg, image: '' },
+          totalWithDelivery: total,
+          fitsInBudget: budget > 0 ? total <= budget : true,
+        }));
+
+      return {
+        success: results.length > 0,
+        suggestions: results,
+        intent: { budget, mood: moods, excludedProteins: exclusions, isVeg: dietary === 'veg' ? true : dietary === 'nonveg' ? false : null, preferredProteins: protein ? ['chicken','beef','fish'] : [] },
+        reasoning: [budget ? `budget ₹${budget}` : '', moods.join(', '), exclusions.length ? `excluded: ${exclusions.join(', ')}` : ''].filter(Boolean).join(' • '),
+      };
     }
 
     // ── MAIN AGENT RUNNER ──
@@ -402,7 +525,7 @@
 
       const steps = [
         'Parsing your constraints...',
-        'Searching 66 menu items across 9 restaurants...',
+        'Searching menu items across 9 restaurants...',
         'Applying budget filter (₹' + parseInt(slider.value) + ')...',
         'Scoring mood & protein matches...',
         'Applying exclusion filters...',
@@ -423,17 +546,27 @@
         if (res && res.success && res.data) {
           renderResults(res.data, query);
         } else {
-          panel.innerHTML = `<div class="empty-state"><i class="bi bi-exclamation-circle"></i><p>Server error. Is the server running on port 5000?</p></div>`;
+          // Fallback to offline agent
+          const offlineResult = runOfflineAgent(query);
+          renderResults(offlineResult, query);
         }
       } catch(e) {
         clearInterval(stepInterval);
         btn.disabled = false;
-        panel.innerHTML = `<div class="empty-state"><i class="bi bi-wifi-off"></i><p>Cannot reach server. Start it with: <code>node server/server.js</code></p></div>`;
+        // Server offline — run fully in the browser
+        const offlineResult = runOfflineAgent(query);
+        if (offlineResult.success) {
+          renderResults(offlineResult, query);
+        } else {
+          panel.innerHTML = `<div class="empty-state"><i class="bi bi-search-heart"></i><p>No dishes matched your filters.</p><p style="margin-top:8px;font-size:0.78rem;">Try increasing the budget or removing exclusions.</p></div>`;
+        }
       }
     }
 
     // ── ADD AGENT RECOMMENDED ITEM TO CART ──
-    function addAgentItemToCart(name, price, restaurant, image) {
+    // Note: 'btnEl' is passed as 'this' from the inline onclick — event.currentTarget
+    // is always null for attribute-based handlers, so we pass the element explicitly.
+    function addAgentItemToCart(name, price, restaurant, image, btnEl) {
       if (typeof cart !== 'undefined') {
         const item = {
           id: 'agent-' + Math.random().toString(36).substr(2, 9),
@@ -443,21 +576,57 @@
           image: image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop'
         };
         const added = cart.addItem(item);
-        if (added) {
-          // Visual feedback on the button
-          const btn = event?.currentTarget;
-          if (btn) {
-            const originalHtml = btn.innerHTML;
-            btn.innerHTML = '✓ Added!';
-            btn.style.background = '#2DD4A8';
-            setTimeout(() => {
-              btn.innerHTML = originalHtml;
-              btn.style.background = 'linear-gradient(135deg, #FF6B35, #FFB347)';
-            }, 1200);
-          }
+        if (added && btnEl) {
+          const originalHtml = btnEl.innerHTML;
+          btnEl.innerHTML = '✓ Added!';
+          btnEl.style.background = '#2DD4A8';
+          setTimeout(() => {
+            btnEl.innerHTML = originalHtml;
+            btnEl.style.background = 'linear-gradient(135deg, #FF6B35, #FFB347)';
+          }, 1200);
         }
       }
     }
   </script>
+
+  <!-- Standard FeastFleet Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h2>Feast<span class="accent">Fleet</span></h2>
+        <p>Delicious food delivered fast to your doorstep. Powered by transparent culinary AI.</p>
+        <div class="footer-socials">
+          <a href="#"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-instagram"></i></a>
+          <a href="#"><i class="bi bi-twitter-x"></i></a>
+          <a href="#"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="index.html">About Us</a>
+        <a href="restaurants.html">Restaurants</a>
+        <a href="ai-agent.html">AI Food Agent</a>
+        <a href="budget-optimizer.html">Budget Optimizer</a>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <a href="contact.html">Contact Us</a>
+        <a href="tracking.html">Track Order</a>
+        <a href="food-profile.html">Food Profile</a>
+        <a href="group-order.html">Group Order</a>
+      </div>
+      <div class="footer-col">
+        <h4>Partner</h4>
+        <a href="contact.html">Become a Partner</a>
+        <a href="#">Delivery Driver</a>
+        <a href="#">Restaurant Owner</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 FeastFleet. All rights reserved.</span>
+      <span>Made with ❤️ in Kerala, India</span>
+    </div>
+  </footer>
 </body>
 </html>

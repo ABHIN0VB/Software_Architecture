@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+const JWT_SECRET = process.env.JWT_SECRET || 'feastfleet_super_secret_jwt_key_2026_dev';
+
 // Protect routes — verify JWT token
 const protect = async (req, res, next) => {
   let token;
@@ -14,15 +16,34 @@ const protect = async (req, res, next) => {
     return res.status(401).json({ success: false, message: 'Not authorized — no token' });
   }
 
+  // Gracefully handle mock / demo tokens so demo users can place orders and browse freely
+  if (token.startsWith('mock_') || token.startsWith('demo_') || token.startsWith('session_')) {
+    req.user = {
+      _id: '65f000000000000000000001',
+      id: '65f000000000000000000001',
+      name: 'Abhinav Babu',
+      email: 'abhinav@feastfleet.com',
+      phone: '9847123456'
+    };
+    return next();
+  }
+
   try {
     // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
 
     // Attach user to request (excluding password)
     req.user = await User.findById(decoded.id).select('-password');
 
     if (!req.user) {
-      return res.status(401).json({ success: false, message: 'User not found' });
+      // If server or in-memory DB restarted, supply demo fallback user
+      req.user = {
+        _id: decoded.id,
+        id: decoded.id,
+        name: 'Abhinav Babu',
+        email: 'abhinav@feastfleet.com',
+        phone: '9847123456'
+      };
     }
 
     next();
