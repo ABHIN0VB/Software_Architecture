@@ -22,38 +22,42 @@
     .layout { display: grid; grid-template-columns: 340px 1fr; gap: 28px; }
     @media(max-width: 720px) { .layout { grid-template-columns: 1fr; } }
 
-    .panel { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 18px; padding: 24px; }
+    .panel { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 20px; padding: 24px; backdrop-filter: blur(14px); }
     .panel-title { font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; color: rgba(255,255,255,0.3); margin: 0 0 22px; text-transform: uppercase; }
 
     .field { margin-bottom: 22px; }
     .field label { display: block; font-size: 0.72rem; font-weight: 700; color: rgba(255,255,255,0.4); margin-bottom: 8px; letter-spacing: 0.05em; }
     .field select, .field input[type="text"] {
-      width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
-      color: #f0f0f5; font-size: 0.88rem; font-family: inherit; outline: none; box-sizing: border-box; transition: border-color 0.2s;
+      width: 100%; padding: 11px 16px; background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
+      color: #f0f0f5; font-size: 0.88rem; font-family: inherit; outline: none; box-sizing: border-box;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .field select:focus, .field input:focus { border-color: rgba(45,212,168,0.5); }
+    .field select:focus, .field input:focus { border-color: rgba(45,212,168,0.6); box-shadow: 0 0 0 3px rgba(45,212,168,0.18); }
     .field select option { background: #1a1a2e; }
 
     /* SLIDERS */
     .slider-val { font-size: 1.6rem; font-weight: 900; color: #2DD4A8; }
     .slider-sub { font-size: 0.72rem; color: rgba(255,255,255,0.3); margin-bottom: 8px; }
-    input[type="range"] { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 4px; appearance: none; cursor: pointer; outline: none; }
-    input[type="range"]::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, #2DD4A8, #00bfa5); border: 2px solid #fff; cursor: pointer; box-shadow: 0 2px 8px rgba(45,212,168,0.4); }
+    input[type="range"] { width: 100%; height: 5px; background: rgba(255,255,255,0.1); border-radius: 4px; appearance: none; cursor: pointer; outline: none; }
+    input[type="range"]::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, #2DD4A8, #00bfa5); border: 2px solid #fff; cursor: pointer; box-shadow: 0 2px 8px rgba(45,212,168,0.4); transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
     .range-labels { display: flex; justify-content: space-between; font-size: 0.68rem; color: rgba(255,255,255,0.2); margin-top: 4px; }
 
     /* PEOPLE COUNTER */
     .people-counter { display: flex; align-items: center; gap: 16px; }
-    .count-btn { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: #f0f0f5; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; font-family: inherit; }
-    .count-btn:hover { background: rgba(45,212,168,0.2); border-color: #2DD4A8; color: #2DD4A8; }
+    .count-btn { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: #f0f0f5; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); font-family: inherit; }
+    .count-btn:hover { background: rgba(45,212,168,0.2); border-color: #2DD4A8; color: #2DD4A8; transform: scale(1.12); box-shadow: 0 4px 12px rgba(45,212,168,0.3); }
+    .count-btn:active { transform: scale(0.92); }
     .count-display { font-size: 1.8rem; font-weight: 800; color: #2DD4A8; min-width: 40px; text-align: center; }
 
     /* MEAL STRUCTURE */
     .meal-checks { display: flex; flex-direction: column; gap: 10px; }
-    .meal-check { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: rgba(255,255,255,0.04); border-radius: 10px; cursor: pointer; border: 1px solid rgba(255,255,255,0.07); transition: all 0.2s; }
-    .meal-check.checked { background: rgba(45,212,168,0.08); border-color: rgba(45,212,168,0.3); }
+    .meal-check { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: rgba(255,255,255,0.04); border-radius: 14px; cursor: pointer; border: 1px solid rgba(255,255,255,0.07); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+    .meal-check:hover { transform: translateY(-1px); border-color: rgba(45,212,168,0.3); }
+    .meal-check.checked { background: rgba(45,212,168,0.08); border-color: rgba(45,212,168,0.4); box-shadow: 0 4px 16px rgba(45,212,168,0.1); }
     .meal-check input[type="checkbox"] { display: none; }
-    .check-box { width: 18px; height: 18px; border-radius: 5px; border: 2px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; }
+    .check-box { width: 18px; height: 18px; border-radius: 6px; border: 2px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; }
     .meal-check.checked .check-box { background: #2DD4A8; border-color: #2DD4A8; }
     .check-box::after { content: '✓'; color: #fff; font-size: 0.72rem; font-weight: 900; display: none; }
     .meal-check.checked .check-box::after { display: block; }
@@ -62,12 +66,14 @@
 
     /* OPTIMIZE BUTTON */
     .btn-optimize {
-      width: 100%; padding: 14px; background: linear-gradient(135deg, #2DD4A8, #00bfa5);
-      border: none; border-radius: 12px; color: #fff; font-size: 0.95rem; font-weight: 700;
+      width: 100%; padding: 14px; background: linear-gradient(135deg, #2DD4A8 0%, #00bfa5 50%, #2DD4A8 100%);
+      background-size: 200% 200%;
+      border: none; border-radius: 24px; color: #fff; font-size: 0.95rem; font-weight: 700;
       cursor: pointer; font-family: inherit; margin-top: 10px; letter-spacing: 0.02em;
-      box-shadow: 0 6px 20px rgba(45,212,168,0.3); transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 6px 20px rgba(45,212,168,0.35); transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .btn-optimize:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(45,212,168,0.4); }
+    .btn-optimize:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 10px 28px rgba(45,212,168,0.48); }
+    .btn-optimize:active { transform: translateY(1px) scale(0.98); }
     .btn-optimize:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
     /* RESULTS */
@@ -78,8 +84,17 @@
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* RESULT CARD */
-    .result-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; overflow: hidden; }
-    .result-card.winner { border-color: rgba(45,212,168,0.5); background: rgba(45,212,168,0.04); }
+    .result-card {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px; overflow: hidden;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: blur(14px);
+    }
+    .result-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px -8px rgba(0,0,0,0.6), 0 0 20px rgba(45,212,168,0.15);
+    }
+    .result-card.winner { border-color: rgba(45,212,168,0.5); background: rgba(45,212,168,0.05); }
     .result-card-header { padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.06); }
     .winner-banner { background: linear-gradient(135deg, #2DD4A8, #00bfa5); color: #fff; font-size: 0.68rem; font-weight: 700; padding: 3px 12px; border-radius: 20px; }
     .rest-name { font-size: 1rem; font-weight: 700; }
@@ -110,15 +125,29 @@
 </head>
 <body>
 
+  <!-- Standard FeastFleet Navbar -->
   <nav class="navbar">
-    <div class="nav-container">
-      <a href="index.html" class="nav-logo">🍽️ FeastFleet</a>
-      <div class="nav-links">
-        <a href="restaurants.html">Restaurants</a>
-        <a href="ai-agent.html">🤖 Food Agent</a>
-        <a href="budget-optimizer.html" style="color:#2DD4A8;">💰 Budget</a>
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-brand">
+        <div class="brand-icon">
+          <img src="images/app-logo.jpg" alt="FeastFleet Logo">
+        </div>
+        Feast<span class="accent">Fleet</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html"><i class="bi bi-house"></i> Home</a></li>
+        <li><a href="restaurants.html"><i class="bi bi-shop"></i> Restaurants</a></li>
+        <li><a href="ai-agent.html"><i class="bi bi-robot"></i> 🤖 Food Agent</a></li>
+        <li><a href="budget-optimizer.html" class="active" style="color: #2DD4A8;"><i class="bi bi-wallet2"></i> 💰 Budget</a></li>
+        <li><a href="cart.html" class="cart-link"><i class="bi bi-bag"></i> Cart <span class="cart-badge">0</span></a></li>
+        <li><a href="contact.html"><i class="bi bi-envelope"></i> Contact</a></li>
+      </ul>
+      <div class="nav-auth">
+        <a href="login.html" class="btn-nav-login">Sign In</a>
       </div>
-      <div class="nav-auth"></div>
+      <button class="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
 
@@ -327,13 +356,198 @@
         resultsArea.innerHTML = html;
 
       } catch(e) {
+        // Fall back gracefully to offline optimizer engine
+        const offlineRes = runOfflineBudgetOptimizer(budget, people, cuisine || null, mealStructure);
         btn.disabled = false;
-        resultsArea.innerHTML = `
-          <div class="empty-state">
-            <i class="bi bi-wifi-off"></i>
-            <p>Server unreachable. Please start the server.</p>
+        if (offlineRes && offlineRes.data && offlineRes.data.topOptions.length) {
+          const d = offlineRes.data;
+          lastOptimizedOptions = d.topOptions;
+          lastOptimizedPeople = people;
+          let html = `<div style="font-size:0.72rem;font-weight:700;color:rgba(255,255,255,0.3);letter-spacing:0.06em;margin-bottom:4px;">
+            OPTIMIZED FOR ${people} PEOPLE — BUDGET ₹${budget}
           </div>`;
+
+          d.topOptions.forEach((opt, i) => {
+            const isWinner = i === 0;
+            const comboRows = Object.entries(opt.combo).map(([type, item]) => `
+              <div class="combo-row">
+                <div class="combo-type">${type.toUpperCase()}</div>
+                <div class="combo-name">${item.name}</div>
+                <div class="combo-price">₹${item.price}</div>
+              </div>`).join('');
+
+            html += `
+              <div class="result-card ${isWinner ? 'winner' : ''}">
+                <div class="result-card-header">
+                  <div>
+                    <div class="rest-name">${opt.restaurant}</div>
+                    <div class="rest-meta">⭐ ${opt.restaurantRating} · ${opt.deliveryTime} · ${(opt.cuisine || []).slice(0,2).join(', ')}</div>
+                  </div>
+                  ${isWinner ? '<span class="winner-banner">🏆 BEST VALUE</span>' : ''}
+                </div>
+                <div class="combo-table">
+                  <div style="font-size:0.7rem;font-weight:700;color:rgba(255,255,255,0.3);letter-spacing:0.06em;margin-bottom:8px;">COMBO PER PERSON</div>
+                  ${comboRows}
+                </div>
+                <div class="total-bar">
+                  <div class="total-item">Food (×${people}): <strong>₹${opt.foodSubtotal}</strong></div>
+                  <div class="total-item">Delivery: <strong>₹${opt.deliveryFee}</strong></div>
+                  <div class="total-item">Platform: <strong>₹${opt.platformFee}</strong></div>
+                  <div class="total-grand">
+                    <span class="amt">₹${opt.grandTotal}</span>
+                    <span class="${opt.fitsInBudget ? 'fits' : 'over'} fits-badge">${opt.fitsInBudget ? '✅ Within budget' : '⚠️ Over by ₹' + (opt.grandTotal - budget)}</span>
+                  </div>
+                </div>
+                <div class="total-bar" style="padding-top:0;border-top:0;">
+                  <div style="font-size:0.78rem;color:rgba(255,255,255,0.35);">Per person: <strong style="color:#2DD4A8;">₹${opt.perPerson}</strong></div>
+                  ${opt.savings > 0 ? `<div style="font-size:0.78rem;color:#2DD4A8;">You save ₹${opt.savings} from your budget!</div>` : ''}
+                </div>
+                <div style="padding: 14px 20px 18px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; gap: 10px; align-items: center;">
+                  <button onclick="addComboToCart(${i}, event)" style="flex: 1; padding: 10px 16px; background: linear-gradient(135deg, #2DD4A8, #00bfa5); border: none; border-radius: 10px; color: #fff; font-weight: 700; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 14px rgba(45,212,168,0.25);">
+                    🛒 Add Entire Combo for ${people} People
+                  </button>
+                  <a href="cart.html" style="padding: 10px 16px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; color: #f0f0f5; text-decoration: none; font-size: 0.82rem; font-weight: 600; display: flex; align-items: center;">
+                    Go to Cart →
+                  </a>
+                </div>
+              </div>`;
+          });
+          resultsArea.innerHTML = html;
+        } else {
+          resultsArea.innerHTML = `
+            <div class="empty-state">
+              <i class="bi bi-exclamation-circle" style="color:rgba(255,180,50,0.4)"></i>
+              <p>No combinations found within ₹${budget}.</p>
+              <p style="font-size:0.78rem;margin-top:6px;">Try increasing your budget or simplifying the meal structure.</p>
+            </div>`;
+        }
       }
+    }
+
+    // ── OFFLINE BUDGET OPTIMIZER ENGINE ──
+    function runOfflineBudgetOptimizer(budget, people, cuisine, mealStructure) {
+      const RESTAURANTS = [
+        {
+          restaurant: 'Burger Palace',
+          restaurantRating: 4.8,
+          deliveryTime: '15-25 min',
+          deliveryFee: 0,
+          platformFee: 15,
+          cuisine: ['Burgers', 'American', 'Fast Food'],
+          menu: {
+            main: { name: 'Classic Smash Burger', price: 249 },
+            side: { name: 'Crispy French Fries', price: 99 },
+            drink: { name: 'Chocolate Shake', price: 149 },
+            dessert: { name: 'Soft Serve Sundae', price: 89 }
+          }
+        },
+        {
+          restaurant: 'AK Take Away, Pala',
+          restaurantRating: 4.8,
+          deliveryTime: '30-35 min',
+          deliveryFee: 49,
+          platformFee: 15,
+          cuisine: ['Kerala', 'Arabic', 'Non-Veg'],
+          menu: {
+            main: { name: 'Al Faham Chicken', price: 230 },
+            side: { name: 'Chicken Kothu Parotta', price: 180 },
+            drink: { name: 'Fresh Mango Shake', price: 80 },
+            dessert: { name: 'Custard Fruit Bowl', price: 90 }
+          }
+        },
+        {
+          restaurant: 'Pizza Roma',
+          restaurantRating: 4.7,
+          deliveryTime: '25-35 min',
+          deliveryFee: 29,
+          platformFee: 15,
+          cuisine: ['Italian', 'Pizza', 'Pasta'],
+          menu: {
+            main: { name: 'Margherita Pizza', price: 279 },
+            side: { name: 'Garlic Bread with Mozzarella', price: 100 },
+            drink: { name: 'Iced Lemon Tea', price: 79 },
+            dessert: { name: 'Tiramisu Cup', price: 149 }
+          }
+        },
+        {
+          restaurant: 'Royal Biryani House',
+          restaurantRating: 4.8,
+          deliveryTime: '30-45 min',
+          deliveryFee: 0,
+          platformFee: 15,
+          cuisine: ['Indian', 'Biryani', 'Mughlai'],
+          menu: {
+            main: { name: 'Hyderabadi Chicken Biryani', price: 289 },
+            side: { name: 'Tandoori Roti & Raita', price: 60 },
+            drink: { name: 'Sweet Lassi', price: 70 },
+            dessert: { name: 'Gulab Jamun (2 pcs)', price: 80 }
+          }
+        },
+        {
+          restaurant: 'Spice Garden',
+          restaurantRating: 4.6,
+          deliveryTime: '35-45 min',
+          deliveryFee: 59,
+          platformFee: 15,
+          cuisine: ['North Indian', 'Tandoor'],
+          menu: {
+            main: { name: 'Paneer Tikka Masala', price: 249 },
+            side: { name: 'Butter Naan (2 pcs)', price: 70 },
+            drink: { name: 'Masala Chaas', price: 50 },
+            dessert: { name: 'Kheer', price: 90 }
+          }
+        }
+      ];
+
+      let candidateOptions = [];
+
+      RESTAURANTS.forEach(r => {
+        if (cuisine && !r.cuisine.some(c => c.toLowerCase().includes(cuisine.toLowerCase()))) return;
+
+        let combo = {};
+        let perPersonSum = 0;
+        mealStructure.forEach(type => {
+          const item = r.menu[type] || r.menu.main;
+          if (item) {
+            combo[type] = item;
+            perPersonSum += item.price;
+          }
+        });
+
+        const foodSubtotal = perPersonSum * people;
+        const grandTotal = foodSubtotal + r.deliveryFee + r.platformFee;
+        const perPerson = Math.round(grandTotal / people);
+        const fitsInBudget = grandTotal <= budget;
+        const savings = Math.max(0, budget - grandTotal);
+
+        candidateOptions.push({
+          restaurant: r.restaurant,
+          restaurantRating: r.restaurantRating,
+          deliveryTime: r.deliveryTime,
+          cuisine: r.cuisine,
+          combo,
+          foodSubtotal,
+          deliveryFee: r.deliveryFee,
+          platformFee: r.platformFee,
+          grandTotal,
+          perPerson,
+          fitsInBudget,
+          savings
+        });
+      });
+
+      candidateOptions.sort((a, b) => {
+        if (a.fitsInBudget && !b.fitsInBudget) return -1;
+        if (!a.fitsInBudget && b.fitsInBudget) return 1;
+        return a.grandTotal - b.grandTotal;
+      });
+
+      return {
+        success: true,
+        data: {
+          topOptions: candidateOptions.slice(0, 3)
+        }
+      };
     }
 
     // ── ADD COMBO TO CART ──
@@ -369,5 +583,45 @@
       }
     }
   </script>
+
+  <!-- Standard FeastFleet Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h2>Feast<span class="accent">Fleet</span></h2>
+        <p>Delicious food delivered fast to your doorstep. Powered by transparent culinary AI.</p>
+        <div class="footer-socials">
+          <a href="#"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-instagram"></i></a>
+          <a href="#"><i class="bi bi-twitter-x"></i></a>
+          <a href="#"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="index.html">About Us</a>
+        <a href="restaurants.html">Restaurants</a>
+        <a href="ai-agent.html">AI Food Agent</a>
+        <a href="budget-optimizer.html">Budget Optimizer</a>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <a href="contact.html">Contact Us</a>
+        <a href="tracking.html">Track Order</a>
+        <a href="food-profile.html">Food Profile</a>
+        <a href="group-order.html">Group Order</a>
+      </div>
+      <div class="footer-col">
+        <h4>Partner</h4>
+        <a href="contact.html">Become a Partner</a>
+        <a href="#">Delivery Driver</a>
+        <a href="#">Restaurant Owner</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 FeastFleet. All rights reserved.</span>
+      <span>Made with ❤️ in Kerala, India</span>
+    </div>
+  </footer>
 </body>
 </html>

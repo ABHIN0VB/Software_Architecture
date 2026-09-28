@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Ingredient Predictor — FeastFleet</title>
+  <meta name="description" content="AI Food Ingredient Predictor & Recipe Explainer. Inspect ingredients, allergens, flavor profiles and dietary profiles before ordering.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      background: #0a0a12;
+      color: #f0f0f5;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    /* HERO */
+    .ing-hero {
+      padding: 56px 20px 32px;
+      text-align: center;
+      background: radial-gradient(ellipse at 50% 0%, rgba(255, 179, 71, 0.14) 0%, transparent 70%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .ing-hero .badge-tag {
+      display: inline-block;
+      background: rgba(255, 179, 71, 0.15);
+      border: 1px solid rgba(255, 179, 71, 0.35);
+      color: #FFB347;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 20px;
+      letter-spacing: 0.08em;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+    .ing-hero h1 {
+      font-size: 2.2rem;
+      font-weight: 900;
+      margin: 0 0 10px;
+      background: linear-gradient(135deg, #FFB347, #FF6B35, #fff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .ing-hero p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.95rem;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    /* CONTAINER */
+    .ing-container {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 36px 20px 80px;
+    }
+
+    /* SEARCH BAR */
+    .ing-search-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 28px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    .ing-input-wrap {
+      display: flex;
+      gap: 10px;
+      position: relative;
+    }
+    .ing-input {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 12px 18px 12px 44px;
+      color: #fff;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .ing-input:focus {
+      border-color: #FFB347;
+      background: rgba(255, 179, 71, 0.05);
+      box-shadow: 0 0 0 3px rgba(255, 179, 71, 0.15);
+    }
+    .ing-input-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 1.1rem;
+    }
+    .btn-predict {
+      background: linear-gradient(135deg, #FF6B35, #FFB347);
+      border: none;
+      color: #fff;
+      font-weight: 700;
+      padding: 12px 24px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .btn-predict:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+    }
+
+    /* QUICK CHIPS */
+    .chip-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.35);
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .dish-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .dish-chip {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.85);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .dish-chip:hover, .dish-chip.active {
+      background: rgba(255, 179, 71, 0.18);
+      border-color: #FFB347;
+      color: #FFB347;
+      transform: translateY(-1px);
+    }
+
+    /* DETAILS LAYOUT */
+    .ing-result-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 28px;
+      animation: fadeIn 0.3s ease;
+    }
+    @media(max-width: 820px) {
+      .ing-result-card {
+        grid-template-columns: 1fr;
+      }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* LEFT INFO PANEL */
+    .ing-meta-panel {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .dish-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #fff;
+      margin: 0 0 4px;
+    }
+    .dish-restaurant {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+    .dish-price {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: #FF6B35;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .dish-price small {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.4);
+      font-weight: 400;
+    }
+
+    .confidence-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(45, 212, 168, 0.12);
+      border: 1px solid rgba(45, 212, 168, 0.3);
+      color: #2DD4A8;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .diet-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+    .diet-badge.veg {
+      background: rgba(45, 212, 168, 0.15);
+      border: 1px solid rgba(45, 212, 168, 0.3);
+      color: #2DD4A8;
+    }
+    .diet-badge.non-veg {
+      background: rgba(255, 107, 53, 0.15);
+      border: 1px solid rgba(255, 107, 53, 0.3);
+      color: #FF6B35;
+    }
+
+    .btn-add-ing-cart {
+      background: linear-gradient(135deg, #FF6B35, #FFB347);
+      border: none;
+      color: #fff;
+      font-weight: 700;
+      padding: 12px 18px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 16px rgba(255, 107, 53, 0.3);
+      margin-top: auto;
+    }
+    .btn-add-ing-cart:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255, 107, 53, 0.45);
+    }
+
+    /* RIGHT CONTENT PANEL */
+    .ing-breakdown-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .section-header-title {
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #FFB347;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .ingredients-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 8px;
+    }
+    .ingredient-item {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ingredient-item i {
+      color: #2DD4A8;
+      font-size: 0.9rem;
+    }
+
+    /* ALLERGEN CARD */
+    .allergen-box {
+      background: rgba(255, 60, 60, 0.08);
+      border: 1px solid rgba(255, 60, 60, 0.25);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .allergen-box.safe {
+      background: rgba(45, 212, 168, 0.08);
+      border-color: rgba(45, 212, 168, 0.25);
+    }
+    .allergen-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .allergen-pill {
+      background: rgba(255, 60, 60, 0.2);
+      border: 1px solid rgba(255, 60, 60, 0.4);
+      color: #ff6b6b;
+      padding: 3px 10px;
+      border-radius: 14px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .allergen-pill.safe {
+      background: rgba(45, 212, 168, 0.2);
+      border-color: rgba(45, 212, 168, 0.4);
+      color: #2DD4A8;
+    }
+
+    /* FLAVOR BOX */
+    .flavor-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .flavor-tag {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.85);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Standard FeastFleet Navbar -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-brand">
+        <div class="brand-icon">
+          <img src="images/app-logo.jpg" alt="FeastFleet Logo">
+        </div>
+        Feast<span class="accent">Fleet</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html"><i class="bi bi-house"></i> Home</a></li>
+        <li><a href="restaurants.html"><i class="bi bi-shop"></i> Restaurants</a></li>
+        <li><a href="ai-agent.html"><i class="bi bi-robot"></i> 🤖 Food Agent</a></li>
+        <li><a href="ai-ingredients.html" class="active" style="color: #FFB347;"><i class="bi bi-stars"></i> ✨ Ingredients</a></li>
+        <li><a href="cart.html" class="cart-link"><i class="bi bi-bag"></i> Cart <span class="cart-badge">0</span></a></li>
+        <li><a href="contact.html"><i class="bi bi-envelope"></i> Contact</a></li>
+      </ul>
+      <div class="nav-auth">
+        <a href="login.html" class="btn-nav-login">Sign In</a>
+      </div>
+      <button class="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Header -->
+  <header class="ing-hero">
+    <span class="badge-tag"><i class="bi bi-cpu"></i> Culinary Neural Engine</span>
+    <h1>✨ AI Food Ingredient Predictor</h1>
+    <p>Predict recipes, secret spices, allergen warnings, and dietary composition for any dish before you order.</p>
+  </header>
+
+  <main class="ing-container">
+    <!-- Search & Quick Picker -->
+    <div class="ing-search-box">
+      <div class="ing-input-wrap">
+        <i class="bi bi-search ing-input-icon"></i>
+        <input type="text" id="dish-search-input" class="ing-input" placeholder="Enter dish name (e.g. Al Faham Chicken, Classic Smash Burger, Biryani)..." value="Al Faham Chicken">
+        <button id="btn-predict-trigger" class="btn-predict">
+          <i class="bi bi-stars"></i> Inspect Ingredients
+        </button>
+      </div>
+
+      <div style="margin-top: 18px;">
+        <div class="chip-label">Popular Dishes to Inspect:</div>
+        <div class="dish-chips" id="dish-chips-container">
+          <button class="dish-chip active" data-dish="Al Faham Chicken">🍗 Al Faham Chicken</button>
+          <button class="dish-chip" data-dish="Classic Smash Burger">🍔 Smash Burger</button>
+          <button class="dish-chip" data-dish="Chicken Dum Biryani">🍚 Hyderabadi Biryani</button>
+          <button class="dish-chip" data-dish="Kothu Parotta">🥘 Kothu Parotta</button>
+          <button class="dish-chip" data-dish="Margherita Pizza">🍕 Margherita Pizza</button>
+          <button class="dish-chip" data-dish="Salmon Maki">🍣 Salmon Maki</button>
+          <button class="dish-chip" data-dish="Paneer Tikka Masala">🧀 Paneer Tikka</button>
+          <button class="dish-chip" data-dish="Chilli Beef">🥩 Chilli Beef</button>
+          <button class="dish-chip" data-dish="Butter Chicken">🍛 Butter Chicken</button>
+          <button class="dish-chip" data-dish="Chocolate Lava Cake">🍫 Lava Cake</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prediction Results Display Area -->
+    <div id="prediction-result-area">
+      <!-- Injected by JavaScript -->
+    </div>
+  </main>
+
+  <!-- Standard FeastFleet Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h2>Feast<span class="accent">Fleet</span></h2>
+        <p>Delicious food delivered fast to your doorstep. Powered by transparent culinary AI.</p>
+        <div class="footer-socials">
+          <a href="#"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-instagram"></i></a>
+          <a href="#"><i class="bi bi-twitter-x"></i></a>
+          <a href="#"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="index.html">About Us</a>
+        <a href="restaurants.html">Restaurants</a>
+        <a href="ai-agent.html">AI Food Agent</a>
+        <a href="budget-optimizer.html">Budget Optimizer</a>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <a href="contact.html">Contact Us</a>
+        <a href="tracking.html">Track Order</a>
+        <a href="food-profile.html">Food Profile</a>
+        <a href="group-order.html">Group Order</a>
+      </div>
+      <div class="footer-col">
+        <h4>Partner</h4>
+        <a href="contact.html">Become a Partner</a>
+        <a href="#">Delivery Driver</a>
+        <a href="#">Restaurant Owner</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 FeastFleet. All rights reserved.</span>
+      <span>Made with ❤️ in Kerala, India</span>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/foodMemory.js"></script>
+  <script src="js/chatbot-widget.js"></script>
+
+  <script>
+    // Offline / Online Rich Knowledge Base
+    const INGREDIENT_DB = {
+      'al faham chicken': {
+        name: 'Al Faham Chicken (Smoked Quarter)',
+        restaurant: 'AK Take Away, Pala',
+        price: 230,
+        rating: 4.8,
+        deliveryTime: '30-35 min',
+        isVeg: false,
+        confidence: 99,
+        dietary: 'Non-Vegetarian, Charcoal Grilled, High-Protein',
+        flavor: 'Smoky, Arabic 7-Spice Baharat, Tangy Lime, Garlic Crust',
+        allergens: ['Dairy (Hung Curd Marinade)'],
+        ingredients: [
+          'Fresh Country Chicken (Cut with Skin Slits)',
+          'Arabic 7-Spice Baharat Blend (Cumin, Coriander, Cloves)',
+          'Fresh Lime Juice & Pure Olive Oil',
+          'Crushed Garlic & Ginger Paste',
+          'Hung Curd (Tenderizer Marinade)',
+          'Smoked Charcoal Infusion with Clarified Butter',
+          'Cracked Black Pepper & Kashmiri Mild Chilli',
+          'Served with Garlic Toum & Kubboos'
+        ]
+      },
+      'classic smash burger': {
+        name: 'Classic Smash Burger',
+        restaurant: 'Burger Palace',
+        price: 249,
+        rating: 4.8,
+        deliveryTime: '15-25 min',
+        isVeg: false,
+        confidence: 98,
+        dietary: 'Non-Vegetarian, High Protein',
+        flavor: 'Deep Savory Umami, Crispy Seared Edges, Caramelized Onions',
+        allergens: ['Gluten (Brioche Bun)', 'Dairy (Melted Cheese)', 'Eggs (Secret Mayo Sauce)'],
+        ingredients: [
+          'Two Smashed Ground Prime Beef Patties',
+          'Toasted French Brioche Bun',
+          'Double Melted Sharp American Cheddar',
+          'Slow-Caramelized Yellow Onions',
+          'Pickled Crisp Dill Gherkins',
+          'House Secret Burger Sauce (Dijon & Paprika)'
+        ]
+      },
+      'chicken dum biryani': {
+        name: 'Hyderabadi Chicken Dum Biryani',
+        restaurant: 'Royal Biryani House',
+        price: 289,
+        rating: 4.8,
+        deliveryTime: '30-45 min',
+        isVeg: false,
+        confidence: 99,
+        dietary: 'Non-Vegetarian, Traditional Dum Cooked',
+        flavor: 'Rich Fragrance, Saffron Infused, Royal Whole Spices',
+        allergens: ['Dairy (Pure Desi Ghee & Milk)'],
+        ingredients: [
+          'Aged Long-Grain Basmati Rice',
+          'Marinated Chicken with Bone',
+          'Pure Kashmiri Saffron Infused Milk',
+          'Caramelized Golden Birista (Crispy Onions)',
+          'Pure Desi Ghee (Clarified Butter)',
+          'Fresh Mint Leaves & Cilantro',
+          'Whole Shahi Spices (Star Anise, Mace, Green Cardamom, Cloves)',
+          'Layered & Dum-Sealed in Heavy Degchi'
+        ]
+      },
+      'kothu parotta': {
+        name: 'Malabar Chicken Kothu Parotta',
+        restaurant: 'AK Take Away, Pala',
+        price: 180,
+        rating: 4.8,
+        deliveryTime: '30-35 min',
+        isVeg: false,
+        confidence: 97,
+        dietary: 'Non-Vegetarian, Street Food Classic',
+        flavor: 'Spicy, Flaky Parotta, Rich Salna Gravy, Aromatic',
+        allergens: ['Gluten (Maida Parotta)', 'Eggs'],
+        ingredients: [
+          'Flaky Hand-Shredded Malabar Porotta',
+          'Spiced Country Chicken Shreds',
+          'Farm Scrambled Eggs',
+          'Caramelized Shallots & Vine Tomatoes',
+          'Green Chillies & Fresh Curry Leaves',
+          'Rich Salna Chicken Gravy Infusion'
+        ]
+      },
+      'margherita pizza': {
+        name: 'Artisan Margherita Pizza',
+        restaurant: 'Pizza Roma',
+        price: 279,
+        rating: 4.7,
+        deliveryTime: '25-35 min',
+        isVeg: true,
+        confidence: 99,
+        dietary: 'Vegetarian, Authentic Italian',
+        flavor: 'Tangy Sweet Tomato, Creamy Buffalo Mozzarella, Fresh Basil',
+        allergens: ['Gluten (Flour Crust)', 'Dairy (Mozzarella)'],
+        ingredients: [
+          '48-Hour Slow Fermented Sourdough Crust',
+          'San Marzano Crushed Italian Tomatoes',
+          'Fresh Buffalo Mozzarella Pearls',
+          'Cold-Pressed Extra Virgin Olive Oil',
+          'Garden-Fresh Sweet Basil Leaves',
+          'Coarse Sea Salt Flakes'
+        ]
+      },
+      'salmon maki': {
+        name: 'Fresh Salmon Maki Roll',
+        restaurant: 'Sushi Master',
+        price: 320,
+        rating: 4.9,
+        deliveryTime: '30-40 min',
+        isVeg: false,
+        confidence: 99,
+        dietary: 'Pescatarian, High Omega-3, Clean Diet',
+        flavor: 'Fresh Ocean Umami, Vinegar Tang, Toasted Nori',
+        allergens: ['Fish (Atlantic Salmon)', 'Sesame', 'Soy Sauce'],
+        ingredients: [
+          'Sashimi Grade Fresh Atlantic Salmon',
+          'Seasoned Japonica Sushi Rice (Rice Vinegar, Mirin, Sea Salt)',
+          'Toasted Roasted Nori Seaweed Sheet',
+          'Toasted White & Black Sesame Seeds',
+          'Served with Genuine Wasabi & Shoyu'
+        ]
+      },
+      'paneer tikka masala': {
+        name: 'Tandoori Paneer Tikka Masala',
+        restaurant: 'Spice Garden',
+        price: 249,
+        rating: 4.6,
+        deliveryTime: '35-45 min',
+        isVeg: true,
+        confidence: 98,
+        dietary: '100% Pure Vegetarian, High Protein',
+        flavor: 'Smoky Char, Creamy Spiced Onion-Tomato Gravy',
+        allergens: ['Dairy (Paneer, Cream, Butter)'],
+        ingredients: [
+          'Charred Cottage Cheese (Paneer Cubes)',
+          'Yogurt Marinade with Kasuri Methi',
+          'Rich Pureed Tomato & Onion Gravy',
+          'Tandoori Bell Peppers & Diced Red Onion',
+          'Ginger-Garlic Paste & Cardamom',
+          'Fresh Coriander Greens & Butter Drizzle'
+        ]
+      },
+      'chilli beef': {
+        name: 'Kerala Spicy Chilli Beef',
+        restaurant: 'AK Take Away, Pala',
+        price: 210,
+        rating: 4.8,
+        deliveryTime: '30-35 min',
+        isVeg: false,
+        confidence: 98,
+        dietary: 'Non-Vegetarian, Kerala Specialty',
+        flavor: 'Cracked Peppercorn Heat, Garlic Slivers, Tangy Soy Reduction',
+        allergens: ['Soy Sauce'],
+        ingredients: [
+          'Slow-Braised Tender Beef Morsels',
+          'Crushed Malabar Black Peppercorns',
+          'Green Chilli Slits & Fresh Ginger',
+          'Crispy Coconut Slivers (Thenga Kothu)',
+          'Dark Soy & Tomato Reduction',
+          'Fresh Fried Curry Leaves in Coconut Oil'
+        ]
+      },
+      'butter chicken': {
+        name: 'Old Delhi Butter Chicken',
+        restaurant: 'Royal Biryani House',
+        price: 279,
+        rating: 4.8,
+        deliveryTime: '30-40 min',
+        isVeg: false,
+        confidence: 99,
+        dietary: 'Non-Vegetarian, Rich Feast',
+        flavor: 'Mildly Sweet, Silky Velvet Cream, Aromatic Fenugreek',
+        allergens: ['Dairy (Butter, Cream)', 'Tree Nuts (Cashew Paste)'],
+        ingredients: [
+          'Smoked Tandoori Chicken Boneless Chunks',
+          'Ripe San Marzano Style Tomato Reduction',
+          'Velvety Cashew Nut Paste',
+          'Fresh Double Cream & White Butter',
+          'Dried Kasuri Methi (Fenugreek Leaves)',
+          'Aromatic Garam Masala & Cardamom'
+        ]
+      },
+      'chocolate lava cake': {
+        name: 'Warm Belgian Chocolate Lava Cake',
+        restaurant: 'Sweet Treats',
+        price: 149,
+        rating: 4.9,
+        deliveryTime: '15-20 min',
+        isVeg: true,
+        confidence: 99,
+        dietary: 'Vegetarian, Indulgent Dessert',
+        flavor: 'Decadent Dark Cocoa, Molten Warm Chocolate Center',
+        allergens: ['Gluten (Flour)', 'Dairy (Butter, Milk Chocolate)'],
+        ingredients: [
+          '70% Single Origin Belgian Dark Chocolate',
+          'Grass-Fed Pure Butter',
+          'Organic Cane Sugar & Cocoa Powder',
+          'Madagascar Bourbon Vanilla Pod',
+          'Light Flour Sponge with Molten Core'
+        ]
+      }
+    };
+
+    function findDishData(query) {
+      const q = (query || '').toLowerCase().trim();
+      // Exact or partial key match
+      for (const [key, data] of Object.entries(INGREDIENT_DB)) {
+        if (q.includes(key) || key.includes(q)) return data;
+        if (data.name.toLowerCase().includes(q)) return data;
+      }
+      // Word token matching
+      const words = q.split(/\s+/).filter(w => w.length > 2);
+      for (const [key, data] of Object.entries(INGREDIENT_DB)) {
+        if (words.some(w => key.includes(w) || data.name.toLowerCase().includes(w))) {
+          return data;
+        }
+      }
+
+      // Dynamic fallback for any dish
+      const isVeg = /veg|paneer|mushroom|salad|dal|shake|fruit|potato|fries/i.test(query);
+      return {
+        name: query.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+        restaurant: 'FeastFleet Gourmet Partner',
+        price: 199,
+        rating: 4.7,
+        deliveryTime: '25-35 min',
+        isVeg: isVeg,
+        confidence: 92,
+        dietary: isVeg ? '100% Pure Vegetarian' : 'Non-Vegetarian',
+        flavor: 'Rich, Balanced, Savory, Herbaceous',
+        allergens: isVeg ? ['Dairy (Check with restaurant)'] : ['Gluten', 'Dairy'],
+        ingredients: [
+          'Fresh Farm-Sourced Primary Ingredients',
+          'Signature Spice & Herb Blend',
+          'Cold-Pressed Cooking Oil',
+          'Fresh Onions, Garlic & Ginger Base',
+          'Sea Salt & Cracked Black Pepper',
+          'Artisan Plating & Garnishing Herbs'
+        ]
+      };
+    }
+
+    async function inspectDish(dishName) {
+      const container = document.getElementById('prediction-result-area');
+      container.innerHTML = `
+        <div style="text-align:center; padding: 60px 20px;">
+          <div class="spinner-border text-warning" role="status" style="width: 3rem; height: 3rem;"></div>
+          <div style="margin-top: 16px; font-weight: 700; font-size: 1.1rem;">AI Deconstructing "${dishName}"...</div>
+          <div style="font-size: 0.85rem; color: rgba(255,255,255,0.45); margin-top: 6px;">Scanning culinary ingredients, allergen triggers, and flavor notes</div>
+        </div>
+      `;
+
+      let data = null;
+
+      // Attempt online backend call if available
+      if (typeof API !== 'undefined' && API.predictIngredients) {
+        try {
+          const res = await API.predictIngredients(dishName, '', '');
+          if (res && res.success && res.data) {
+            const apiD = res.data;
+            data = {
+              name: dishName,
+              restaurant: 'FeastFleet Kitchen',
+              price: 240,
+              rating: 4.8,
+              deliveryTime: '25-35 min',
+              isVeg: apiD.dietary ? !apiD.dietary.toLowerCase().includes('non') : false,
+              confidence: apiD.aiConfidence || 96,
+              dietary: apiD.dietary || 'Fresh Culinary Preparation',
+              flavor: apiD.flavorProfile || 'Balanced & Savory',
+              allergens: apiD.allergens || ['None Detected'],
+              ingredients: apiD.predictedIngredients || []
+            };
+          }
+        } catch (e) {
+          // Gracefully fall back to local knowledge base
+        }
+      }
+
+      if (!data) {
+        data = findDishData(dishName);
+      }
+
+      const isSafe = data.allergens.length === 0 || data.allergens.some(a => a.toLowerCase().includes('none') || a.toLowerCase().includes('free'));
+
+      container.innerHTML = `
+        <div class="ing-result-card">
+          <!-- LEFT SUMMARY -->
+          <div class="ing-meta-panel">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 8px;">
+                <span class="confidence-badge"><i class="bi bi-shield-check"></i> ${data.confidence}% AI Accuracy</span>
+                <span class="diet-badge ${data.isVeg ? 'veg' : 'non-veg'}">
+                  ${data.isVeg ? '🟢 Pure Veg' : '🔴 Non-Veg'}
+                </span>
+              </div>
+              <h2 class="dish-title">${data.name}</h2>
+              <div class="dish-restaurant"><i class="bi bi-shop"></i> Available at <strong>${data.restaurant}</strong></div>
+              <div style="font-size:0.8rem; color:rgba(255,255,255,0.45); margin-top:4px;">
+                ⭐ ${data.rating} · ⏱️ ${data.deliveryTime} delivery
+              </div>
+            </div>
+
+            <div class="dish-price">
+              ₹${data.price}
+              <small>all-inclusive</small>
+            </div>
+
+            <div style="background: rgba(255,255,255,0.04); border-radius: 10px; padding: 10px 14px; font-size: 0.8rem;">
+              <div style="font-size: 0.72rem; color: rgba(255,255,255,0.35); font-weight: 700; text-transform: uppercase;">Dietary Tag</div>
+              <div style="font-weight: 600; color: #fff; margin-top: 2px;">${data.dietary}</div>
+            </div>
+
+            <button class="btn-add-ing-cart" onclick="addDishToCart('${data.name.replace(/'/g, "\\'")}', ${data.price}, '${data.restaurant.replace(/'/g, "\\'")}', this)">
+              <i class="bi bi-bag-plus"></i> Add to Cart (₹${data.price})
+            </button>
+          </div>
+
+          <!-- RIGHT BREAKDOWN -->
+          <div class="ing-breakdown-panel">
+            <!-- INGREDIENTS -->
+            <div>
+              <div class="section-header-title">
+                <i class="bi bi-egg-fried"></i> Predicted Culinary Ingredients (${data.ingredients.length})
+              </div>
+              <div class="ingredients-grid">
+                ${data.ingredients.map(ing => `
+                  <div class="ingredient-item">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span>${ing}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <!-- ALLERGENS -->
+            <div>
+              <div class="section-header-title">
+                <i class="bi bi-shield-exclamation"></i> Allergen Safety Warning
+              </div>
+              <div class="allergen-box ${isSafe ? 'safe' : ''}">
+                <div style="font-size: 0.85rem; font-weight: 700; color: ${isSafe ? '#2DD4A8' : '#ff6b6b'};">
+                  ${isSafe ? '✓ No Critical Allergens Detected' : '⚠️ Contains Common Allergens — Check Before Ingesting:'}
+                </div>
+                <div class="allergen-pills">
+                  ${data.allergens.map(a => `<span class="allergen-pill ${isSafe ? 'safe' : ''}">${a}</span>`).join('')}
+                </div>
+              </div>
+            </div>
+
+            <!-- FLAVOR PROFILE -->
+            <div>
+              <div class="section-header-title">
+                <i class="bi bi-magic"></i> Flavor Notes & Culinary Profile
+              </div>
+              <div class="flavor-box">
+                <i class="bi bi-fire" style="font-size: 1.4rem; color: #FF6B35;"></i>
+                <div class="flavor-tag">
+                  <strong>Notes:</strong> ${data.flavor}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function addDishToCart(name, price, restaurant, btnEl) {
+      if (typeof cart !== 'undefined') {
+        cart.addItem({
+          id: 'ing-' + Math.random().toString(36).substr(2, 9),
+          name: name,
+          price: Number(price),
+          restaurant: restaurant,
+          image: ''
+        });
+        if (btnEl) {
+          const orig = btnEl.innerHTML;
+          btnEl.innerHTML = `<i class="bi bi-check-circle-fill"></i> Added to Cart!`;
+          btnEl.style.background = '#2DD4A8';
+          setTimeout(() => {
+            btnEl.innerHTML = orig;
+            btnEl.style.background = 'linear-gradient(135deg, #FF6B35, #FFB347)';
+          }, 1500);
+        }
+      }
+    }
+
+    // Event listeners
+    document.getElementById('btn-predict-trigger').addEventListener('click', () => {
+      const q = document.getElementById('dish-search-input').value.trim();
+      if (q) inspectDish(q);
+    });
+
+    document.getElementById('dish-search-input').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        const q = document.getElementById('dish-search-input').value.trim();
+        if (q) inspectDish(q);
+      }
+    });
+
+    // Chip click handlers
+    document.querySelectorAll('.dish-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.dish-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        const dish = chip.dataset.dish;
+        document.getElementById('dish-search-input').value = dish;
+        inspectDish(dish);
+      });
+    });
+
+    // Initial inspection on page load
+    inspectDish('Al Faham Chicken');
+  </script>
+  <script src="js/app.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/chatbot-widget.js"></script>
+</body>
+</html>

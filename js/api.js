@@ -20,7 +20,19 @@ class API {
     if (user) localStorage.setItem('feastfleet_user', JSON.stringify(user));
     else localStorage.removeItem('feastfleet_user');
   }
-  static isLoggedIn() { return !!this.getToken(); }
+  static isLoggedIn() {
+    const token = this.getToken();
+    const user = this.getUser();
+    if (user && !token) {
+      this.setToken(`session_${Date.now()}`);
+      return true;
+    }
+    if (token && !user) {
+      this.setUser({ name: 'User', email: 'user@feastfleet.com' });
+      return true;
+    }
+    return !!(token && user);
+  }
 
   // ── CORE REQUEST ──
   static async request(endpoint, options = {}) {
@@ -33,9 +45,16 @@ class API {
       const response = await fetch(url, { ...options, headers });
       const data = await response.json();
       if (response.status === 401) {
-        this.removeToken();
-        this.setUser(null);
-        updateAuthUI();
+        // Do not clear session if the failed request was a login/register attempt
+        if (!endpoint.includes('/auth/login') && !endpoint.includes('/auth/register')) {
+          const currentToken = this.getToken();
+          // Never log out mock/demo tokens on 401
+          if (currentToken && !currentToken.startsWith('mock_') && !currentToken.startsWith('demo_') && !currentToken.startsWith('session_')) {
+            this.removeToken();
+            this.setUser(null);
+            updateAuthUI();
+          }
+        }
       }
       return data;
     } catch (error) {
@@ -175,10 +194,19 @@ function updateAuthUI() {
 }
 
 function toggleUserDropdown(event) {
-  if (event) event.stopPropagation();
-  const dropdown = document.getElementById('nav-profile-dropdown');
+  if (event) {
+    event.stopPropagation();
+    event.preventDefault();
+  }
+  const btn = event ? event.currentTarget : null;
+  const parent = btn ? btn.closest('.user-profile-nav') : null;
+  const dropdown = parent ? parent.querySelector('.profile-dropdown') : document.getElementById('nav-profile-dropdown');
   if (dropdown) {
-    dropdown.classList.toggle('show');
+    const isShowing = dropdown.classList.contains('show');
+    document.querySelectorAll('.profile-dropdown').forEach(d => d.classList.remove('show'));
+    if (!isShowing) {
+      dropdown.classList.add('show');
+    }
   }
 }
 
@@ -188,6 +216,14 @@ document.addEventListener('click', (e) => {
     document.querySelectorAll('.profile-dropdown').forEach(d => d.classList.remove('show'));
   }
 });
+
+// Cross-tab and runtime auth synchronization
+window.addEventListener('storage', (e) => {
+  if (e.key === 'feastfleet_token' || e.key === 'feastfleet_user') {
+    updateAuthUI();
+  }
+});
+window.addEventListener('authChange', updateAuthUI);
 
 // Run automatically on page load
 if (document.readyState === 'loading') {

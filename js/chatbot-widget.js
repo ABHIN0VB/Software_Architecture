@@ -17,19 +17,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* Floating toggle button */
     #ff-chatbot-toggle {
-      width: 60px;
-      height: 60px;
+      width: 62px;
+      height: 62px;
       border-radius: 50%;
-      background: #12121a;
-      border: 2px solid #FF6B35;
+      background: linear-gradient(135deg, #FF6B35, #FFB347);
+      border: 2px solid rgba(255,255,255,0.4);
       cursor: pointer;
-      box-shadow: 0 6px 24px rgba(255,107,53,0.45);
+      box-shadow: 0 8px 30px rgba(255,107,53,0.45);
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
       padding: 0;
-      transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: chatbotPulse 3.5s infinite;
+    }
+    @keyframes chatbotPulse {
+      0%, 100% { box-shadow: 0 8px 30px rgba(255,107,53,0.45), 0 0 0 0 rgba(255,107,53,0.35); }
+      50% { box-shadow: 0 10px 36px rgba(255,107,53,0.65), 0 0 0 12px rgba(255,107,53,0); }
     }
     #ff-chatbot-toggle img {
       width: 100%;
@@ -37,45 +42,50 @@ document.addEventListener('DOMContentLoaded', () => {
       object-fit: cover;
       display: block;
       border-radius: 50%;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
     #ff-chatbot-toggle:hover {
-      transform: scale(1.1);
-      box-shadow: 0 8px 32px rgba(255,107,53,0.6);
-      border-color: #FFB347;
+      transform: scale(1.12) rotate(6deg);
+      box-shadow: 0 12px 38px rgba(255,107,53,0.7);
+      border-color: #ffffff;
     }
     #ff-chatbot-toggle.hidden { display: none !important; }
 
     /* Chat Panel */
     #ff-chatbot-panel {
-      width: 370px;
-      height: 520px;
-      background: #12121a;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
-      box-shadow: 0 12px 48px rgba(0,0,0,0.5);
+      width: 380px;
+      height: 530px;
+      background: rgba(18, 18, 26, 0.92);
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      box-shadow: 0 20px 60px -10px rgba(0,0,0,0.65), 0 0 35px rgba(255,107,53,0.18), inset 0 1px 0 rgba(255,255,255,0.12);
       display: flex;
       flex-direction: column;
       overflow: hidden;
       position: absolute;
       bottom: 0;
       right: 0;
-      transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
     #ff-chatbot-panel.minimized {
       opacity: 0;
-      transform: scale(0.8) translateY(20px);
+      transform: scale(0.85) translateY(24px);
       pointer-events: none;
     }
 
     /* Header */
     #ff-chatbot-header {
-      background: linear-gradient(135deg, #FF6B35, #FFB347);
+      background: linear-gradient(135deg, #FF6B35 0%, #FF8C5A 40%, #FFB347 100%);
       color: white;
-      padding: 14px 18px;
+      padding: 16px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-shrink: 0;
+      border-radius: 24px 24px 0 0;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
     }
     #ff-chatbot-header .header-left {
       display: flex;
@@ -85,12 +95,12 @@ document.addEventListener('DOMContentLoaded', () => {
       font-size: 0.95rem;
     }
     #ff-chatbot-header .bot-avatar {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       overflow: hidden;
-      border: 1.5px solid rgba(255,255,255,0.6);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      border: 1.5px solid rgba(255,255,255,0.7);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -120,10 +130,11 @@ document.addEventListener('DOMContentLoaded', () => {
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.2s;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
     #ff-chatbot-minimize:hover {
       background: rgba(255,255,255,0.35);
+      transform: scale(1.1);
     }
 
     /* Messages */
@@ -134,37 +145,40 @@ document.addEventListener('DOMContentLoaded', () => {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      background: #0e0e16;
+      background: rgba(14, 14, 22, 0.6);
     }
     #ff-chatbot-messages::-webkit-scrollbar { width: 4px; }
     #ff-chatbot-messages::-webkit-scrollbar-track { background: transparent; }
-    #ff-chatbot-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+    #ff-chatbot-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
 
     .ff-msg {
       max-width: 85%;
-      padding: 11px 15px;
-      border-radius: 14px;
-      font-size: 0.85rem;
+      padding: 11px 16px;
+      border-radius: 18px;
+      font-size: 0.86rem;
       line-height: 1.5;
       white-space: pre-wrap;
       word-break: break-word;
-      animation: ffMsgIn 0.3s ease;
+      animation: ffMsgIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
     @keyframes ffMsgIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(10px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
     .ff-msg.bot {
-      background: rgba(255,255,255,0.07);
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(10px);
       color: #e0e0e5;
       align-self: flex-start;
       border-bottom-left-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.06);
     }
     .ff-msg.user {
-      background: linear-gradient(135deg, #FF6B35, #e05a2d);
+      background: linear-gradient(135deg, #FF6B35, #FF8C5A);
       color: white;
       align-self: flex-end;
       border-bottom-right-radius: 4px;
+      box-shadow: 0 4px 14px rgba(255,107,53,0.3);
     }
     .ff-msg.typing {
       background: rgba(255,255,255,0.05);
@@ -178,50 +192,58 @@ document.addEventListener('DOMContentLoaded', () => {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
-      background: #0e0e16;
+      background: rgba(14, 14, 22, 0.7);
       border-top: 1px solid rgba(255,255,255,0.05);
       flex-shrink: 0;
     }
     .ff-quick-btn {
       background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 7px 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 7px 15px;
       border-radius: 20px;
-      font-size: 0.75rem;
-      color: #ccc;
+      font-size: 0.76rem;
+      font-weight: 500;
+      color: #ddd;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       font-family: inherit;
+      backdrop-filter: blur(8px);
     }
     .ff-quick-btn:hover {
-      background: rgba(255,107,53,0.15);
-      border-color: rgba(255,107,53,0.3);
-      color: #FF6B35;
+      background: rgba(255,107,53,0.2);
+      border-color: rgba(255,107,53,0.45);
+      color: #ffffff;
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 4px 12px rgba(255,107,53,0.25);
     }
 
     /* Input Area */
     #ff-chatbot-input-area {
       display: flex;
       padding: 12px 14px;
-      background: #12121a;
+      background: rgba(18, 18, 26, 0.9);
       border-top: 1px solid rgba(255,255,255,0.06);
       gap: 8px;
       flex-shrink: 0;
     }
     #ff-chatbot-input {
       flex: 1;
-      padding: 10px 16px;
-      border: 1px solid rgba(255,255,255,0.1);
+      padding: 10px 18px;
+      border: 1px solid rgba(255,255,255,0.12);
       border-radius: 24px;
       background: rgba(255,255,255,0.05);
       color: #f0f0f5;
-      font-size: 0.85rem;
+      font-size: 0.86rem;
       outline: none;
       font-family: inherit;
-      transition: border-color 0.2s;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    #ff-chatbot-input::placeholder { color: rgba(255,255,255,0.3); }
-    #ff-chatbot-input:focus { border-color: rgba(255,107,53,0.4); }
+    #ff-chatbot-input::placeholder { color: rgba(255,255,255,0.35); }
+    #ff-chatbot-input:focus {
+      border-color: rgba(255,107,53,0.5);
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 0 0 3px rgba(255,107,53,0.15);
+    }
 
     #ff-chatbot-send {
       background: linear-gradient(135deg, #FF6B35, #FFB347);
@@ -235,10 +257,17 @@ document.addEventListener('DOMContentLoaded', () => {
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.2s;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(255,107,53,0.35);
     }
-    #ff-chatbot-send:hover { transform: scale(1.08); }
+    #ff-chatbot-send:hover {
+      transform: scale(1.12) rotate(12deg);
+      box-shadow: 0 6px 20px rgba(255,107,53,0.55);
+    }
+    #ff-chatbot-send:active {
+      transform: scale(0.92);
+    }
 
     /* Mobile */
     @media (max-width: 480px) {
@@ -262,10 +291,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const widget = document.createElement('div');
   widget.id = 'ff-chatbot-widget';
   widget.innerHTML = `
-    <button id="ff-chatbot-toggle" class="hidden" title="FeastFleet AI Assistant">
+    <button id="ff-chatbot-toggle" title="FeastFleet AI Assistant">
       <img src="images/chatbot-logo.jpg" alt="FeastFleet AI Chef">
     </button>
-    <div id="ff-chatbot-panel">
+    <div id="ff-chatbot-panel" class="minimized">
       <div id="ff-chatbot-header">
         <div class="header-left">
           <div class="bot-avatar">
@@ -333,6 +362,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   minimizeBtn.addEventListener('click', minimize);
   toggleBtn.addEventListener('click', openChat);
+
+  // ── ADD PLAIN TEXT MESSAGE BUBBLE ──
+  function addMessage(text, sender) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `ff-msg ${sender}`;
+    msgDiv.textContent = text;
+    messages.appendChild(msgDiv);
+    messages.scrollTop = messages.scrollHeight;
+    return msgDiv;
+  }
 
   // ── ADD HTML MESSAGE BUBBLE (supports rich cards) ──
   function addMessageHTML(html, sender) {
@@ -520,6 +559,101 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      // ── 💡 AI RECOMMENDATIONS ──
+      if (low.includes('recommend') || low.includes('suggest') || low.includes('top picks') || low.includes('what is good') || low.includes('popular')) {
+        typing.remove();
+        const topDishes = [
+          { name: 'Al Faham Chicken', rest: 'AK Take Away, Pala', price: 230, rating: '4.8', time: '30 min', icon: '🍗' },
+          { name: 'Classic Smash Burger', rest: 'Burger Palace', price: 249, rating: '4.8', time: '20 min', icon: '🍔' },
+          { name: 'Chicken Dum Biryani', rest: 'Royal Biryani House', price: 289, rating: '4.8', time: '35 min', icon: '🍚' },
+          { name: 'Margherita Pizza', rest: 'Pizza Roma', price: 279, rating: '4.7', time: '25 min', icon: '🍕' }
+        ];
+
+        let html = `<div style="font-size:0.82rem;color:#FFB347;font-weight:700;margin-bottom:8px;">💡 AI Top Recommendations For You</div>`;
+        topDishes.forEach(d => {
+          html += `
+            <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:10px;margin-bottom:8px;border-left:3px solid #FF6B35;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;">
+                <div>
+                  <div style="font-weight:700;font-size:0.88rem;">${d.icon} ${d.name}</div>
+                  <div style="color:rgba(255,255,255,0.5);font-size:0.75rem;">@ ${d.rest} · ⭐${d.rating} · ${d.time}</div>
+                  <div style="font-weight:800;color:#FF6B35;margin-top:3px;font-size:0.85rem;">₹${d.price}</div>
+                </div>
+                <button onclick="if(typeof cart!=='undefined'){cart.addItem({id:'rec-'+Math.random().toString(36).substr(2,8),name:'${d.name.replace(/'/g, "\\'")}',price:${d.price},restaurant:'${d.rest.replace(/'/g, "\\'")}'});this.textContent='✓ Added';this.style.background='#2DD4A8';}" style="background:#FF6B35;color:#fff;border:none;border-radius:6px;padding:5px 10px;font-size:0.75rem;font-weight:700;cursor:pointer;flex-shrink:0;">
+                  + Cart
+                </button>
+              </div>
+            </div>`;
+        });
+        html += `<div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:0.75rem;">
+          <a href="cart.html" style="color:#2DD4A8;text-decoration:none;font-weight:600;">View Cart & Checkout →</a>
+          <a href="restaurants.html" style="color:#FFB347;text-decoration:none;font-weight:600;">All Menus →</a>
+        </div>`;
+        addMessageHTML(html, 'bot');
+        return;
+      }
+
+      // ── ✨ AI INGREDIENTS IN-CHAT HANDLER ──
+      if (low.includes('ingredient') || low.includes('recipe') || low.includes("what's in") || low.includes('what is in') || low.includes('allergens')) {
+        typing.remove();
+        let html = `
+          <div style="font-size:0.82rem;color:#FFB347;font-weight:700;margin-bottom:6px;">✨ AI Ingredient Predictor</div>
+          <div style="font-size:0.8rem;color:rgba(255,255,255,0.7);margin-bottom:10px;">Select a dish to inspect predicted ingredients and allergen safety:</div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <a href="ai-ingredients.html" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);padding:8px 12px;border-radius:8px;color:#fff;text-decoration:none;font-size:0.8rem;display:flex;justify-content:space-between;align-items:center;">
+              <span>🍗 Al Faham Chicken</span>
+              <span style="color:#2DD4A8;font-size:0.75rem;">Inspect →</span>
+            </a>
+            <a href="ai-ingredients.html" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);padding:8px 12px;border-radius:8px;color:#fff;text-decoration:none;font-size:0.8rem;display:flex;justify-content:space-between;align-items:center;">
+              <span>🍔 Classic Smash Burger</span>
+              <span style="color:#2DD4A8;font-size:0.75rem;">Inspect →</span>
+            </a>
+            <a href="ai-ingredients.html" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);padding:8px 12px;border-radius:8px;color:#fff;text-decoration:none;font-size:0.8rem;display:flex;justify-content:space-between;align-items:center;">
+              <span>🍚 Chicken Dum Biryani</span>
+              <span style="color:#2DD4A8;font-size:0.75rem;">Inspect →</span>
+            </a>
+          </div>
+          <div style="margin-top:10px;">
+            <a href="ai-ingredients.html" style="display:block;text-align:center;background:linear-gradient(135deg,#FF6B35,#FFB347);color:#fff;padding:8px 12px;border-radius:18px;text-decoration:none;font-size:0.8rem;font-weight:700;">
+              ✨ Open AI Ingredient Predictor →
+            </a>
+          </div>`;
+        addMessageHTML(html, 'bot');
+        return;
+      }
+
+      // ── 📍 TRACK ORDER IN-CHAT HANDLER ──
+      if (low.includes('track') || low.includes('where is my order') || low.includes('order status')) {
+        typing.remove();
+        let ord = null;
+        const lastOrderRaw = localStorage.getItem('feastfleet_last_order');
+        if (lastOrderRaw) {
+          try { ord = JSON.parse(lastOrderRaw); } catch(e) {}
+        }
+
+        const orderId = ord ? (ord.orderId || 'FF-ACTIVE') : 'FF-A7X9K2M1';
+        const rest = (ord && ord.restaurants && ord.restaurants.length > 0) ? ord.restaurants.join(', ') : 'Burger Palace';
+        const rider = (ord && ord.deliveryPartner && ord.deliveryPartner.name) ? ord.deliveryPartner.name : 'Rahul';
+        const riderPhone = (ord && ord.deliveryPartner && ord.deliveryPartner.phone) ? ord.deliveryPartner.phone : '+91 9847123456';
+        const total = (ord && ord.total) ? ord.total : '890.00';
+
+        let html = `
+          <div style="font-size:0.82rem;color:#2DD4A8;font-weight:700;margin-bottom:8px;">📍 Live Order Tracking</div>
+          <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:12px;border-left:3px solid #2DD4A8;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+              <span style="font-weight:700;font-size:0.88rem;color:#fff;">Order #${orderId}</span>
+              <span style="background:rgba(45,212,168,0.15);color:#2DD4A8;font-size:0.7rem;font-weight:700;padding:2px 8px;border-radius:10px;">ON THE WAY 🏍️</span>
+            </div>
+            <div style="font-size:0.78rem;color:rgba(255,255,255,0.6);margin-bottom:4px;">🍽️ ${rest} · Total ₹${total}</div>
+            <div style="font-size:0.78rem;color:rgba(255,255,255,0.7);margin-bottom:10px;">🛵 Pilot: <strong>${rider}</strong> (${riderPhone})</div>
+            <a href="tracking.html" style="display:block;text-align:center;background:linear-gradient(135deg,#FF6B35,#FFB347);color:#fff;padding:8px;border-radius:8px;text-decoration:none;font-size:0.8rem;font-weight:700;">
+              📍 Open Live Tracking Map & Details →
+            </a>
+          </div>`;
+        addMessageHTML(html, 'bot');
+        return;
+      }
+
       // ── FALLBACK: Send to backend chatbot ──
       if (typeof API !== 'undefined' && API.chatMessage) {
         let currentActiveOrder = null;
@@ -539,22 +673,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       } else {
         typing.remove();
-        // Offline fallback
         const user = (typeof API !== 'undefined') ? API.getUser() : null;
-        if (low.includes('track')) {
-          const lastOrder = localStorage.getItem('feastfleet_last_order');
-          if (lastOrder && user) {
-            const ord = JSON.parse(lastOrder);
-            const rider = ord.deliveryPartner?.name || 'Rahul';
-            addMessage(`📦 Order #${ord.orderId} · Status: ON THE WAY 🏍️\n🛵 Delivery Partner: ${rider}\n💰 Total: ₹${ord.total}`, 'bot');
-          } else {
-            addMessage('Please sign in and place an order to track it! 🔑', 'bot');
-          }
-        } else if (low.includes('recommend') || low.includes('menu')) {
-          addMessage('🌟 Top Picks:\n• Chicken Biryani @ Royal Biryani House (₹289)\n• Al Faham Chicken @ AK Take Away (₹230)\n• Smash Burger @ Burger Palace (₹249)', 'bot');
-        } else {
-          addMessage(user ? `Hi ${user.name}! Try the AI features above — Food Agent, Budget Optimizer, or Visual Search! 🚀` : 'Welcome to FeastFleet! Try the AI quick actions above! 🍽️', 'bot');
-        }
+        addMessage(user ? `Hi ${user.name}! Try the AI options above — Food Agent, Budget Optimizer, Ingredients or Tracking! 🚀` : 'Welcome to FeastFleet! Click any of the quick options above to get started! 🍽️', 'bot');
       }
     } catch (err) {
       typing.remove();
@@ -571,11 +691,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Map quick buttons to dedicated pages or chat actions
   const PAGE_MAP = {
+    'Track Order':      'tracking.html',
     'Food Agent':       'ai-agent.html',
     'Budget Optimizer': 'budget-optimizer.html',
     'My Food Profile':  'food-profile.html',
     'Visual Search':    'visual-search.html',
     'Group Order':      'group-order.html',
+    'AI Ingredients':   'ai-ingredients.html',
   };
 
   quickBtns.forEach(btn => {
@@ -585,7 +707,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (PAGE_MAP[label]) {
         window.location.href = PAGE_MAP[label];
       } else {
-        // Track Order, AI Ingredients, Recommend → chat as before
+        // Recommend & other queries → run rich in-chat action
         const query = btn.textContent.replace(/^[^\s]+\s/, '');
         sendMessage(query);
       }

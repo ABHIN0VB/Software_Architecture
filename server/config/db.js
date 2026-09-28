@@ -30,9 +30,11 @@ const connectDB = async () => {
 
     // Auto-seed if database is empty
     const Restaurant = require('../models/Restaurant');
-    const count = await Restaurant.countDocuments();
-    if (count === 0) {
-      console.log('📦 Database empty — running auto-seed...');
+    const User = require('../models/User');
+    const rCount = await Restaurant.countDocuments();
+    const uCount = await User.countDocuments();
+    if (rCount === 0 || uCount === 0) {
+      console.log('📦 Database missing records — running auto-seed...');
       await require('../seed').seedDatabase();
     }
 

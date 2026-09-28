@@ -1,12 +1,31 @@
 const mongoose = require('mongoose');
 const Restaurant = require('./models/Restaurant');
 const MenuItem = require('./models/MenuItem');
+const User = require('./models/User');
 
 const seedDatabase = async () => {
   try {
     console.log('Clearing existing data...');
     await Restaurant.deleteMany();
     await MenuItem.deleteMany();
+    await User.deleteMany();
+
+    console.log('Seeding default users...');
+    await User.create([
+      {
+        name: 'Abhinav Babu',
+        email: 'abhinav@feastfleet.com',
+        password: 'password123',
+        phone: '9847123456'
+      },
+      {
+        name: 'Demo User',
+        email: 'demo@feastfleet.com',
+        password: 'password123',
+        phone: '9876543210'
+      }
+    ]);
+    console.log('Default users created.');
 
     console.log('Inserting restaurants...');
     const restaurantsData = [
